@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 
-import { IconButton } from '@/shared/ui/IconButton';
+import { IconButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const FeedPage = () => {
