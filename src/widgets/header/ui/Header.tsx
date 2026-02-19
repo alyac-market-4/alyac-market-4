@@ -1,20 +1,29 @@
 import type { ReactNode } from 'react';
 
-import { Title } from '@/widgets/header/ui/Title';
+type HeaderProps = {
+  left?: ReactNode;
+  right?: ReactNode;
+  center?: ReactNode;
+};
 
-interface HeaderProps {
-  left?: ReactNode | string;
-  right?: ReactNode | string;
-}
-
-export const Header = ({ left, right }: HeaderProps) => {
-  const renderLeft = typeof left === 'string' ? <Title>{left}</Title> : left;
-  const renderRight = typeof right === 'string' ? <Title>{right}</Title> : right;
-
+export const Header = ({ left, right, center }: HeaderProps) => {
   return (
-    <header className="border-border bg-background sticky top-0 z-10 flex items-center justify-between border-b px-4 py-3">
-      <div>{renderLeft}</div>
-      <div>{renderRight}</div>
+    <header className="border-border bg-background sticky top-0 z-50 h-14 border-b">
+      {/* ✅ max-w 제거: 전체 폭 사용 */}
+      <div className="flex h-full w-full items-center gap-2 px-4">
+        {/* Left */}
+        <div className="flex min-w-0 flex-1 items-center">
+          {typeof left === 'string' ? <h1 className="text-base font-semibold">{left}</h1> : left}
+        </div>
+
+        {/* Center */}
+        {center ? (
+          <div className="flex w-full flex-[2] items-center justify-center">{center}</div>
+        ) : null}
+
+        {/* Right */}
+        <div className="flex flex-1 items-center justify-end">{right}</div>
+      </div>
     </header>
   );
 };
