@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import { type SignInRequest, useSignIn } from '@/entities/auth';
+import { type SignInRequest, useAuth } from '@/entities/auth';
 
 const signInSchema = z.object({
   email: z.email('올바른 이메일을 입력하세요'),
@@ -14,7 +14,7 @@ type SignInFormData = z.infer<typeof signInSchema>;
 
 export const SignInForm = () => {
   const navigate = useNavigate();
-  const signInMutation = useSignIn();
+  const { signInMutation } = useAuth();
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
