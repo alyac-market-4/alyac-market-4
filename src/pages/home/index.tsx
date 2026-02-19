@@ -5,12 +5,13 @@ export const HomePage = () => {
 
   return (
     <div className="flex h-screen flex-col items-center bg-[#23D038]">
-      <img src="/src/shared/assets/images/full-logo-alyac-no-text.png" alt="alyac-logo" />
-
-      <div className="flex w-full flex-col items-center gap-4 rounded-t-[40px] bg-white px-6 pt-16 pb-24">
-        <div>
+      <div className="flex h-screen items-center">
+        <img src="/src/shared/assets/images/full-logo-alyac-no-text.png" alt="alyac-logo" />
+      </div>
+      <div className="flex w-full flex-col items-center rounded-t-[40px] bg-white px-6 pt-16 pb-24">
+        <div className="flex w-full flex-col items-center gap-4">
           <button
-            className="inline-flex h-auto w-[332px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#FEE500]! px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors hover:bg-[#FEE500]/10 [&amp;_svg]:shrink-0"
+            className="inline-flex h-auto w-full max-w-[448px] min-w-[322px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#FEE500]! px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors hover:bg-[#FEE500]/10 [&amp;_svg]:shrink-0"
             type="button"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -21,11 +22,9 @@ export const HomePage = () => {
             </svg>
             <span className="flex-1 text-center text-sm font-medium">카카오톡 계정으로 로그인</span>
           </button>
-        </div>
 
-        <div>
           <button
-            className="inline-flex h-auto w-[332px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#767676] px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors hover:bg-[#767676]/10 [&amp;_svg]:shrink-0"
+            className="inline-flex h-auto w-full max-w-[448px] min-w-[322px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#767676]! px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors hover:bg-[#767676]/10 [&amp;_svg]:shrink-0"
             type="button"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -48,11 +47,9 @@ export const HomePage = () => {
             </svg>
             <span className="flex-1 text-center text-sm font-medium">구글 계정으로 로그인</span>
           </button>
-        </div>
 
-        <div>
           <button
-            className="inline-flex h-auto w-[332px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#2D9CDB]! px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors hover:bg-[#2D9CDB]/10 [&amp;_svg]:shrink-0"
+            className="inline-flex h-auto w-full max-w-[448px] min-w-[322px] cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-[#2D9CDB]! px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors hover:bg-[#2D9CDB]/10 [&amp;_svg]:shrink-0"
             type="button"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -61,20 +58,26 @@ export const HomePage = () => {
                 fill="#2D9CDB"
               ></path>
             </svg>
-            <span className="text-card-foreground flex-1 text-center text-sm font-medium">
-              페이스북 계정으로 로그인
-            </span>
+            <span className="flex-1 text-center text-sm font-medium">페이스북 계정으로 로그인</span>
           </button>
-        </div>
 
-        <div className="mt-4 flex flex-row items-center justify-center gap-4">
-          <button type="button" className="cursor-pointer" onClick={() => navigate('/sign-in')}>
-            이메일로 로그인
-          </button>
-          <span>|</span>
-          <button type="button" className="cursor-pointer" onClick={() => navigate('/sign-up')}>
-            회원가입
-          </button>
+          <div className="mt-4 flex flex-row items-center justify-center gap-4">
+            <button
+              type="button"
+              className="cursor-pointer text-sm"
+              onClick={() => navigate('/sign-in')}
+            >
+              이메일로 로그인
+            </button>
+            <span>|</span>
+            <button
+              type="button"
+              className="cursor-pointer text-sm"
+              onClick={() => navigate('/sign-up')}
+            >
+              회원가입
+            </button>
+          </div>
         </div>
       </div>
     </div>
