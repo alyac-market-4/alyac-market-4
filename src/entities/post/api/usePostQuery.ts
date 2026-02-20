@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { postApi } from '@/entities/post';
 import { postKeys } from '@/entities/post/model/keys';
@@ -36,12 +37,15 @@ export const useUserPostsQuery = (accountname: string, limit: number = 10, skip:
 
 export const usePostMutation = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const createMutation = useMutation({
     mutationFn: ({ content, image }: { content: string; image: string }) =>
       postApi.createPost({ post: { content, image } }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: postKeys.all });
+      navigate(`/post/${data.id}`);
     },
   });
 
@@ -62,8 +66,9 @@ export const usePostMutation = () => {
   const updateMutation = useMutation({
     mutationFn: ({ postId, post }: { postId: string; post: Post }) =>
       postApi.updatePost({ postId, post }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: postKeys.all });
+      navigate(`/post/${data.id}`);
     },
   });
 
@@ -71,6 +76,9 @@ export const usePostMutation = () => {
     mutationFn: (postId: string) => postApi.deletePost(postId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: postKeys.all });
+      if (!location.pathname.includes('/profile')) {
+        navigate('/profile');
+      }
     },
   });
 
