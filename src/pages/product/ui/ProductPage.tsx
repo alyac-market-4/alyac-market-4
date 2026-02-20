@@ -1,48 +1,61 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ImagePlus } from 'lucide-react';
 
+import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
+import { imageUrl } from '@/shared/lib';
 import { BackButton } from '@/shared/ui/BackButton';
 import { ImageFileButton } from '@/shared/ui/ImageFileButton';
 import { Button } from '@/shared/ui/button';
 import { Header } from '@/widgets/header';
 
+// import { useCreatePost } from '@/entities/post/hooks/useCreatePost'; ← 프로젝트에 맞게 수정 필요
+
 export const ProductPage = () => {
-  // 이미지 미리보기 URL
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const uploadMutation = useUploadFiles();
+  // const createPostMutation = useCreatePost(); ← 프로젝트에 맞게 수정 필요
 
-  // 컴포넌트 언마운트 시 URL 객체 해제
-  useEffect(() => {
-    return () => {
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview);
-      }
-    };
-  }, [imagePreview]);
-
-  // 이미지 업로드 처리
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      alert('이미지 파일만 업로드 가능합니다.');
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      alert('파일 크기는 5MB 이하여야 합니다.');
-      return;
-    }
-
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
-  };
-
-  // 이미지 업로드 처리 - 이미지 아이콘 버튼
   const handleOpenFile = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const file = files[0];
+
+    // 미리보기
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
+
+    // 서버 업로드
+    uploadMutation.mutate(files, {
+      onSuccess: (data) => {
+        const filenames = data.map((item) => item.filename);
+        setUploadedImageNames(filenames);
+      },
+      onError: (error: unknown) => {
+        if (error instanceof Error) {
+          alert('업로드 실패: ' + error.message);
+        }
+      },
+    });
+  };
+
+  const handleSubmit = () => {
+    const imageString = uploadedImageNames.join(',');
+
+    console.log('서버에 보낼 이미지 문자열:', imageString);
+
+    // createPostMutation.mutate({
+    //   content: 'Hello',
+    //   image: imageString,
+    // });
   };
 
   return (
@@ -52,6 +65,7 @@ export const ProductPage = () => {
         left={<BackButton />}
         right={
           <Button
+            onClick={handleSubmit}
             type="submit"
             form="product-form"
             className="ring-offset-background focus-visible:ring-ring inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full bg-[#6FCA3C] px-6 py-1 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[#5CB32A] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
