@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 export const HomePage = () => {
   const navigate = useNavigate();
 
+  // Todo : 홈페이지 전환효과
+  // 테마 변경 효과
+
   return (
     <div className="flex h-screen flex-col items-center bg-[#23D038]">
       <div className="flex h-screen items-center">
@@ -69,7 +72,7 @@ export const HomePage = () => {
             >
               이메일로 로그인
             </button>
-            <span>|</span>
+            <span className="text-sm">|</span>
             <button
               type="button"
               className="cursor-pointer text-sm"
