@@ -1,1 +1,1 @@
-export * from './ui/AccountSearchPage.tsx';
+export * from './ui/AccountSearchPage';
