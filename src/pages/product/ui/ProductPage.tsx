@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ImagePlus } from 'lucide-react';
 
 import { BackButton } from '@/shared/ui/BackButton';
+import { ImageFileButton } from '@/shared/ui/ImageFileButton';
 import { Button } from '@/shared/ui/button';
 import { Header } from '@/widgets/header';
 
 export const ProductPage = () => {
   // 이미지 미리보기 URL
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // 컴포넌트 언마운트 시 URL 객체 해제
   useEffect(() => {
@@ -38,6 +40,11 @@ export const ProductPage = () => {
     setImagePreview(previewUrl);
   };
 
+  // 이미지 업로드 처리 - 이미지 아이콘 버튼
+  const handleOpenFile = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <>
       {/* 헤더 */}
@@ -60,34 +67,37 @@ export const ProductPage = () => {
           <div className="space-y-2">
             <label className="text-muted-foreground block text-sm">이미지 등록</label>
 
-            <div className="relative">
-              <label
-                htmlFor="image-input"
-                className="flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl bg-gray-800 hover:bg-gray-700"
-              >
-                {imagePreview ? (
-                  <img
-                    src={imagePreview}
-                    alt="상품 이미지"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <ImagePlus className="mb-2 size-8 text-gray-400" />
-                    <span className="text-sm text-gray-400">이미지를 선택하세요</span>
-                  </div>
-                )}
-              </label>
+            {/* 이미지 등록 */}
+            <div
+              onClick={handleOpenFile}
+              className="relative h-64 w-full cursor-pointer overflow-hidden rounded-2xl bg-gray-800 transition-colors duration-200 hover:bg-gray-700"
+            >
+              {imagePreview ? (
+                <img src={imagePreview} alt="상품 이미지" className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center">
+                  <ImagePlus className="mb-2 size-8 text-gray-400" />
+                  <span className="text-sm text-gray-400">이미지를 선택하세요</span>
+                </div>
+              )}
 
-              {/* input은 하나만 */}
-              <input
-                onChange={handleImageChange}
-                id="image-input"
-                type="file"
-                accept="image/*"
-                className="hidden"
+              {/* 아이콘 버튼 */}
+              <ImageFileButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenFile();
+                }}
+                className="cursor-pointer bg-white/60 text-gray-700 transition-colors duration-200 hover:bg-white"
               />
             </div>
+
+            <input
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              type="file"
+              accept="image/*"
+              className="hidden"
+            />
           </div>
         </form>
       </main>
