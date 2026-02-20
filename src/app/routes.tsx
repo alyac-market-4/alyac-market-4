@@ -17,8 +17,9 @@ const ChatPage = lazy(() => import('@/pages/chat').then((m) => ({ default: m.Cha
 const ProfilePage = lazy(() => import('@/pages/profile').then((m) => ({ default: m.ProfilePage })));
 const ProductPage = lazy(() => import('@/pages/product').then((m) => ({ default: m.ProductPage })));
 const SignInPage = lazy(() => import('@/pages/sign-in').then((m) => ({ default: m.SignInPage })));
-const SignUpPage = lazy(() =>
-  import('@/pages/sign-up/ui/SignUpPage').then((m) => ({ default: m.SignUpPage })),
+const SignUpPage = lazy(() => import('@/pages/sign-up').then((m) => ({ default: m.SignUpPage })));
+const ProfileSettingPage = lazy(() =>
+  import('@/pages/profile-setting').then((m) => ({ default: m.ProfileSettingPage })),
 );
 const PostCreatePage = lazy(() =>
   import('@/pages/post-create').then((m) => ({ default: m.PostCreatePage })),
@@ -62,6 +63,7 @@ export const router = createBrowserRouter([
         children: [
           { path: 'sign-in', element: <SignInPage /> },
           { path: 'sign-up', element: <SignUpPage /> },
+          { path: 'profile-setting', element: <ProfileSettingPage /> },
         ],
       },
     ],
