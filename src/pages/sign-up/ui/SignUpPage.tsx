@@ -6,7 +6,7 @@ export const SignUpPage = () => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    navigate('/sign-in');
+    navigate('/profile-setting');
   };
 
   return <Button onClick={onClick}>회원가입</Button>;
