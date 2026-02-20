@@ -33,6 +33,7 @@ export const ProfilePage = () => {
           </IconButton>
         }
       />
+      <Button onClick={onClick}>로그아웃</Button>
       <main className="flex-1 overflow-y-auto pb-16">
         <div className="border-border border-b px-4 py-6">
           <div className="flex items-center justify-center gap-12">
