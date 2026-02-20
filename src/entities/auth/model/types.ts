@@ -1,3 +1,5 @@
+import type { User } from '@/shared/model';
+
 export interface SignInRequest {
   user: {
     email: string;
@@ -6,18 +8,25 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
+  user: User & {
+    accessToken: string;
+    refreshToken: string;
+  };
+}
+
+export interface SignUpRequest {
   user: {
-    _id: string;
     username: string;
     email: string;
+    password: string;
     accountname: string;
     intro: string;
     image: string;
-    following: string[];
-    follower: string[];
-    followerCount: number;
-    followingCount: number;
-    accessToken: string;
-    refreshToken: string;
+  };
+}
+
+export interface SignUpResponse {
+  user: User & {
+    message: string;
   };
 }
