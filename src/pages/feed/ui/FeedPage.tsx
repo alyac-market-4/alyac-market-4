@@ -1,6 +1,10 @@
+//외부 라이브러리
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+//assets
+import alyacImage from '@/shared/assets/images/full-logo-alyac-gray.png';
+//프로젝트 컴포넌트
 import { IconButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -36,11 +40,9 @@ export const FeedPage = () => {
 const EmptyFeed = ({ onSearch }: { onSearch: () => void }) => {
   return (
     <section className="flex min-h-[70vh] flex-col items-center justify-center">
-      {/* 🔻 이미지 들어갈 자리  */}
+      {/* 🔻 이미지   */}
       <div className="mb-6 flex flex-col items-center">
-        <div className="border-border bg-muted flex h-[120px] w-[120px] items-center justify-center rounded-full border">
-          <span className="text-[10px] opacity-60">ALYAC IMAGE HERE</span>
-        </div>
+        <img src={alyacImage} alt="알약 이미지" className="h-[120px] w-[120px] object-contain" />
       </div>
 
       <p className="text-sm opacity-70">유저를 검색해 팔로우 해보세요!</p>

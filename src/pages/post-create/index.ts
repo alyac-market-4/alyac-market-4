@@ -1,1 +1,1 @@
-export * from './ui/PostCreatePage.tsx';
+export * from './ui/PostCreatePage';

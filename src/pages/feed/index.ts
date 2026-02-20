@@ -1,1 +1,1 @@
-export * from './ui/FeedPage.tsx';
+export * from './ui/FeedPage';
