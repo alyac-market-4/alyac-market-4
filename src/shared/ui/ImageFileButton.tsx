@@ -1,4 +1,4 @@
-import { Image } from 'lucide-react';
+import { ImagePlus } from 'lucide-react';
 
 import { Button } from '@/shared/ui';
 
@@ -14,9 +14,9 @@ export const ImageFileButton = ({ onClick, className }: ImageFileButtonProps) =>
       type="button"
       size="icon"
       onClick={onClick}
-      className={`absolute right-4 bottom-4 rounded-full ${className ?? ''}`}
+      className={`absolute rounded-full ${className ?? ''}`}
     >
-      <Image className="size-5" />
+      <ImagePlus className="size-5" />
     </Button>
   );
 };
