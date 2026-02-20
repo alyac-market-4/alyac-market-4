@@ -15,11 +15,9 @@ export const AccountSearchPage = () => {
     <>
       <Header
         left={
-          // ✅ 헤더 폭을 "거의 전체"처럼 쓰게 만들기
           <div className="flex w-[calc(100vw-2rem)] items-center gap-3">
             <BackButton />
 
-            {/* ✅ 가운데를 꽉 채우는 검색창 */}
             <input
               ref={inputRef}
               className="border-border bg-muted flex-1 rounded-full border px-4 py-2 text-sm outline-none"
@@ -28,11 +26,9 @@ export const AccountSearchPage = () => {
               onChange={(e) => setKeyword(e.target.value)}
             />
 
-            {/* ✅ 오른쪽도 BackButton과 같은 폭 더미로 대칭 맞추기 */}
             <div className="w-10" />
           </div>
         }
-        // ✅ Header가 justify-between이라 오른쪽에 공간을 남겨줘야 함
         right={<div className="w-10" />}
       />
 
