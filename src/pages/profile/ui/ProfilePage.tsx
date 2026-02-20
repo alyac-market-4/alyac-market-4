@@ -1,6 +1,7 @@
 import { EllipsisVertical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import { useUserProductsQuery } from '@/entities/product/api/useProductQuery';
 import { useUserQuery } from '@/entities/user';
 import { removeToken } from '@/shared/lib';
 import { Button } from '@/shared/ui';
@@ -12,6 +13,7 @@ export const ProfilePage = () => {
   const navigate = useNavigate();
 
   const { data: user, isLoading, isError } = useUserQuery();
+  const { data: products } = useUserProductsQuery(user?.accountname || '');
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError) return <div>에러</div>;
@@ -67,20 +69,22 @@ export const ProfilePage = () => {
             <h3 className="text-foreground text-base font-bold">판매 중인 상품</h3>
           </div>
           <div className="scrollbar-hide flex gap-3 overflow-x-auto px-4 pb-2">
-            <div className="relative w-32 shrink-0 cursor-pointer overflow-hidden rounded-lg">
-              {/* TODO: 판매 중인 상품 alt, url api */}
-              <img
-                alt="테스트용 파일"
-                className="h-32 w-full object-cover"
-                src="https://storage.googleapis.com/alyac-market-server.firebasestorage.app/uploadFiles/1771481153153.jpg"
-              />
-              <div className="mt-2">
-                {/* TODO: 판매 중인 상품 이름 api */}
-                <p className="text-foreground text-sm font-medium">테스트용 파일</p>
-                {/* TODO: 판매 중인 상품 가격 api */}
-                <p className="text-sm font-bold text-green-600">1,234,000원</p>
+            {products?.map((product) => (
+              <div
+                key={product.itemImage}
+                className="relative w-32 shrink-0 cursor-pointer overflow-hidden rounded-lg"
+              >
+                <img
+                  alt={product.itemName}
+                  className="h-32 w-full object-cover"
+                  src={product.itemImage}
+                />
+                <div className="mt-2">
+                  <p className="text-foreground text-sm font-medium">{product.itemName}</p>
+                  <p className="text-sm font-bold text-green-600">{product.price}</p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
         <div className="border-border flex items-center justify-end border-b px-4 py-4">
