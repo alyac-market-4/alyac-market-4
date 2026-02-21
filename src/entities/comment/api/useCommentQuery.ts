@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { commentApi } from '@/entities/comment/api/commentApi';
-import { commentKeys } from '@/entities/comment/model/keys';
-import type { DeleteCommentRequest } from '@/entities/comment/model/types';
+import { commentKeys } from '../model/keys';
+import type { DeleteCommentRequest } from '../model/types';
+import { commentApi } from './commentApi';
 
 export const usePostCommentsQuery = (postId: string, limit: number = 10, skip: number = 0) => {
   return useQuery({

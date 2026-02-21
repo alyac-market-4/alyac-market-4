@@ -1,3 +1,6 @@
+import axiosInstance from '@/shared/api/axios';
+import type { Product, ProductDetail } from '@/shared/model';
+
 import type {
   CreateProductResponse,
   DeleteProductResponse,
@@ -5,9 +8,7 @@ import type {
   GetUserProductsResponse,
   UpdateProductRequest,
   UpdateProductResponse,
-} from '@/entities/product';
-import axiosInstance from '@/shared/api/axios';
-import type { Product, ProductDetail } from '@/shared/model';
+} from '../model/types';
 
 export const productApi = {
   createProduct: async (product: Product): Promise<ProductDetail> => {

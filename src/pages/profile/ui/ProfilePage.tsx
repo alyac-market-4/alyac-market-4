@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { usePostMutation, useUserPostsQuery } from '@/entities/post';
 import { useUserProductsQuery } from '@/entities/product/api/useProductQuery';
-import { useUserQuery } from '@/entities/user';
+import { useMyInfoQuery } from '@/entities/user';
 import { removeToken } from '@/shared/lib';
 import { Button } from '@/shared/ui';
 import { BackButton } from '@/shared/ui/BackButton';
@@ -13,7 +13,7 @@ import { Header } from '@/widgets/header';
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const { data: user, isLoading, isError } = useUserQuery();
+  const { data: user, isLoading, isError } = useMyInfoQuery();
   const { data: posts = [] } = useUserPostsQuery(user?.accountname || '');
   const { toggleLikeMutation } = usePostMutation();
   const { data: products = [] } = useUserProductsQuery(user?.accountname || '');

@@ -1,3 +1,6 @@
+import axiosInstance from '@/shared/api/axios';
+import type { Comment } from '@/shared/model';
+
 import type {
   CreateCommentRequest,
   CreateCommentResponse,
@@ -6,9 +9,7 @@ import type {
   GetPostCommentsResponse,
   ReportCommentRequest,
   ReportCommentResponse,
-} from '@/entities/comment';
-import axiosInstance from '@/shared/api/axios';
-import type { Comment } from '@/shared/model';
+} from '../model/types';
 
 export const commentApi = {
   getPostComments: async (
