@@ -10,7 +10,7 @@ export const AccountSearchPage = () => {
     <>
       <Header left={<SearchInput keyword={keyword} onChangeKeyword={setKeyword} />} />
 
-      <main className="px-4 py-8">
+      <main className="flex h-[calc(100vh-120px)] items-center justify-center">
         <div className="text-center text-sm opacity-60">계정을 검색해보세요.</div>
       </main>
     </>
