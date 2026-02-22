@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import type { Post } from '@/shared/model';
@@ -7,30 +7,32 @@ import { postKeys } from '../model/keys';
 import { postApi } from './postApi';
 
 export const useAllPostsQuery = (limit: number = 10, skip: number = 0) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: postKeys.list(limit, skip),
     queryFn: () => postApi.getAllPosts(limit, skip),
   });
 };
 
 export const useFeedPostsQuery = (limit: number = 10, skip: number = 0) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: postKeys.feed(limit, skip),
     queryFn: () => postApi.getFeedPosts(limit, skip),
   });
 };
 
 export const usePostDetailQuery = (postId: string) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: postKeys.detail(postId),
     queryFn: () => postApi.getPostDetail(postId),
+    enabled: !!postId,
   });
 };
 
 export const useUserPostsQuery = (accountname: string, limit: number = 10, skip: number = 0) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: postKeys.user(accountname, limit, skip),
     queryFn: () => postApi.getUserPosts(accountname, limit, skip),
+    enabled: !!accountname,
   });
 };
 

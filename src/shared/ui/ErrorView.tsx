@@ -1,11 +1,14 @@
-import { type FallbackProps, getErrorMessage } from 'react-error-boundary';
-
 import { Button } from './button';
 
-export const ErrorView = ({ error, resetErrorBoundary }: FallbackProps) => (
+interface ErrorViewProps {
+  message: string;
+  onRetry: () => void;
+}
+
+export const ErrorView = ({ message, onRetry }: ErrorViewProps) => (
   <div className="py-4 text-center">
-    <p className="text-sm text-red-500">에러 발생: {getErrorMessage(error)}</p>
-    <Button onClick={resetErrorBoundary} size="sm">
+    <p className="text-sm text-red-500">에러 발생: {message}</p>
+    <Button onClick={onRetry} size="sm">
       재시도
     </Button>
   </div>

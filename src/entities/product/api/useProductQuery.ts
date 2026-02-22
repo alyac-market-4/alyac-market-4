@@ -1,20 +1,22 @@
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { productKeys } from '../model/keys';
 import type { UpdateProductRequest } from '../model/types';
 import { productApi } from './productApi';
 
-export const useUserProductsQuery = (accountname: string) => {
-  return useSuspenseQuery({
-    queryKey: productKeys.list(accountname),
-    queryFn: () => productApi.getUserProducts(accountname),
+export const useUserProductsQuery = (accountname: string, limit: number = 10, skip: number = 0) => {
+  return useQuery({
+    queryKey: productKeys.list(accountname, limit, skip),
+    queryFn: () => productApi.getUserProducts(accountname, limit, skip),
+    enabled: !!accountname,
   });
 };
 
 export const useProductDetailQuery = (productId: string) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: productKeys.detail(productId),
     queryFn: () => productApi.getProductDetail(productId),
+    enabled: !!productId,
   });
 };
 

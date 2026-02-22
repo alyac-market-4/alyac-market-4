@@ -3,26 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 import { usePostMutation, useUserPostsQuery } from '@/entities/post';
 import { useMyInfoQuery } from '@/entities/user';
-import { AsyncBoundary, ErrorView, IconButton, LoadingState } from '@/shared/ui';
+import { ErrorView, IconButton, LoadingState } from '@/shared/ui';
 
 export const PostList = () => {
-  return (
-    <AsyncBoundary loadingFallback={<LoadingState />} errorFallback={ErrorView}>
-      <PostListContent />
-    </AsyncBoundary>
-  );
-};
-
-const PostListContent = () => {
   const navigate = useNavigate();
   const { toggleLikeMutation } = usePostMutation();
   // TODO: URL params가 없는 경우만 useMyInfoQuery 사용해야 함
   const { data: user } = useMyInfoQuery();
-  const { data: posts } = useUserPostsQuery(user.accountname);
+  const {
+    data: posts = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useUserPostsQuery(user?.accountname || '');
 
   return (
     <>
-      {posts.length > 0 ? (
+      {isLoading ? (
+        <LoadingState />
+      ) : isError ? (
+        <ErrorView message={'게시글 목록 불러오기 실패'} onRetry={() => refetch()} />
+      ) : posts.length > 0 ? (
         posts.map((post) => {
           return (
             <article key={post.id} className="border-border border-b pb-4">

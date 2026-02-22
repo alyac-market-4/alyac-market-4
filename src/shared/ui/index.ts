@@ -1,4 +1,3 @@
-export * from './AsyncBoundary';
 export * from './avatar';
 export * from './BackButton';
 export * from './button';
