@@ -22,7 +22,7 @@ export const productApi = {
     accountname: string,
     limit: number = 10,
     skip: number = 0,
-  ): Promise<Product[]> => {
+  ): Promise<ProductDetail[]> => {
     const { data } = await axiosInstance.get<GetUserProductsResponse>(
       `/api/product/${accountname}`,
       {
