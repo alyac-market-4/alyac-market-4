@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { userKeys } from '../model/keys';
@@ -6,16 +6,15 @@ import type { UpdateProfileRequest } from '../model/types';
 import { userApi } from './userApi';
 
 export const useMyInfoQuery = () => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: userKeys.me(),
     queryFn: () => userApi.getMyInfo(),
   });
 };
 export const useSearchUserQuery = (keyword: string) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: userKeys.search(keyword),
     queryFn: () => userApi.searchUser(keyword),
-    enabled: !!keyword,
   });
 };
 
