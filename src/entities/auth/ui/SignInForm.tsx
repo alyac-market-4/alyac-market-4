@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import { type SignInRequest, useAuth } from '@/entities/auth';
+import { type SignInRequest } from '../model/types';
+import { useAuth } from '../model/useAuth';
 
 const signInSchema = z.object({
   email: z.email('올바른 이메일을 입력하세요'),

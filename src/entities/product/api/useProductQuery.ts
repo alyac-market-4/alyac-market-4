@@ -1,19 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { productApi } from '@/entities/product/api/productApi';
-import type { UpdateProductRequest } from '@/entities/product/model/types';
+import { productKeys } from '../model/keys';
+import type { UpdateProductRequest } from '../model/types';
+import { productApi } from './productApi';
 
-export const useUserProductsQuery = (accountname: string) => {
+export const useUserProductsQuery = (accountname: string, limit: number = 10, skip: number = 0) => {
   return useQuery({
-    queryKey: ['product', 'list', accountname],
-    queryFn: () => productApi.getUserProducts(accountname),
+    queryKey: productKeys.list(accountname, limit, skip),
+    queryFn: () => productApi.getUserProducts(accountname, limit, skip),
     enabled: !!accountname,
   });
 };
 
 export const useProductDetailQuery = (productId: string) => {
   return useQuery({
-    queryKey: ['product', 'detail', productId],
+    queryKey: productKeys.detail(productId),
     queryFn: () => productApi.getProductDetail(productId),
     enabled: !!productId,
   });
@@ -25,7 +26,7 @@ export const useProductMutation = () => {
   const createMutation = useMutation({
     mutationFn: productApi.createProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['product'] });
+      queryClient.invalidateQueries({ queryKey: productKeys.all });
     },
   });
 
@@ -33,14 +34,14 @@ export const useProductMutation = () => {
     mutationFn: ({ productId, product }: UpdateProductRequest) =>
       productApi.updateProduct({ productId, product }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['product'] });
+      queryClient.invalidateQueries({ queryKey: productKeys.all });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (productId: string) => productApi.deleteProduct(productId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['product'] });
+      queryClient.invalidateQueries({ queryKey: productKeys.all });
     },
   });
 
