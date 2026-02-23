@@ -1,9 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import type { Post } from '@/shared/model';
+import { type Post, postKeys } from '@/shared/model';
 
-import { postKeys } from '../model/keys';
 import { postApi } from './postApi';
 
 export const useAllPostsQuery = (limit: number = 10, skip: number = 0) => {
