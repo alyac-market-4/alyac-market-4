@@ -1,21 +1,33 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { signIn, signUp } from '@/entities/auth/api/auth';
 import { getToken, removeToken, saveToken } from '@/shared/lib';
+
+import { authApi } from '../api/auth';
+import { authKeys } from './keys';
+import type { SignInRequest, SignUpRequest } from './types';
 
 export const useAuth = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const checkTokenQuery = useQuery({
+    queryKey: authKeys.session(),
+    queryFn: () => authApi.checkToken(),
+    enabled: !!getToken(),
+  });
 
   const signInMutation = useMutation({
-    mutationFn: signIn,
+    mutationFn: (userInfo: SignInRequest) => authApi.signIn(userInfo),
     onSuccess: (data) => {
       saveToken(data.user.accessToken, data.user.refreshToken);
+      queryClient.invalidateQueries({ queryKey: authKeys.session() });
+      navigate('/feed');
     },
   });
 
   const signUpMutation = useMutation({
-    mutationFn: signUp,
+    mutationFn: (userInfo: SignUpRequest) => authApi.signUp(userInfo),
     onSuccess: () => {
       alert('회원가입이 완료되었습니다! 로그인해 주세요.');
       navigate('/sign-in');
@@ -24,14 +36,14 @@ export const useAuth = () => {
 
   const logout = () => {
     removeToken();
+    queryClient.clear();
     navigate('/sign-in');
   };
 
-  const isAuthenticated = () => {
-    return !!getToken();
-  };
+  const isAuthenticated = !!getToken();
 
   return {
+    useCheckTokenQuery: checkTokenQuery,
     signInMutation,
     signUpMutation,
     logout,

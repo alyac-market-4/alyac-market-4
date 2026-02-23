@@ -1,3 +1,6 @@
+import axiosInstance from '@/shared/api/axios';
+import type { Post } from '@/shared/model/post';
+
 import type {
   CreatePostRequest,
   DeletePostResponse,
@@ -7,9 +10,7 @@ import type {
   TogglePostLikeResponse,
   UnlikePostResponse,
   UpdatePostRequest,
-} from '@/entities/post';
-import axiosInstance from '@/shared/api/axios';
-import type { Post } from '@/shared/model/post';
+} from '../model/types';
 
 // TODO: 백엔드 개선 시 FlexiblePostsResponse 제거
 export const postApi = {
