@@ -4,6 +4,8 @@ export * from './button';
 export * from './dropdown-menu';
 export * from './ErrorView';
 export * from './IconButton';
+export * from './ImageFileButton';
+export * from './KebabMenu';
 export * from './LoadingState';
 export * from './ProfileAvatar';
 export * from './ProfileAvatarEditor';
