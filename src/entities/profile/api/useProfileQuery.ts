@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { profileKeys } from '../model/keys';
+import { profileKeys } from '@/shared/model';
+
 import { profileApi } from './getProfile';
 
 export const useUserProfileQuery = (accountname: string) => {
