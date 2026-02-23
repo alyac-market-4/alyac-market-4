@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { CommentButton } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
@@ -9,6 +11,8 @@ interface PostSummaryProps {
 }
 
 export const PostSummary = ({ post }: PostSummaryProps) => {
+  const navigate = useNavigate();
+
   return (
     <article key={post.id} className="border-border border-b pb-4">
       <div className="mb-3 flex items-center justify-between">
@@ -31,8 +35,11 @@ export const PostSummary = ({ post }: PostSummaryProps) => {
         src={post.image}
       />
       <div className="mt-3 ml-12 flex gap-4">
-        <LikeButton postId={post.id} heartCount={post.heartCount} />
-        <CommentButton commentCount={post.commentCount} />
+        <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
+        <CommentButton
+          commentCount={post.commentCount}
+          onClick={() => navigate(`/post/${post.id}`)}
+        />
       </div>
     </article>
   );
