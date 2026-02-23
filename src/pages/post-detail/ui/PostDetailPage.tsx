@@ -1,44 +1,43 @@
-import { useQuery } from '@tanstack/react-query';
-import { EllipsisVertical } from 'lucide-react';
+import { useState } from 'react';
+
 import { useParams } from 'react-router-dom';
 
-import { commentApi } from '@/entities/comment';
-import { commentKeys } from '@/entities/comment/model/keys';
-import { postApi } from '@/entities/post';
-import { postKeys } from '@/entities/post/model/keys';
-import { PostDetail } from '@/pages/post-detail/ui/PostDetail';
+import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
+import { usePostDetailQuery, usePostMutation } from '@/entities/post';
+import { useMyInfoQuery } from '@/entities/user';
 import {
   BackButton,
   Button,
-  IconButton,
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
+  KebabMenu,
+  ProfileAvatar,
 } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 import CommentDetail from './CommentDetail';
+import { PostDetail } from './PostDetail';
 
 export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
-
-  const {
-    data: post,
-    isLoading: isLoadingPost,
-    isError: isErrorPost,
-  } = useQuery({
-    queryKey: postKeys.detail(postId),
-    queryFn: () => postApi.getPostDetail(postId),
-  });
+  const { data: user } = useMyInfoQuery();
+  const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
+  const { createMutation } = useCommentMutation();
+  const { deleteMutation, reportMutation } = usePostMutation();
 
   const {
     data: comments,
     isLoading: isLoadingComments,
     isError: isErrorComments,
-  } = useQuery({
-    queryKey: commentKeys.list(postId),
-    queryFn: () => commentApi.getPostComments(postId),
-  });
+  } = usePostCommentsQuery(postId);
+
+  const [comment, setComment] = useState<string>('');
+  const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createMutation.mutate({ postId, content: comment });
+    setComment('');
+  };
 
   if (isLoadingPost || isLoadingComments) return <div>로딩 중...</div>;
   if (isErrorPost || isErrorComments) return <div>에러</div>;
@@ -49,9 +48,22 @@ export const PostDetailPage = () => {
       <Header
         left={<BackButton />}
         right={
-          <IconButton>
-            <EllipsisVertical />
-          </IconButton>
+          <KebabMenu
+            items={[
+              {
+                label: '신고하기',
+                onClick: () => {
+                  reportMutation.mutate(postId);
+                },
+              },
+              {
+                label: '삭제',
+                onClick: () => {
+                  deleteMutation.mutate(postId);
+                },
+              },
+            ]}
+          />
         }
       />
       <main className="flex-1 overflow-y-auto">
@@ -61,8 +73,8 @@ export const PostDetailPage = () => {
         <div className="divide-border divide-y">
           {Number(post.commentCount) > 0 ? (
             comments?.map((comment) => (
-              <div className="flex gap-3 px-4 py-4">
-                <CommentDetail comment={comment} />
+              <div key={comment.id} className="flex gap-3 px-4 py-4">
+                <CommentDetail postId={postId} comment={comment} />
               </div>
             ))
           ) : (
@@ -71,22 +83,26 @@ export const PostDetailPage = () => {
             </div>
           )}
         </div>
-        <div className="border-border bg-background fixed right-0 bottom-0 left-0 border-t px-4 py-3">
-          <form className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-300"></div>
-            <div className="relative flex-1">
-              <InputGroup variant="default" size="lg">
-                <InputGroupInput placeholder="댓글 입력하기..." />
-                <InputGroupAddon align="inline-end">
-                  <Button variant="ghost" type="submit" className="font-semibold">
-                    게시
-                  </Button>
-                </InputGroupAddon>
-              </InputGroup>
-            </div>
-          </form>
-        </div>
       </main>
+      <div className="border-border bg-background sticky right-0 bottom-0 left-0 border-t px-4 py-3">
+        <form className="flex items-center gap-3" onSubmit={handleCommentSubmit}>
+          <ProfileAvatar src={user?.image || ''} alt={user?.accountname || ''} size="lg" />
+          <div className="relative flex-1">
+            <InputGroup variant="default" size="lg">
+              <InputGroupInput
+                placeholder="댓글 입력하기..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <InputGroupAddon align="inline-end">
+                <Button variant="ghost" type="submit" className="font-semibold">
+                  게시
+                </Button>
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
+        </form>
+      </div>
     </>
   );
 };
