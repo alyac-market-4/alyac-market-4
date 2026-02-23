@@ -1,17 +1,17 @@
-import { Button } from '@/shared/ui';
+import { forwardRef } from 'react';
 
-export const IconButton = ({
-  children,
-  onClick,
-  className,
-}: {
+import { Button } from './button';
+
+interface IconButtonProps extends React.ComponentProps<typeof Button> {
   children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
-}) => {
-  return (
-    <Button variant="ghost" size="icon-lg" onClick={onClick} className={className}>
-      {children}
-    </Button>
-  );
-};
+}
+
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <Button ref={ref} variant="ghost" size="icon-lg" className={className} {...props}>
+        {children}
+      </Button>
+    );
+  },
+);
