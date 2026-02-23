@@ -21,32 +21,30 @@ interface KebabMenuProps {
 
 export const KebabMenu = ({ items, align = 'end' }: KebabMenuProps) => {
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <IconButton>
-            <EllipsisVertical />
-          </IconButton>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align={align}>
-          <DropdownMenuGroup>
-            {items.map((item, index) => {
-              const key = `${item.label}-${index}`;
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <IconButton>
+          <EllipsisVertical />
+        </IconButton>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align={align}>
+        <DropdownMenuGroup>
+          {items.map((item, index) => {
+            const key = `${item.label}-${index}`;
 
-              return item.icon ? (
-                <DropdownMenuLabel key={key} className="flex flex-row items-center">
-                  {item.label}
-                  <IconButton onClick={item.onClick}>{item.icon}</IconButton>
-                </DropdownMenuLabel>
-              ) : (
-                <DropdownMenuItem key={key} onClick={item.onClick}>
-                  {item.label}
-                </DropdownMenuItem>
-              );
-            })}
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+            return item.icon ? (
+              <DropdownMenuLabel key={key} className="flex flex-row items-center">
+                {item.label}
+                <IconButton onClick={item.onClick}>{item.icon}</IconButton>
+              </DropdownMenuLabel>
+            ) : (
+              <DropdownMenuItem key={key} onClick={item.onClick}>
+                {item.label}
+              </DropdownMenuItem>
+            );
+          })}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

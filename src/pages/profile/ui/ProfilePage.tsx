@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { EllipsisVertical, Monitor, Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 
 import { useAuth } from '@/entities/auth';
 import { useTheme } from '@/shared/lib/theme/useTheme';
-import { BackButton, Button, IconButton } from '@/shared/ui';
+import { BackButton } from '@/shared/ui';
 import { KebabMenu } from '@/shared/ui/KebabMenu';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
