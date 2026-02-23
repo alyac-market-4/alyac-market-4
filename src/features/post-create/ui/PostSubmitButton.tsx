@@ -3,7 +3,8 @@ type Props = {
   onClick: () => void;
 };
 
-export default function PostSubmitButton({ disabled, onClick }: Props) {
+// ✅ named export도 제공 (import { PostSubmitButton } ... 대응)
+export function PostSubmitButton({ disabled, onClick }: Props) {
   return (
     <button
       type="button"
@@ -15,3 +16,6 @@ export default function PostSubmitButton({ disabled, onClick }: Props) {
     </button>
   );
 }
+
+// ✅ 기존 default import도 계속 지원 (import PostSubmitButton ... 대응)
+export default PostSubmitButton;
