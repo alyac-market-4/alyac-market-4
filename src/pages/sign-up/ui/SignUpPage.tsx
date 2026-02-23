@@ -39,10 +39,6 @@ export const SignUpPage = () => {
     });
   };
 
-  const onClick = () => {
-    navigate('/profile-setting');
-  };
-
   return (
     <div id="root">
       <div className="bg-background flex min-h-screen justify-center px-4 pt-20">
@@ -97,9 +93,6 @@ export const SignUpPage = () => {
               disabled={!form.formState.isValid || validateEmailMutation.isPending}
             >
               {validateEmailMutation.isPending ? '처리 중...' : '다음'}
-            </Button>
-            <Button variant="alyac" size="lgbtn" onClick={onClick}>
-              임시 회원가입
             </Button>
           </form>
         </div>
