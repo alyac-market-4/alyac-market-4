@@ -1,11 +1,37 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
+import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
 import { Button } from '@/shared/ui';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
   const { signInMutation } = useAuth();
+
+  const form = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = (data: SignInFormData) => {
+    signInMutation.mutate(
+      { user: data },
+      {
+        onSuccess: () => {
+          navigate('/feed');
+        },
+        onError: (error) => {
+          alert('로그인 실패: ' + error.message);
+        },
+      },
+    );
+  };
 
   const onClick = () => {
     // TODO: 임시 로그인
@@ -19,35 +45,42 @@ export const SignInPage = () => {
         <div className="text-center">
           <h1 className="text-foreground text-3xl font-bold">로그인</h1>
         </div>
-        <form className="flex flex-col space-y-6">
+
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6">
           <div className="space-y-2">
             <label htmlFor="email" className="text-foreground block text-sm font-medium">
               이메일
             </label>
             <input
+              {...form.register('email')}
               className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               id="email"
               placeholder="이메일을 입력하세요."
               type="email"
-              name="email"
             />
           </div>
+
           <div className="space-y-2">
             <label htmlFor="password" className="text-foreground block text-sm font-medium">
               비밀번호
             </label>
             <input
+              {...form.register('password')}
               className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               id="password"
               placeholder="비밀번호를 입력하세요."
               type="password"
-              name="password"
             />
           </div>
-          {/* TODO: 임시 로그인 수정하기  */}
-          <Button variant="alyac" size="lgbtn" onClick={onClick}>
+
+          <Button variant="alyac" size="lgbtn" type="submit">
             로그인
           </Button>
+          {/* TODO: 임시 로그인 수정하기  */}
+          <Button variant="alyac" size="lgbtn" onClick={onClick}>
+            임시 로그인
+          </Button>
+
           <div className="text-center">
             <a
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
