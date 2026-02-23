@@ -26,6 +26,7 @@ export const userApi = {
     const { data } = await axiosInstance.post<ValidateEmailResponse>(`/api/user/emailvalid`, email);
     return data;
   },
+
   validateAccountname: async (
     accountname: ValidateAccountnameRequest,
   ): Promise<ValidateAccountnameResponse> => {

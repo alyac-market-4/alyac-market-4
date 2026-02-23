@@ -4,13 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/entities/auth';
+import { useUserMutation } from '@/entities/user';
 import { type SignUpFormData, signUpSchema } from '@/features/auth/model/schemas';
 import { Button } from '@/shared/ui';
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
-  const { signUpMutation } = useAuth();
+  const { validateEmailMutation } = useUserMutation();
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -25,17 +25,18 @@ export const SignUpPage = () => {
 
   const onSubmit = (data: SignUpFormData) => {
     setServerError(null);
-    signUpMutation.mutate(
-      { user: data },
-      {
-        onSuccess: () => {
-          navigate('/profile-setting');
-        },
-        onError: (error) => {
-          setServerError(error.message);
-        },
+    validateEmailMutation.mutate(data.email, {
+      onSuccess: (response) => {
+        if (!response.ok) {
+          setServerError(response.message);
+          return;
+        }
+        navigate('/profile-setting', { state: { user: data } });
       },
-    );
+      onError: () => {
+        setServerError('서버 오류가 발생했습니다.');
+      },
+    });
   };
 
   const onClick = () => {
@@ -93,9 +94,9 @@ export const SignUpPage = () => {
               variant="alyac"
               size="lgbtn"
               type="submit"
-              disabled={!form.formState.isValid || signUpMutation.isPending}
+              disabled={!form.formState.isValid || validateEmailMutation.isPending}
             >
-              {signUpMutation.isPending ? '처리 중...' : '다음'}
+              {validateEmailMutation.isPending ? '처리 중...' : '다음'}
             </Button>
             <Button variant="alyac" size="lgbtn" onClick={onClick}>
               임시 회원가입
