@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { commentKeys } from '@/shared/model';
+import { commentKeys, postKeys } from '@/shared/model';
 
 import type { CommentSubmitData, DeleteCommentRequest } from '../model/types';
 import { commentApi } from './commentApi';
@@ -19,16 +19,18 @@ export const useCommentMutation = () => {
   const createMutation = useMutation({
     mutationFn: ({ postId, content }: CommentSubmitData) =>
       commentApi.createComment({ postId, comment: { content } }),
-    onSuccess: () => {
+    onSuccess: (_, { postId }) => {
       queryClient.invalidateQueries({ queryKey: commentKeys.all });
+      queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: ({ postId, commentId }: DeleteCommentRequest) =>
       commentApi.deleteComment({ postId, commentId }),
-    onSuccess: () => {
+    onSuccess: (_, { postId }) => {
       queryClient.invalidateQueries({ queryKey: commentKeys.all });
+      queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
     },
   });
 
