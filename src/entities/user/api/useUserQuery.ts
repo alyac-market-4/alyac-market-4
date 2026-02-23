@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { userKeys } from '../model/keys';
+import { userKeys } from '@/shared/model';
+
 import type { UpdateProfileRequest } from '../model/types';
 import { userApi } from './userApi';
 

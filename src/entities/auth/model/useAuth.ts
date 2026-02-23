@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { getToken, removeToken, saveToken } from '@/shared/lib';
+import { authKeys } from '@/shared/model';
 
 import { authApi } from '../api/auth';
-import { authKeys } from './keys';
 import type { SignInRequest, SignUpRequest } from './types';
 
 export const useAuth = () => {
