@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 //assets
 import alyacImage from '@/shared/assets/images/full-logo-alyac-gray.png';
 //프로젝트 컴포넌트
-import { IconButton } from '@/shared/ui';
+import { Button, IconButton } from '@/shared/ui';
+// ✅ Button 추가
 import { Header } from '@/widgets/header';
 
 export const FeedPage = () => {
@@ -47,13 +48,15 @@ const EmptyFeed = ({ onSearch }: { onSearch: () => void }) => {
 
       <p className="text-sm opacity-70">유저를 검색해 팔로우 해보세요!</p>
 
-      <button
-        className="mt-6 rounded-full bg-green-500 px-10 py-3 text-sm font-medium text-white hover:bg-green-600"
+      {/* 검색하기 버튼 */}
+      <Button
+        variant="alyac"
+        className="mt-6 rounded-full px-10 py-6 text-sm font-medium"
         onClick={onSearch}
         type="button"
       >
         검색하기
-      </button>
+      </Button>
     </section>
   );
 };

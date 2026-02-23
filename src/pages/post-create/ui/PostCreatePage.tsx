@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import { usePostMutation } from '@/entities/post';
+import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
 import PostCreateForm from '@/features/post-create/ui/PostCreateForm';
 import PostSubmitButton from '@/features/post-create/ui/PostSubmitButton';
 import { BackButton } from '@/shared/ui';
@@ -9,22 +11,42 @@ export const PostCreatePage = () => {
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
 
+  const uploadMutation = useUploadFiles();
+  const { createMutation } = usePostMutation();
+
   const canUpload = useMemo(() => {
     return content.trim().length > 0 || files.length > 0;
   }, [content, files.length]);
 
-  const onClickUpload = () => {
-    // TODO: 나중에 실제 업로드 API 연결
-    // 지금은 틀만 잡아두는 단계
-    console.log('upload', { content, files });
+  const isSubmitting = uploadMutation.isPending || createMutation.isPending;
+
+  const onClickUpload = async () => {
+    if (!canUpload || isSubmitting) return;
+
+    try {
+      // 1) 이미지 업로드(선택한 경우만)
+      let image = '';
+      if (files.length > 0) {
+        const uploaded = await uploadMutation.mutateAsync(files);
+        image = uploaded.map((item) => item.filename).join(',');
+      }
+
+      // 2) 게시글 생성
+      createMutation.mutate({
+        content,
+        image,
+      });
+    } catch (err) {
+      if (err instanceof Error) alert(err.message);
+      else alert('업로드/등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
     <>
-      {/* ✅ 화살표 크기/스타일은 shared/ui/BackButton 그대로 사용 */}
       <Header
         left={<BackButton />}
-        right={<PostSubmitButton disabled={!canUpload} onClick={onClickUpload} />}
+        right={<PostSubmitButton disabled={!canUpload || isSubmitting} onClick={onClickUpload} />}
       />
 
       <main className="px-4 py-6">
