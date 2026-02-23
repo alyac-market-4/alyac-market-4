@@ -5,6 +5,7 @@ export * from './dropdown-menu';
 export * from './ErrorView';
 export * from './IconButton';
 export * from './ImageFileButton';
+export * from './input-group';
 export * from './KebabMenu';
 export * from './LoadingState';
 export * from './ProfileAvatar';
