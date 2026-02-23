@@ -33,12 +33,6 @@ export const SignInPage = () => {
     );
   };
 
-  const onClick = () => {
-    // TODO: 임시 로그인
-    signInMutation.mutate({ user: { email: 'test@test.com', password: '11111111' } });
-    navigate('/feed');
-  };
-
   return (
     <div className="bg-background flex min-h-screen justify-center px-4 pt-20">
       <div className="w-full max-w-md space-y-8">
@@ -58,6 +52,9 @@ export const SignInPage = () => {
               placeholder="이메일을 입력하세요."
               type="email"
             />
+            {form.formState.errors.email && (
+              <p className="mt-1 text-sm text-red-500">{form.formState.errors.email.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -71,14 +68,18 @@ export const SignInPage = () => {
               placeholder="비밀번호를 입력하세요."
               type="password"
             />
+            {form.formState.errors.password?.message && (
+              <p className="mt-1 text-sm text-red-500">{form.formState.errors.password.message}</p>
+            )}
           </div>
 
-          <Button variant="alyac" size="lgbtn" type="submit">
-            로그인
-          </Button>
-          {/* TODO: 임시 로그인 수정하기  */}
-          <Button variant="alyac" size="lgbtn" onClick={onClick}>
-            임시 로그인
+          <Button
+            variant="alyac"
+            size="lgbtn"
+            type="submit"
+            disabled={!form.formState.isValid || signInMutation.isPending}
+          >
+            {signInMutation.isPending ? '로그인 중...' : '로그인'}
           </Button>
 
           <div className="text-center">
