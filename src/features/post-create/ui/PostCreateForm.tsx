@@ -107,7 +107,7 @@ export default function PostCreateForm({
         </div>
       </div>
 
-      {/* ✅ 이미지 선택 버튼 */}
+      {/* 이미지 선택 버튼 */}
       <ImageFileButton
         onClick={onPickImages}
         className="fixed right-6 bottom-24 z-50 h-14 w-14 bg-[#8BD56A] text-white shadow-md hover:bg-[#7CCF5A]"
