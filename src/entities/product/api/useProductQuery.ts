@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import type { Product, ProductDetail } from '@/shared/model';
+
 import { productKeys } from '../model/keys';
 import type { UpdateProductRequest } from '../model/types';
 import { productApi } from './productApi';
@@ -23,7 +25,11 @@ export const useProductDetailQuery = (productId: string) => {
 export const useProductMutation = () => {
   const queryClient = useQueryClient();
 
-  const createMutation = useMutation({
+  const createMutation = useMutation<
+    ProductDetail, // 반환 타입 (Promise<ProductDetail>)
+    Error,
+    Product // 요청 타입 (createProduct(product: Product))
+  >({
     mutationFn: productApi.createProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
