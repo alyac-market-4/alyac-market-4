@@ -51,7 +51,7 @@ const EmptyFeed = ({ onSearch }: { onSearch: () => void }) => {
       {/* 검색하기 버튼 */}
       <Button
         variant="alyac"
-        className="mt-6 rounded-full px-10 py-3 text-sm font-medium"
+        className="mt-6 rounded-full px-10 py-6 text-sm font-medium"
         onClick={onSearch}
         type="button"
       >
