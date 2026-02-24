@@ -29,11 +29,13 @@ export const PostSummary = ({ post }: PostSummaryProps) => {
         />
       </div>
       <p className="text-foreground mb-3 ml-12 text-sm leading-relaxed">{post.content}</p>
-      <img
-        alt="Post content"
-        className="ml-12 h-40 w-11/12 rounded-lg object-cover"
-        src={post.image}
-      />
+      {post.image && (
+        <img
+          alt="Post content"
+          className="ml-12 h-40 w-11/12 rounded-lg object-cover"
+          src={post.image}
+        />
+      )}
       <div className="mt-3 ml-12 flex gap-4">
         <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
         <CommentButton
