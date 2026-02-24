@@ -5,7 +5,7 @@ import { getToken, removeToken, saveToken } from '@/shared/lib';
 import { authKeys } from '@/shared/model';
 
 import { authApi } from '../api/auth';
-import type { SignInRequest, SignUpRequest } from './types';
+import type { SignInRequest, SignUpFormData } from './types';
 
 export const useAuth = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export const useAuth = () => {
   });
 
   const signUpMutation = useMutation({
-    mutationFn: (userInfo: SignUpRequest) => authApi.signUp(userInfo),
+    mutationFn: (userInfo: SignUpFormData) => authApi.signUp({ user: userInfo }),
     onSuccess: () => {
       alert('회원가입이 완료되었습니다! 로그인해 주세요.');
     },

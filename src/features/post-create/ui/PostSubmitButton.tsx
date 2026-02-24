@@ -1,21 +1,22 @@
+import { Button } from '@/shared/ui';
+
 type Props = {
   disabled: boolean;
   onClick: () => void;
 };
 
-// ✅ named export도 제공 (import { PostSubmitButton } ... 대응)
 export function PostSubmitButton({ disabled, onClick }: Props) {
   return (
-    <button
+    <Button
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="h-9 rounded-full bg-[#A7D676] px-4 text-sm font-medium text-white disabled:opacity-40"
+      variant="alyac"
+      className="h-9 rounded-full px-4 text-sm font-medium"
     >
       업로드
-    </button>
+    </Button>
   );
 }
 
-// ✅ 기존 default import도 계속 지원 (import PostSubmitButton ... 대응)
 export default PostSubmitButton;

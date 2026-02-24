@@ -25,14 +25,17 @@ export interface SignUpRequest {
     image: string;
   };
 }
+
+export interface SignUpFormData {
+  username: string;
+  email: string;
+  password: string;
+  accountname: string;
+  intro: string;
+  image: string;
+}
+
 export interface SignUpResponse {
   message: string;
   user: User;
-}
-
-export interface SignInRequest {
-  user: {
-    email: string;
-    password: string;
-  };
 }

@@ -23,7 +23,6 @@ export default function PostCreateForm({
 }: PostCreateFormProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // ✅ 프로젝트에 실제로 존재하는 훅
   const { data: me } = useMyInfoQuery();
 
   const previews = useMemo(() => {
