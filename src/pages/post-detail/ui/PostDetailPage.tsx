@@ -15,10 +15,9 @@ import {
   KebabMenu,
   ProfileAvatar,
 } from '@/shared/ui';
+import { CommentList } from '@/widgets/comment-list';
 import { Header } from '@/widgets/header';
-
-import CommentDetail from './CommentDetail';
-import { PostDetail } from './PostDetail';
+import { PostDetail } from '@/widgets/post-detail';
 
 export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
@@ -86,7 +85,7 @@ export const PostDetailPage = () => {
           {Number(post.commentCount) > 0 ? (
             comments?.map((comment) => (
               <div key={comment.id} className="flex gap-3 px-4 py-4">
-                <CommentDetail postId={postId} comment={comment} />
+                <CommentList postId={postId} comment={comment} />
               </div>
             ))
           ) : (
