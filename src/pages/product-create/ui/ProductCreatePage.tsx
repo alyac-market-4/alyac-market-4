@@ -10,63 +10,131 @@ import { ImageFileButton } from '@/shared/ui/ImageFileButton';
 import { Button } from '@/shared/ui/button';
 import { Header } from '@/widgets/header';
 
+// 폼 데이터 타입 정의
+// - formData의 구조를 명확하게 타입으로 고정
+// - 추후 필드 추가/수정 시 타입 오류로 빠르게 감지 가능
+interface FormState {
+  productName: string; // 상품명 (2~15자)
+  price: string; // 숫자 문자열로 관리 (input은 항상 string)
+  saleLink: string; // 선택 입력 URL
+}
+
+// 에러 상태 타입 정의
+// - 각 필드별 에러 메시지를 문자열로 관리
+// - 에러가 없으면 빈 문자열 ''
+interface FormErrors {
+  productName: string;
+  price: string;
+  saleLink: string;
+}
+
 export const ProductCreatePage = () => {
+  // 라우터 이동 훅
+  // - 저장 성공 시 이전 페이지로 이동하기 위해 사용
   const navigate = useNavigate();
 
-  // 상품 생성 mutation 가져오기
-  // createMutation, updateMutation, deleteMutation 중에서
-  // 우리는 createMutation만 사용
+  // 상품 생성 mutation
+  // - 서버에 상품 생성 요청 보내는 역할
   const { createMutation } = useProductMutation();
 
-  // 폼 상태 관리
-  const [formData, setFormData] = useState({
-    productName: '',
-    price: '',
-    saleLink: '',
-  });
-
-  // 입력값 검증 에러 상태
-  const [errors, setErrors] = useState({
-    productName: '',
-    price: '',
-    saleLink: '',
-  });
-
-  // 이미지 미리보기 URL
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  // 서버 업로드 후 반환된 파일명 저장
-  const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  // 이미지 업로드 mutation
+  // 파일 업로드 mutation
+  // - 이미지 업로드 전용 API 호출 역할
   const uploadMutation = useUploadFiles();
 
-  // 파일 선택창 열기
+  // 숨겨진 파일 input 제어용 ref
+  // - 커스텀 버튼 클릭 시 실제 input을 강제로 클릭시키기 위해 사용
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // 폼 상태
+  // - 입력값을 하나의 객체로 관리
+  // - 확장성 + 상태 관리 일관성 확보
+  const [formData, setFormData] = useState<FormState>({
+    productName: '',
+    price: '',
+    saleLink: '',
+  });
+
+  // 에러 상태
+  // - validate 실행 후 결과를 저장
+  // - UI에 즉시 반영됨
+  const [errors, setErrors] = useState<FormErrors>({
+    productName: '',
+    price: '',
+    saleLink: '',
+  });
+
+  // 선택한 이미지 미리보기 URL
+  // - URL.createObjectURL로 생성된 임시 URL 저장
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // 서버 업로드 후 반환된 filename 저장
+  // - 실제 API 전송 시 사용
+  const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
+
+  // 유효성 검사 로직
+  // - 필드별 validator를 객체로 분리
+  // - 가독성 + 확장성 확보
+  const validators = {
+    // 상품명: 2~15자
+    productName: (value: string) =>
+      value.length < 2 || value.length > 15 ? '2~15자 이내여야 합니다.' : '',
+
+    // 가격: 숫자만 허용
+    price: (value: string) => (/^\d+$/.test(value) ? '' : '숫자만 입력 가능합니다.'),
+
+    // 링크: 선택 입력이지만 URL 형식이어야 함
+    saleLink: (value: string) => {
+      if (!value) return ''; // 선택이므로 비어있으면 통과
+
+      try {
+        // http가 없으면 https 자동 보정
+        const url = value.startsWith('http') ? value : `https://${value}`;
+        new URL(url); // URL 생성 시도 → 실패하면 catch
+        return '';
+      } catch {
+        return 'URL을 입력해 주세요.';
+      }
+    },
+  };
+
+  // 전체 폼 검증 함수
+  // - 각 validator 실행
+  // - 에러 상태 업데이트
+  // - 에러가 하나라도 있으면 false 반환
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {
+      productName: validators.productName(formData.productName),
+      price: validators.price(formData.price),
+      saleLink: validators.saleLink(formData.saleLink),
+    };
+
+    setErrors(newErrors);
+
+    // 하나라도 true(에러 존재)면 저장 중단
+    return !Object.values(newErrors).some(Boolean);
+  };
+
+  // 이미지 처리
+  // 숨겨진 input 강제 클릭
   const handleOpenFile = () => {
     fileInputRef.current?.click();
   };
 
-  // 이미지 선택 시 실행
+  // 파일 선택 시 실행
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-
-    const file = files[0];
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // 1. 미리보기 생성
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
+    setImagePreview(URL.createObjectURL(file));
 
-    // 2. 서버에 이미지 업로드
-    uploadMutation.mutate(files, {
+    // 2. 서버 업로드
+    uploadMutation.mutate([file], {
       onSuccess: (data) => {
-        // 서버에서 filename 배열을 반환
-        const filenames = data.map((item) => item.filename);
-        setUploadedImageNames(filenames);
+        // 서버에서 받은 filename 배열 저장
+        setUploadedImageNames(data.map((item) => item.filename));
       },
-      onError: (error: unknown) => {
+      onError: (error) => {
         if (error instanceof Error) {
           alert('업로드 실패: ' + error.message);
         }
@@ -74,48 +142,10 @@ export const ProductCreatePage = () => {
     });
   };
 
-  // 상품명 검증
-  const validateProductName = (value: string) => {
-    if (value.length < 2 || value.length > 15) {
-      return '2~15자 이내여야 합니다.';
-    }
-    return '';
-  };
-
-  // 가격 검증
-  const validatePrice = (value: string) => {
-    if (!/^\d+$/.test(value)) {
-      return '숫자만 입력 가능합니다.';
-    }
-    return '';
-  };
-
-  // 링크 검증
-  const validateSaleLink = (value: string) => {
-    if (!value) return '';
-    try {
-      const urlToValidate = value.startsWith('http') ? value : `https://${value}`;
-      new URL(urlToValidate);
-    } catch {
-      return 'URL을 입력해 주세요.';
-    }
-    return '';
-  };
-
-  // 저장 버튼 클릭 시 실행
+  // 저장 처리
   const handleSave = () => {
-    // 1. 모든 입력값 검증
-    const nameError = validateProductName(formData.productName);
-    const priceError = validatePrice(formData.price);
-    const linkError = validateSaleLink(formData.saleLink);
-
-    setErrors({
-      productName: nameError,
-      price: priceError,
-      saleLink: linkError,
-    });
-
-    if (nameError || priceError || linkError) return;
+    // 1. 폼 검증
+    if (!validateForm()) return;
 
     // 2. 이미지 업로드 여부 확인
     if (!uploadedImageNames.length) {
@@ -123,27 +153,24 @@ export const ProductCreatePage = () => {
       return;
     }
 
-    // 3. 서버에서 반환된 filename을
-    //    API 스펙에 맞게 문자열로 변환
-    // 예: "uploadFiles/123.png"
-    const imageString = uploadedImageNames.map((name) => `uploadFiles/${name}`).join(',');
-
-    // 4. productApi.createProduct에 전달할 객체 구성
+    // 3. API 스펙에 맞게 payload 구성
     const productPayload = {
       itemName: formData.productName,
-      price: Number(formData.price),
+      price: Number(formData.price), // 문자열 → 숫자 변환
       link: formData.saleLink,
-      itemImage: imageString,
+      itemImage: uploadedImageNames.map((name) => `uploadFiles/${name}`).join(','), // 문자열 형태로 변환
     };
 
-    // 5. 상품 생성 API 호출
+    // 4. 상품 생성 요청
     createMutation.mutate(productPayload, {
       onSuccess: () => {
         alert('상품이 등록되었습니다.');
         navigate(-1); // 이전 페이지로 이동
       },
       onError: (error) => {
-        alert('등록 실패: ' + error.message);
+        if (error instanceof Error) {
+          alert('등록 실패: ' + error.message);
+        }
       },
     });
   };
