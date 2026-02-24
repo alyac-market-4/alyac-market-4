@@ -1,4 +1,4 @@
-import axiosInstance from '@/shared/api/axios';
+import { axiosInstance } from '@/shared/api';
 import type { User } from '@/shared/model';
 
 import type {

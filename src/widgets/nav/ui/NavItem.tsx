@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/lib';
 import { buttonVariants } from '@/shared/ui';
 
 interface NavItemProps {

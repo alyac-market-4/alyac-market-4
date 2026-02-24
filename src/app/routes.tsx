@@ -2,9 +2,10 @@ import { lazy } from 'react';
 
 import { createBrowserRouter } from 'react-router-dom';
 
-import { MainLayout } from '@/app/layouts/MainLayout';
 import { RequireAuth } from '@/entities/auth';
 import { RequireGuest } from '@/entities/auth';
+
+import { MainLayout } from './layouts/MainLayout';
 
 const HomePage = lazy(() =>
   import('@/pages/home/ui/HomePage').then((m) => ({ default: m.HomePage })),

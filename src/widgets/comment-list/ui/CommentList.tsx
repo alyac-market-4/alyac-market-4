@@ -1,14 +1,14 @@
 import { useCommentMutation } from '@/entities/comment';
-import { useConfirmDialog } from '@/shared/lib/confirm-dialog/useConfirmDialog';
+import { useConfirmDialog } from '@/shared/lib';
 import type { Comment } from '@/shared/model';
 import { KebabMenu, ProfileAvatar } from '@/shared/ui';
 
-interface CommentDetailProps {
+interface CommentListProps {
   postId: string;
   comment: Comment;
 }
 
-export default function CommentDetail({ postId, comment }: CommentDetailProps) {
+export function CommentList({ postId, comment }: CommentListProps) {
   const { deleteMutation, reportMutation } = useCommentMutation();
   const { openConfirm } = useConfirmDialog();
 

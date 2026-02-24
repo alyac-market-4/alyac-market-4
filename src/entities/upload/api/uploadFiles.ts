@@ -1,5 +1,4 @@
-// entities/upload/api/uploadFiles.ts
-import uploadApi from '@/shared/api/uploadApi';
+import { uploadApi } from '@/shared/api';
 
 export interface UploadResponse {
   filename: string;

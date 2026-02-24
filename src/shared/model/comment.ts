@@ -1,4 +1,4 @@
-import type { User } from '@/shared/model';
+import type { User } from './user';
 
 export interface CommentContent {
   content: string;
