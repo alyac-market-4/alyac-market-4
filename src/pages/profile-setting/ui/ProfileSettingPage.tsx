@@ -1,11 +1,59 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
+import { useUserMutation } from '@/entities/user';
+import { type ProfileFormData, profileSchema } from '@/features/profile/model/schemas';
 import { Button } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
   const navigate = useNavigate();
-  const { signInMutation } = useAuth();
+  const { signInMutation, signUpMutation } = useAuth();
+  const { validateAccountnameMutation } = useUserMutation();
+
+  const location = useLocation();
+  const user = location.state?.user;
+
+  console.log(user);
+
+  const form = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    mode: 'onChange',
+    defaultValues: {
+      username: '',
+      accountname: '',
+      intro: '',
+    },
+  });
+
+  const onSubmit = (data: ProfileFormData) => {
+    if (!user) {
+      console.error('이전 단계 데이터가 없습니다.');
+      return;
+    }
+    console.log('폼데이터', data.accountname);
+    validateAccountnameMutation.mutate(data.accountname, {
+      onSuccess: (response) => {
+        if (!response.ok) {
+          form.setError('accountname', {
+            type: 'server',
+            message: response.message,
+          });
+          return;
+        }
+
+        // ✅ 1페이지 + 2페이지 데이터 합치기
+        const finalData = {
+          ...user, // email, password
+          ...data, // username, accountname, intro
+        };
+
+        signUpMutation.mutate(finalData);
+      },
+    });
+  };
 
   const onClick = () => {
     // TODO: 임시 로그인
@@ -61,45 +109,70 @@ export const ProfileSettingPage = () => {
                 </button>
               </div>
             </div>
-            <form className="flex flex-col gap-6">
+
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
               <div className="space-y-2">
-                <label htmlFor="사용자-이름" className="text-foreground block text-sm font-medium">
+                <label htmlFor="username" className="text-foreground block text-sm font-medium">
                   사용자 이름
                 </label>
                 <input
+                  {...form.register('username')}
                   className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                  id="사용자-이름"
+                  id="username"
                   placeholder="이름을 입력하세요."
                   type="text"
-                  name="username"
                 />
+                {form.formState.errors.username && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {form.formState.errors.username.message}
+                  </p>
+                )}
               </div>
+
               <div className="space-y-2">
-                <label htmlFor="계정-id" className="text-foreground block text-sm font-medium">
+                <label htmlFor="accountname" className="text-foreground block text-sm font-medium">
                   계정 ID
                 </label>
                 <input
+                  {...form.register('accountname')}
                   className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                  id="계정-id"
+                  id="accountname"
                   placeholder="계정 아이디를 입력하세요."
                   type="text"
-                  name="accountId"
                 />
+                {form.formState.errors.accountname && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {form.formState.errors.accountname.message}
+                  </p>
+                )}
               </div>
+
               <div className="space-y-2">
                 <label htmlFor="소개" className="text-foreground block text-sm font-medium">
                   소개
                 </label>
                 <input
+                  {...form.register('intro')}
                   className="bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border border-b-2 border-[#6FCA3C] px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:border-[#6FCA3C] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                   id="소개"
                   placeholder="간단한 자기 소개를 입력하세요."
                   type="text"
-                  name="bio"
                 />
+                {form.formState.errors.intro && (
+                  <p className="mt-1 text-sm text-red-500">{form.formState.errors.intro.message}</p>
+                )}
               </div>
-              <Button variant="alyac" size="lgbtn" onClick={onClick} type="submit">
-                알약마켓 시작하기
+
+              <Button
+                variant="alyac"
+                size="lgbtn"
+                type="submit"
+                disabled={!form.formState.isValid || validateAccountnameMutation.isPending}
+              >
+                {validateAccountnameMutation.isPending ? '처리 중...' : '알약마켓 시작하기'}
+              </Button>
+              <Button variant="alyac" size="lgbtn" onClick={onClick} type="button">
+                임시 버튼
               </Button>
             </form>
           </div>

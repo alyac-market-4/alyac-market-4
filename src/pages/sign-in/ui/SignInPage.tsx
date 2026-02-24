@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -19,15 +21,18 @@ export const SignInPage = () => {
     },
   });
 
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const onSubmit = (data: SignInFormData) => {
+    setServerError(null);
     signInMutation.mutate(
       { user: data },
       {
         onSuccess: () => {
           navigate('/feed');
         },
-        onError: (error) => {
-          alert('로그인 실패: ' + error.message);
+        onError: () => {
+          setServerError('이메일 또는 비밀번호가 일치하지 않습니다.');
         },
       },
     );
@@ -38,6 +43,12 @@ export const SignInPage = () => {
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-foreground text-3xl font-bold">로그인</h1>
+
+          {serverError && (
+            <div className="bg-destructive/10 text-destructive mt-8 flex rounded-lg p-4 text-sm">
+              <p className="text-sm font-medium text-red-600">{serverError}</p>
+            </div>
+          )}
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6">
