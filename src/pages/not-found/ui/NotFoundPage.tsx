@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 
-
 import mascot404 from '@/shared/assets/images/full-logo-alyac-404.png';
 import { Button } from '@/shared/ui';
 
@@ -24,12 +23,10 @@ export const NotFoundPage = () => {
       }}
     >
       {/* Mascot image */}
-      <img
-        src={mascot404}
-        alt="404 mascot"
-        style={{ width: 97, height: 197, marginBottom: 8 }}
-      />
-      <div style={{ fontSize: 16, color: '#767676', marginTop: 8 }}>페이지를 찾을 수 없습니다. :(</div>
+      <img src={mascot404} alt="404 mascot" style={{ width: 97, height: 197, marginBottom: 8 }} />
+      <div style={{ fontSize: 16, color: '#767676', marginTop: 8 }}>
+        페이지를 찾을 수 없습니다. :(
+      </div>
       <Button
         onClick={onClick2}
         style={{
