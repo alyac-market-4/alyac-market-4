@@ -68,6 +68,7 @@ export const SignUpPage = () => {
                 <p className="mt-1 text-sm text-red-500">{form.formState.errors.email.message}</p>
               )}
             </div>
+
             <div className="space-y-2">
               <label htmlFor="비밀번호" className="text-foreground block text-sm font-medium">
                 비밀번호
