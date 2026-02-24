@@ -18,6 +18,7 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
       {children}
       {confirmDialog && (
         <ConfirmDialog
+          onCancel={closeConfirm}
           {...confirmDialog}
           open={true}
           onOpenChange={(open) => {

@@ -10,7 +10,7 @@ interface CommentDetailProps {
 
 export default function CommentDetail({ postId, comment }: CommentDetailProps) {
   const { deleteMutation, reportMutation } = useCommentMutation();
-  const { openConfirm, closeConfirm } = useConfirmDialog();
+  const { openConfirm } = useConfirmDialog();
 
   return (
     <>
@@ -39,7 +39,6 @@ export default function CommentDetail({ postId, comment }: CommentDetailProps) {
                     description: '삭제된 게시물은 복구할 수 없습니다.',
                     actionText: '삭제',
                     onConfirm: () => deleteMutation.mutate({ postId, commentId: comment.id }),
-                    onCancel: closeConfirm,
                   });
                 },
               },

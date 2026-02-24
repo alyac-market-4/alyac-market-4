@@ -12,7 +12,7 @@ import {
 export interface ConfirmDialogProps {
   title: string;
   description: string;
-  onCancel: () => void;
+  onCancel?: () => void;
   onConfirm: () => void;
   actionText: string;
   open?: boolean;
