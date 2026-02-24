@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
 import { useMyInfoQuery } from '@/entities/user';
+import { useConfirmDialog } from '@/shared/lib';
 import {
   BackButton,
   Button,
@@ -25,6 +26,7 @@ export const PostDetailPage = () => {
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
   const { createMutation } = useCommentMutation();
   const { deleteMutation, reportMutation } = usePostMutation();
+  const { openConfirm } = useConfirmDialog();
 
   const {
     data: comments,
@@ -59,7 +61,12 @@ export const PostDetailPage = () => {
               {
                 label: '삭제',
                 onClick: () => {
-                  deleteMutation.mutate(postId);
+                  openConfirm({
+                    title: '정말 삭제하시겠습니까?',
+                    description: '삭제된 게시물은 복구할 수 없습니다.',
+                    actionText: '삭제',
+                    onConfirm: () => deleteMutation.mutate(postId),
+                  });
                 },
               },
             ]}
