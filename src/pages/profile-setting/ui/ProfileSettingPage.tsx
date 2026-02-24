@@ -10,7 +10,7 @@ import { Button } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
   const navigate = useNavigate();
-  const { signInMutation, signUpMutation } = useAuth();
+  const { signUpMutation } = useAuth();
   const { validateAccountnameMutation } = useUserMutation();
 
   const location = useLocation();
@@ -26,38 +26,34 @@ export const ProfileSettingPage = () => {
     },
   });
 
-  const onSubmit = (data: ProfileFormData) => {
+  const onSubmit = async (data: ProfileFormData) => {
     if (!user) {
-      console.error('이전 단계 데이터가 없습니다.');
+      alert('이전 단계 데이터가 없습니다.'); //TODO 모달로 변경
+      navigate('/sign-up');
       return;
     }
-    validateAccountnameMutation.mutate(data.accountname, {
-      onSuccess: (response) => {
-        if (!response.ok) {
-          form.setError('accountname', {
-            type: 'server',
-            message: response.message,
-          });
-          return;
-        }
 
-        const userInfo = {
-          ...user, // email, password
-          ...data, // username, accountname, intro
-          image: '', // TODO: image 입력값 없음 추후 추가
-        };
-        //TODO : 콜백지옥 개선
-        console.log('---------------------------------------------------', userInfo);
-        signUpMutation.mutate(userInfo);
-        navigate('/sign-in');
-      },
-    });
-  };
+    try {
+      const response = await validateAccountnameMutation.mutateAsync(data.accountname);
+      if (!response.ok) {
+        form.setError('accountname', {
+          type: 'server',
+          message: response.message,
+        });
+        return;
+      }
 
-  const onClick = () => {
-    // TODO: 임시 로그인
-    signInMutation.mutate({ user: { email: 'test@test.com', password: '11111111' } });
-    navigate('/feed');
+      const userInfo = {
+        ...user,
+        ...data,
+        image: '',
+      };
+
+      await signUpMutation.mutateAsync(userInfo);
+      navigate('/sign-in');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -169,9 +165,6 @@ export const ProfileSettingPage = () => {
                 disabled={!form.formState.isValid || validateAccountnameMutation.isPending}
               >
                 {validateAccountnameMutation.isPending ? '처리 중...' : '알약마켓 시작하기'}
-              </Button>
-              <Button variant="alyac" size="lgbtn" onClick={onClick} type="button">
-                임시 버튼
               </Button>
             </form>
           </div>
