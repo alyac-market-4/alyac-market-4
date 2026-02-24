@@ -16,8 +16,6 @@ export const ProfileSettingPage = () => {
   const location = useLocation();
   const user = location.state?.user;
 
-  console.log(user);
-
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     mode: 'onChange',
@@ -33,7 +31,6 @@ export const ProfileSettingPage = () => {
       console.error('이전 단계 데이터가 없습니다.');
       return;
     }
-    console.log('폼데이터', data.accountname);
     validateAccountnameMutation.mutate(data.accountname, {
       onSuccess: (response) => {
         if (!response.ok) {
@@ -44,13 +41,15 @@ export const ProfileSettingPage = () => {
           return;
         }
 
-        // ✅ 1페이지 + 2페이지 데이터 합치기
-        const finalData = {
+        const userInfo = {
           ...user, // email, password
           ...data, // username, accountname, intro
+          image: '', // TODO: image 입력값 없음 추후 추가
         };
-
-        signUpMutation.mutate(finalData);
+        //TODO : 콜백지옥 개선
+        console.log('---------------------------------------------------', userInfo);
+        signUpMutation.mutate(userInfo);
+        navigate('/sign-in');
       },
     });
   };
