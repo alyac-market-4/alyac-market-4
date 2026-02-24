@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getToken } from '@/shared/lib';
 
 const uploadApi = axios.create({
-  baseURL: import.meta.env.VITE_UPLOAD_BASE_URL,
+  baseURL: import.meta.env.VITE_IMAGE_BASE_URL,
   timeout: 30000,
 });
 
