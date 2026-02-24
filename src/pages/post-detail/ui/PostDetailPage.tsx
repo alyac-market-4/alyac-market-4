@@ -55,7 +55,12 @@ export const PostDetailPage = () => {
               {
                 label: '신고하기',
                 onClick: () => {
-                  reportMutation.mutate(postId);
+                  openConfirm({
+                    title: '정말 신고하시겠습니까?',
+                    description: '신고는 취소할 수 없습니다.',
+                    actionText: '신고',
+                    onConfirm: () => reportMutation.mutate(postId),
+                  });
                 },
               },
               {
