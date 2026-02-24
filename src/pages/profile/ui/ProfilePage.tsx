@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
-import { EllipsisVertical } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Monitor, Moon, Sun } from 'lucide-react';
 
-import { removeToken } from '@/shared/lib';
-import { BackButton, Button, IconButton } from '@/shared/ui';
+import { useAuth } from '@/entities/auth';
+import { useTheme } from '@/shared/lib/theme/useTheme';
+import { BackButton } from '@/shared/ui';
+import { KebabMenu } from '@/shared/ui/KebabMenu';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
 import { ProductList } from '@/widgets/product-list';
@@ -14,28 +15,31 @@ import type { ViewMode } from '../model/types';
 import { LayoutController } from './LayoutController';
 import { ProfileActions } from './ProfileActions';
 
+const themeIcons = {
+  system: <Monitor />,
+  light: <Sun />,
+  dark: <Moon />,
+};
+
 export const ProfilePage = () => {
-  const navigate = useNavigate();
-
+  const { logout } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
-
-  const onClick = () => {
-    removeToken();
-    navigate('/');
-  };
+  const { theme, switchTheme } = useTheme();
 
   return (
     <>
       <Header
         left={<BackButton />}
         right={
-          <IconButton>
-            <EllipsisVertical />
-          </IconButton>
+          <KebabMenu
+            items={[
+              { label: '설정 및 개인정보', onClick: () => {} },
+              { label: '테마:', icon: themeIcons[theme], onClick: () => switchTheme() },
+              { label: '로그아웃', onClick: logout },
+            ]}
+          />
         }
       />
-
-      <Button onClick={onClick}>로그아웃</Button>
 
       <main className="flex-1 overflow-y-auto pb-16">
         <section className="border-border border-b px-4 py-6">

@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { Product, ProductDetail } from '@/shared/model';
 
-import { productKeys } from '../model/keys';
+import { productKeys } from '@/shared/model';
+
 import type { UpdateProductRequest } from '../model/types';
 import { productApi } from './productApi';
 

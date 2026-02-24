@@ -29,3 +29,8 @@ export interface DeleteCommentResponse {
 export interface ReportCommentResponse {
   report: CommentContent;
 }
+
+export interface CommentSubmitData {
+  postId: string;
+  content: string;
+}

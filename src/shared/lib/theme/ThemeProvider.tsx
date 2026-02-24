@@ -1,8 +1,14 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 
 import type { Theme, ThemeContextType } from './types';
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+const themeMap = {
+  system: 'light',
+  light: 'dark',
+  dark: 'system',
+} as const;
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -43,13 +49,19 @@ export const ThemeProvider = ({
     root.classList.add(theme);
   }, [theme]);
 
-  const value = {
-    theme,
-    setTheme: (newTheme: Theme) => {
-      localStorage.setItem(storageKey, newTheme);
-      setTheme(newTheme);
-    },
-  };
+  const value = useMemo(
+    () => ({
+      theme,
+      setTheme: (newTheme: Theme) => {
+        localStorage.setItem(storageKey, newTheme);
+        setTheme(newTheme);
+      },
+      switchTheme: () => {
+        setTheme((prev) => themeMap[prev as keyof typeof themeMap]);
+      },
+    }),
+    [theme],
+  );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { getToken, removeToken, saveToken } from '@/shared/lib';
+import { authKeys } from '@/shared/model';
 
 import { authApi } from '../api/auth';
-import { authKeys } from './keys';
 import type { SignInRequest, SignUpRequest } from './types';
 
 export const useAuth = () => {
@@ -22,7 +22,6 @@ export const useAuth = () => {
     onSuccess: (data) => {
       saveToken(data.user.accessToken, data.user.refreshToken);
       queryClient.invalidateQueries({ queryKey: authKeys.session() });
-      navigate('/feed');
     },
   });
 
@@ -30,7 +29,6 @@ export const useAuth = () => {
     mutationFn: (userInfo: SignUpRequest) => authApi.signUp(userInfo),
     onSuccess: () => {
       alert('회원가입이 완료되었습니다! 로그인해 주세요.');
-      navigate('/sign-in');
     },
   });
 
@@ -43,7 +41,7 @@ export const useAuth = () => {
   const isAuthenticated = !!getToken();
 
   return {
-    useCheckTokenQuery: checkTokenQuery,
+    checkTokenQuery,
     signInMutation,
     signUpMutation,
     logout,

@@ -9,7 +9,7 @@ export const NotFoundPage = () => {
     navigate('/');
   };
   const onClick2 = () => {
-    navigate('-1');
+    navigate(-1);
   };
 
   return (
