@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom';
 
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
-import { useMyInfoQuery } from '@/entities/user';
+import { useUserProfileQuery } from '@/entities/profile';
 import { useConfirmDialog } from '@/shared/lib';
+import { getTokenUserInfo } from '@/shared/lib';
 import {
   BackButton,
   Button,
@@ -21,7 +22,7 @@ import { PostDetail } from '@/widgets/post-detail';
 
 export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
-  const { data: user } = useMyInfoQuery();
+  const { data: user } = useUserProfileQuery(getTokenUserInfo().accountname);
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
   const { createMutation } = useCommentMutation();
   const { deleteMutation, reportMutation } = usePostMutation();

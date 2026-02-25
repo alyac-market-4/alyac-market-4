@@ -9,9 +9,10 @@ import { KebabMenu, PostImage } from '@/shared/ui';
 
 interface PostSummaryProps {
   post: Post;
+  to: string;
 }
 
-export const PostSummary = ({ post }: PostSummaryProps) => {
+export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const navigate = useNavigate();
   const { deleteMutation } = usePostMutation();
   const { openConfirm } = useConfirmDialog();
@@ -49,10 +50,7 @@ export const PostSummary = ({ post }: PostSummaryProps) => {
       )}
       <div className="mt-3 ml-12 flex gap-4">
         <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
-        <CommentButton
-          commentCount={post.commentCount}
-          onClick={() => navigate(`/post/${post.id}`)}
-        />
+        <CommentButton commentCount={post.commentCount} onClick={() => navigate(to)} />
       </div>
     </article>
   );
