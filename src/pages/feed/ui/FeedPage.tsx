@@ -39,7 +39,7 @@ export const FeedPage = () => {
         ) : (
           <section className="flex flex-col gap-4">
             {posts.map((post) => (
-              <PostSummary key={post.id} post={post} />
+              <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />
             ))}
           </section>
         )}
