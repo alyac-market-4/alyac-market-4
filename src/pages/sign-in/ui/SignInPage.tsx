@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
@@ -93,14 +93,15 @@ export const SignInPage = () => {
             {signInMutation.isPending ? '로그인 중...' : '로그인'}
           </Button>
 
-          <div className="text-center">
-            <a
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              href="/sign-up"
-              data-discover="true"
+          <div className="text-muted-foreground flex items-center justify-center text-sm">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="hover:text-foreground hover:bg-transparent"
             >
-              이메일로 회원가입
-            </a>
+              <Link to="/sign-up">{'이메일로 회원가입'}</Link>
+            </Button>
           </div>
         </form>
       </div>
