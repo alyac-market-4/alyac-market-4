@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { AuthLinks, SocialLoginButton } from '@/features/auth';
-import { fullLogoAlyacNoText } from '@/shared/assets';
+import { fullLogoAlyac, fullLogoAlyacNoText } from '@/shared/assets';
 
 export const HomePage = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -22,7 +22,7 @@ export const HomePage = () => {
           }`}
         >
           <div className="flex flex-col items-center gap-8">
-            <img src="/src/shared/assets/images/full-logo-alyac-png.png" alt="alyac-logo" />
+            <img src={fullLogoAlyac} alt="alyac-logo" />
           </div>
         </div>
 
