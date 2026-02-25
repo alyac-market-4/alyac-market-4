@@ -1,21 +1,17 @@
-import facebookIcon from './icons/facebook-icon.svg';
-import googleIcon from './icons/google-icon.svg';
-import kakaoIcon from './icons/kakao-icon.svg';
-import fullLogoAlyac404 from './images/full-logo-alyac-404.png';
-import fullLogoAlyacGray from './images/full-logo-alyac-gray.png';
-import fullLogoAlyacNoText from './images/full-logo-alyac-no-text.png';
-import fullLogoAlyacPng from './images/full-logo-alyac-png.png';
-import uploadImage from './images/upload-image.png';
-import uploadSmallImage from './images/upload-small-image.png';
+import fullLogoAlyac404 from './images/full-logo-alyac-404.webp';
+import fullLogoAlyacGray from './images/full-logo-alyac-gray.webp';
+import fullLogoAlyacNoText from './images/full-logo-alyac-no-text.webp';
+import fullLogoAlyac from './images/full-logo-alyac.webp';
+import uploadImage from './images/upload-image.webp';
+import uploadSmallImage from './images/upload-small-image.webp';
+
+export * from './icons';
 
 export {
-  facebookIcon,
-  googleIcon,
-  kakaoIcon,
   fullLogoAlyac404,
   fullLogoAlyacGray,
   fullLogoAlyacNoText,
-  fullLogoAlyacPng,
+  fullLogoAlyac,
   uploadImage,
   uploadSmallImage,
 };

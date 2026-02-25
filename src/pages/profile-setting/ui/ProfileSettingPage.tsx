@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
 import { type ProfileFormData, profileSchema } from '@/features/profile/model/schemas';
-import { Button } from '@/shared/ui';
+import { Button, ProfileAvatarEditor } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
   const navigate = useNavigate();
@@ -25,6 +25,8 @@ export const ProfileSettingPage = () => {
       intro: '',
     },
   });
+
+  //TODO: 프로필 이미지 업로드 구현.
 
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) {
@@ -46,7 +48,7 @@ export const ProfileSettingPage = () => {
       const userInfo = {
         ...user,
         ...data,
-        image: '',
+        image: `${user?.image}`,
       };
 
       await signUpMutation.mutateAsync(userInfo);
@@ -67,41 +69,7 @@ export const ProfileSettingPage = () => {
           <div className="space-y-8">
             <div className="flex justify-center">
               <div className="relative">
-                <button
-                  className="ring-offset-background focus-visible:ring-ring hover:text-accent-foreground focus:ring-ring bg-muted hover:bg-muted/80 relative flex h-32 w-32 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full p-0 text-sm font-medium whitespace-nowrap transition-all focus:ring-2 focus:ring-offset-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-70 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
-                  type="button"
-                >
-                  <svg
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 40 72"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                    className="h-20 w-10"
-                  >
-                    <path d="M0 0H40V72H0V0Z" fill="url(#pattern0_124226_1030)"></path>
-                    <defs>
-                      <pattern
-                        id="pattern0_124226_1030"
-                        patternContentUnits="objectBoundingBox"
-                        width="1"
-                        height="1"
-                      >
-                        <use
-                          xmlnsXlink="#image0_124226_1030"
-                          transform="matrix(0.00215581 0 0 0.00125558 -0.603774 -0.148352)"
-                        ></use>
-                      </pattern>
-                      <image
-                        id="image0_124226_1030"
-                        width="1024"
-                        height="1024"
-                        preserveAspectRatio="none"
-                      />
-                    </defs>
-                  </svg>
-                </button>
+                <ProfileAvatarEditor src={user?.image} alt="프로필 이미지" />
               </div>
             </div>
 
