@@ -15,6 +15,9 @@ const AccountSearchPage = lazy(() =>
   import('@/pages/account-search').then((m) => ({ default: m.AccountSearchPage })),
 );
 const ChatPage = lazy(() => import('@/pages/chat').then((m) => ({ default: m.ChatPage })));
+const ChatDetailPage = lazy(() =>
+  import('@/pages/chat-detail').then((m) => ({ default: m.ChatDetailPage })),
+);
 const ProfilePage = lazy(() => import('@/pages/profile').then((m) => ({ default: m.ProfilePage })));
 const ProductCreatePage = lazy(() =>
   import('@/pages/product-create').then((m) => ({ default: m.ProductCreatePage })),
@@ -39,6 +42,9 @@ const ProfileSettingPage = lazy(() =>
 const PostCreatePage = lazy(() =>
   import('@/pages/post-create').then((m) => ({ default: m.PostCreatePage })),
 );
+const PostUpdatePage = lazy(() =>
+  import('@/pages/post-update').then((m) => ({ default: m.PostUpdatePage })),
+);
 const NotFoundPage = lazy(() =>
   import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage })),
 );
@@ -55,6 +61,7 @@ export const router = createBrowserRouter([
           { path: 'feed', element: <FeedPage /> },
           { path: 'feed/search', element: <AccountSearchPage /> },
           { path: 'chat', element: <ChatPage /> },
+          { path: 'chat/:chatId', element: <ChatDetailPage /> },
           { path: 'profile', element: <ProfilePage /> },
           { path: 'profile/:accountname', element: <ProfilePage /> },
           { path: 'followers/:accountname', element: <FollowersPage /> },
@@ -73,6 +80,7 @@ export const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           { path: 'post-create', element: <PostCreatePage /> },
+          { path: 'post-update/:postId', element: <PostUpdatePage /> },
           { path: 'product-create', element: <ProductCreatePage /> },
           { path: 'profile-update', element: <ProfileUpdatePage /> },
           { path: 'post/:postId', element: <PostDetailPage /> },

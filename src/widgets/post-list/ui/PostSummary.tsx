@@ -18,7 +18,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const { openConfirm } = useConfirmDialog();
 
   return (
-    <article key={post.id} className="border-border border-b pb-4">
+    <article key={post.id} className="border-border border-b py-4">
       <div className="mb-3 flex items-center justify-between">
         <ProfileBadge
           username={post.author.username}

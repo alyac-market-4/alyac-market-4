@@ -1,16 +1,23 @@
 import { useMemo, useState } from 'react';
 
 import { uploadImage } from '../assets';
+
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from './avatar';
 import { imageUrl } from '../lib';
-import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 
 interface ProfileAvatarProps {
   src?: string | null;
   alt: string;
   size?: 'default' | 'sm' | 'lg' | 'xl';
+  hasBadge?: boolean;
 }
 
-export const ProfileAvatar = ({ src, alt, size = 'default' }: ProfileAvatarProps) => {
+export const ProfileAvatar = ({
+  src,
+  alt,
+  size = 'default',
+  hasBadge = false,
+}: ProfileAvatarProps) => {
   const initial = useMemo(() => {
     const trimmed = src?.trim();
     if (!trimmed) return uploadImage;
@@ -32,6 +39,7 @@ export const ProfileAvatar = ({ src, alt, size = 'default' }: ProfileAvatarProps
       <AvatarFallback>
         <img alt={alt} src={uploadImage} />
       </AvatarFallback>
+      {hasBadge && <AvatarBadge className="top-0 left-0 bg-green-600" />}
     </Avatar>
   );
 };
