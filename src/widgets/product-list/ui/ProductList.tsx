@@ -1,11 +1,14 @@
+import { useParams } from 'react-router-dom';
+
 import { ProductCard, useUserProductsQuery } from '@/entities/product';
 import { useUserProfileQuery } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView, LoadingState } from '@/shared/ui';
 
 export const ProductList = () => {
-  // TODO: URL params에 따라 다르게 처리
-  const { data: user } = useUserProfileQuery(getTokenUserInfo().accountname);
+  const { accountname = '' } = useParams();
+  const targetAccountname = accountname || getTokenUserInfo().accountname;
+  const { data: user } = useUserProfileQuery(targetAccountname);
   const {
     data: products = [],
     isLoading,

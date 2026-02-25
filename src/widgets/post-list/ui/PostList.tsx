@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+
 import { useUserPostsQuery } from '@/entities/post';
 import { useUserProfileQuery } from '@/entities/profile';
 import type { ViewMode } from '@/features/layout-controller';
@@ -12,8 +14,9 @@ interface PostListProps {
 }
 
 export const PostList = ({ viewMode }: PostListProps) => {
-  // TODO: URL params에 따라 다르게 처리
-  const { data: user } = useUserProfileQuery(getTokenUserInfo().accountname);
+  const { accountname = '' } = useParams();
+  const targetAccountname = accountname || getTokenUserInfo().accountname;
+  const { data: user } = useUserProfileQuery(targetAccountname);
   const {
     data: posts = [],
     isLoading,
