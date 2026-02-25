@@ -63,6 +63,7 @@ export function ChatDetailPage() {
 
   const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!comment) return;
 
     const newMessage: Chat = {
       id: Date.now(),
