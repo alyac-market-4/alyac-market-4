@@ -32,7 +32,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
           image={post.author.image}
         />
 
-        {/* ✅ 메뉴 클릭은 게시물 이동이랑 분리 (전파 차단은 wrapper에서) */}
+        {/* 메뉴 클릭은 게시물 이동이랑 분리 (전파 차단은 wrapper에서) */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
           <KebabMenu
             items={[
@@ -62,12 +62,12 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
       )}
 
       <div className="mt-3 ml-12 flex gap-4">
-        {/* ✅ 좋아요 영역도 전파 차단 (좋아요 누를 때 상세로 이동하면 짜증남) */}
+        {/*  좋아요 영역도 전파 차단 (좋아요 누를 때 상세로 이동 못하도록) */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
           <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
         </div>
 
-        {/* ✅ 댓글 버튼도 마찬가지로 wrapper에서 전파 차단 + 클릭 시 이동 */}
+        {/*  댓글 버튼도 마찬가지로 wrapper에서 전파 차단 + 클릭 시 이동 */}
         <div
           onClick={(e) => {
             e.stopPropagation();
