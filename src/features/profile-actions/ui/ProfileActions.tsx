@@ -14,9 +14,9 @@ export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   const { followMutation, unfollowMutation } = useProfileMutation();
   const { accountname } = useParams();
 
-  const handleFollow = (isfollow: boolean) => {
+  const handleFollow = (isFollow: boolean) => {
     if (!accountname) return;
-    if (isfollow) {
+    if (isFollow) {
       unfollowMutation.mutate(accountname);
     } else {
       followMutation.mutate(accountname);
