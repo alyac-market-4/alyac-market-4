@@ -1,10 +1,14 @@
+import { useParams } from 'react-router-dom';
+
 import { ProductCard, useUserProductsQuery } from '@/entities/product';
-import { useMyInfoQuery } from '@/entities/user';
+import { useUserProfileQuery } from '@/entities/profile';
+import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView, LoadingState } from '@/shared/ui';
 
 export const ProductList = () => {
-  // TODO: URL params가 없는 경우만 useMyInfoQuery 사용해야 함
-  const { data: user } = useMyInfoQuery();
+  const { accountname = '' } = useParams();
+  const targetAccountname = accountname || getTokenUserInfo().accountname;
+  const { data: user } = useUserProfileQuery(targetAccountname);
   const {
     data: products = [],
     isLoading,

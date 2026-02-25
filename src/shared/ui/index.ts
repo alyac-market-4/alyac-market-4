@@ -12,3 +12,4 @@ export * from './LoadingState';
 export * from './ProfileAvatar';
 export * from './ProfileAvatarEditor';
 export * from './SuspenseWrapper';
+export * from './toggle-group';

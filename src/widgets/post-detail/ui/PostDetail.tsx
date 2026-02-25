@@ -30,7 +30,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
       <div className="flex items-center gap-4 px-4">
         <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
         <div className="flex items-center gap-1.5">
-          <CommentButton commentCount={post.commentCount} />
+          <CommentButton commentCount={post.commentCount} className="cursor-auto" />
         </div>
       </div>
     </>
