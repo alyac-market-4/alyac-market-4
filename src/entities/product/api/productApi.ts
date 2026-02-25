@@ -12,7 +12,7 @@ import type {
 
 export const productApi = {
   createProduct: async (product: Product): Promise<ProductDetail> => {
-    const { data } = await axiosInstance.post<CreateProductResponse>(`/api/products`, {
+    const { data } = await axiosInstance.post<CreateProductResponse>(`/api/product`, {
       product,
     });
     return data.product;
