@@ -104,6 +104,7 @@ export const ProductCreatePage = () => {
         right={
           <Button
             type="submit"
+            form="product-form"
             disabled={createMutation.isPending}
             className="h-10 cursor-pointer rounded-full bg-[#6FCA3C]/50 px-6 py-1 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[#5CB32A]"
           >
@@ -113,7 +114,7 @@ export const ProductCreatePage = () => {
       />
 
       <main className="bg-background flex-1 px-4 py-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form id="product-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* 이미지 영역 */}
           <div className="space-y-2">
             <label className="text-muted-foreground block text-sm">이미지 등록</label>
@@ -155,12 +156,13 @@ export const ProductCreatePage = () => {
             />
           </div>
 
-          {/* 상품명 */}
+          {/* 상품명 입력 */}
           <div>
             <label className="text-foreground text-sm font-medium">상품명</label>
             <input
               type="text"
               {...register('productName')}
+              placeholder="2~15자 이내여야 합니다"
               className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
             />
             {errors.productName && (
@@ -168,26 +170,31 @@ export const ProductCreatePage = () => {
             )}
           </div>
 
-          {/* 가격 */}
+          {/* 가격 입력 */}
           <div>
             <label className="text-foreground text-sm font-medium">가격</label>
             <input
               type="number"
-              {...register('price', { valueAsNumber: true })}
+              {...register('price')}
+              placeholder="숫자만 입력 가능합니다."
               className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
             />
             {errors.price && <p className="text-sm text-red-500">{errors.price.message}</p>}
           </div>
 
-          {/* 링크 */}
+          {/* 링크 입력 */}
           <div>
             <label className="text-foreground text-sm font-medium">판매 링크</label>
             <input
               type="text"
               {...register('saleLink')}
+              placeholder="URL을 입력해 주세요"
               className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
             />
             {errors.saleLink && <p className="text-sm text-red-500">{errors.saleLink.message}</p>}
+            <p className="text-muted-foreground mt-2 text-xs">
+              선택 사항 (http:// 또는 https://로 시작)
+            </p>
           </div>
         </form>
       </main>
