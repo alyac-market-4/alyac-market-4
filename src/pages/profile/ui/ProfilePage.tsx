@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { Monitor, Moon, Sun } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
@@ -8,18 +7,12 @@ import { useUserProfileQuery } from '@/entities/profile';
 import { LayoutController } from '@/features/layout-controller';
 import type { ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
-import { getTokenUserInfo, useTheme } from '@/shared/lib';
+import { getTokenUserInfo, themeIcons, useTheme } from '@/shared/lib';
 import { BackButton, ErrorView, KebabMenu, LoadingState } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
 import { ProductList } from '@/widgets/product-list';
 import { ProfileCard } from '@/widgets/profile-card';
-
-const themeIcons = {
-  system: <Monitor />,
-  light: <Sun />,
-  dark: <Moon />,
-};
 
 export const ProfilePage = () => {
   const { accountname } = useParams();
