@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 
 import { uploadImage } from '../assets';
+
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from './avatar';
+import { imageUrl } from '../lib';
 
 interface ProfileAvatarProps {
   src?: string | null;
@@ -16,7 +18,12 @@ export const ProfileAvatar = ({
   size = 'default',
   hasBadge = false,
 }: ProfileAvatarProps) => {
-  const initial = useMemo(() => (src?.trim() ? src : uploadImage), [src]);
+  const initial = useMemo(() => {
+    const trimmed = src?.trim();
+    if (!trimmed) return uploadImage;
+    // 서버가 filename만 주는 경우에도 정상 표시되도록 변환
+    return imageUrl(trimmed, uploadImage);
+  }, [src]);
   const [imgSrc, setImgSrc] = useState<string>(initial);
 
   return (

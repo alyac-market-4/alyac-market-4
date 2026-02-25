@@ -13,35 +13,38 @@ export const PostCreatePage = () => {
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
 
+  // 처음엔 에러 안 보여주고, 한 번이라도 건드리면 보여주기
+  const [isTouched, setIsTouched] = useState(false);
+
   const uploadMutation = useUploadFiles();
   const { createMutation } = usePostMutation();
 
   const isSubmitting = uploadMutation.isPending || createMutation.isPending;
 
-  // ✅ 현재 입력 상태를 항상 검증해서 버튼 상태/안내문을 통일
   const zodResult = useMemo(() => {
     return postCreateSchema.safeParse({ content, files });
   }, [content, files]);
 
   const canUpload = zodResult.success;
 
-  // ✅ 예제처럼: 아무것도 안 썼을 때는 "게시글 내용을 입력해주세요."
-  // + 추가로, 파일 개수 초과 같은 에러도 보여주고 싶으면 첫 에러를 띄움
   const helperText = useMemo(() => {
+    if (!isTouched) return ''; // 처음 진입 시엔 아무것도 안 보여줌
+
+    // 빈 상태면 예제처럼 “내용 입력” 안내
     const isEmpty = content.trim().length === 0 && files.length === 0;
     if (isEmpty) return '게시글 내용을 입력해주세요.';
 
+    // 그 외(이미지 4개, 용량 초과 등)도 바로 안내
     if (!zodResult.success) {
       return zodResult.error.issues[0]?.message ?? '';
     }
 
     return '';
-  }, [content, files.length, zodResult]);
+  }, [isTouched, content, files.length, zodResult]);
 
   const onClickUpload = async () => {
     if (!canUpload || isSubmitting) return;
 
-    // ✅ 제출 시점엔 parse로 확정(여기서 content trim된 값 사용)
     const parsed = postCreateSchema.parse({ content, files });
     const safeContent = parsed.content;
     const safeFiles = parsed.files;
@@ -51,7 +54,9 @@ export const PostCreatePage = () => {
 
       if (safeFiles.length > 0) {
         const uploaded = await uploadMutation.mutateAsync(safeFiles);
-        image = uploaded.map((item) => item.filename).join(',');
+        // 서버는 업로드된 파일을 /uploadFiles/<filename> 경로로 제공
+        // DB에는 filename만 저장하지 말고, 실제 접근 가능한 경로까지 저장해야 화면에서 깨지지 않음
+        image = uploaded.map((item) => `uploadFiles/${item.filename}`).join(',');
       }
 
       createMutation.mutate({
@@ -74,12 +79,17 @@ export const PostCreatePage = () => {
       <main className="px-4 py-6">
         <PostCreateForm
           content={content}
-          onChangeContent={setContent}
+          onChangeContent={(next) => {
+            if (!isTouched) setIsTouched(true); // ✅ 한 번이라도 입력하면 touched
+            setContent(next);
+          }}
           files={files}
-          onChangeFiles={setFiles}
+          onChangeFiles={(next) => {
+            if (!isTouched) setIsTouched(true); // ✅ 이미지 선택도 touched로 취급
+            setFiles(next);
+          }}
         />
 
-        {/* ✅ fixed 제거: 폼 아래에 자연스럽게 표시 → 이미지랑 안 겹침 */}
         {helperText && <p className="mt-2 text-sm text-red-500">{helperText}</p>}
       </main>
     </>

@@ -11,7 +11,7 @@ export const ProfileAvatarEditor = ({ src, alt, size = 'xl' }: ProfileAvatarProp
   return (
     <div className="relative inline-block">
       <ProfileAvatar src={src} alt={alt} size={size} />
-      <ImageFileButton className="absolute right-0 bottom-0" />
+      <ImageFileButton className="absolute right-0 bottom-0 bg-[var(--main-button)] hover:bg-[var(--main-button-hover)]" />
     </div>
   );
 };
