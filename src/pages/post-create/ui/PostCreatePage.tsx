@@ -13,7 +13,7 @@ export const PostCreatePage = () => {
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
 
-  // ✅ 처음엔 에러 안 보여주고, 한 번이라도 건드리면 보여주기
+  // 처음엔 에러 안 보여주고, 한 번이라도 건드리면 보여주기
   const [isTouched, setIsTouched] = useState(false);
 
   const uploadMutation = useUploadFiles();
@@ -28,7 +28,7 @@ export const PostCreatePage = () => {
   const canUpload = zodResult.success;
 
   const helperText = useMemo(() => {
-    if (!isTouched) return ''; // ✅ 처음 진입 시엔 아무것도 안 보여줌
+    if (!isTouched) return ''; // 처음 진입 시엔 아무것도 안 보여줌
 
     // 빈 상태면 예제처럼 “내용 입력” 안내
     const isEmpty = content.trim().length === 0 && files.length === 0;
