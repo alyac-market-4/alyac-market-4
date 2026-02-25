@@ -6,6 +6,9 @@ import { userKeys } from '@/shared/model';
 import type { UpdateProfileRequest } from '../model/types';
 import { userApi } from './userApi';
 
+/**
+ * @deprecated useUserProfileQuery(getTokenUserInfo().accountname)를 사용하세요.
+ */
 export const useMyInfoQuery = () => {
   return useQuery({
     queryKey: userKeys.me(),

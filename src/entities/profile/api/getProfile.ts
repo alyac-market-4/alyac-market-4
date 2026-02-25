@@ -24,7 +24,7 @@ export const profileApi = {
       `/api/profile/${accountname}/following`,
       { params: { limit, skip } },
     );
-    return data.following;
+    return data.following || [];
   },
   getFollowers: async (
     accountname: string,
@@ -35,7 +35,7 @@ export const profileApi = {
       `/api/profile/${accountname}/follower`,
       { params: { limit, skip } },
     );
-    return data.follower;
+    return data.follower || [];
   },
 
   followUser: async (accountname: string): Promise<User> => {

@@ -1,6 +1,6 @@
 import { LayoutGrid, StretchHorizontal } from 'lucide-react';
 
-import { IconButton } from '@/shared/ui';
+import { ToggleGroup, ToggleGroupItem } from '@/shared/ui';
 
 import type { ViewMode } from '../model/types';
 
@@ -11,19 +11,22 @@ interface LayoutControllerProps {
 
 export const LayoutController = ({ viewMode, setViewMode }: LayoutControllerProps) => {
   return (
-    <div className="flex gap-1">
-      <IconButton
-        onClick={() => setViewMode('list')}
-        className={viewMode === 'list' ? 'text-foreground' : 'text-muted-foreground'}
-      >
-        <StretchHorizontal />
-      </IconButton>
-      <IconButton
-        onClick={() => setViewMode('grid')}
-        className={viewMode === 'grid' ? 'text-foreground' : 'text-muted-foreground'}
-      >
-        <LayoutGrid />
-      </IconButton>
-    </div>
+    <ToggleGroup
+      type="single"
+      size="sm"
+      variant="outline"
+      value={viewMode}
+      onValueChange={(value) => {
+        if (value) setViewMode(value as ViewMode);
+      }}
+    >
+      <ToggleGroupItem value="list" aria-label="Toggle list view">
+        <StretchHorizontal className="h-4 w-4" />
+      </ToggleGroupItem>
+
+      <ToggleGroupItem value="grid" aria-label="Toggle grid view">
+        <LayoutGrid className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 };

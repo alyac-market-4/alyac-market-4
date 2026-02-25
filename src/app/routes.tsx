@@ -22,6 +22,12 @@ const ProductCreatePage = lazy(() =>
 const ProfileUpdatePage = lazy(() =>
   import('@/pages/profile-update').then((m) => ({ default: m.ProfileUpdatePage })),
 );
+const FollowersPage = lazy(() =>
+  import('@/pages/followers').then((m) => ({ default: m.FollowersPage })),
+);
+const FollowingsPage = lazy(() =>
+  import('@/pages/followings').then((m) => ({ default: m.FollowingsPage })),
+);
 const PostDetailPage = lazy(() =>
   import('@/pages/post-detail').then((m) => ({ default: m.PostDetailPage })),
 );
@@ -50,6 +56,9 @@ export const router = createBrowserRouter([
           { path: 'feed/search', element: <AccountSearchPage /> },
           { path: 'chat', element: <ChatPage /> },
           { path: 'profile', element: <ProfilePage /> },
+          { path: 'profile/:accountname', element: <ProfilePage /> },
+          { path: 'followers/:accountname', element: <FollowersPage /> },
+          { path: 'followings/:accountname', element: <FollowingsPage /> },
         ],
       },
     ],

@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { X } from 'lucide-react';
 
-import { useMyInfoQuery } from '@/entities/user';
+import { useUserProfileQuery } from '@/entities/profile';
+import { getTokenUserInfo } from '@/shared/lib';
 import { ProfileAvatar } from '@/shared/ui';
-import { ImageFileButton } from '@/shared/ui/ImageFileButton';
+import { ImageFileButton } from '@/shared/ui';
 
 import PostContentInput from './PostContentInput';
 
@@ -23,7 +24,7 @@ export default function PostCreateForm({
 }: PostCreateFormProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: me } = useMyInfoQuery();
+  const { data: me } = useUserProfileQuery(getTokenUserInfo().accountname);
 
   const previews = useMemo(() => {
     return files.map((file) => ({
