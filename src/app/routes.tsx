@@ -39,6 +39,9 @@ const ProfileSettingPage = lazy(() =>
 const PostCreatePage = lazy(() =>
   import('@/pages/post-create').then((m) => ({ default: m.PostCreatePage })),
 );
+const PostUpdatePage = lazy(() =>
+  import('@/pages/post-update').then((m) => ({ default: m.PostUpdatePage })),
+);
 const NotFoundPage = lazy(() =>
   import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage })),
 );
@@ -73,6 +76,7 @@ export const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           { path: 'post-create', element: <PostCreatePage /> },
+          { path: 'post-update/:postId', element: <PostUpdatePage /> },
           { path: 'product-create', element: <ProductCreatePage /> },
           { path: 'profile-update', element: <ProfileUpdatePage /> },
           { path: 'post/:postId', element: <PostDetailPage /> },
