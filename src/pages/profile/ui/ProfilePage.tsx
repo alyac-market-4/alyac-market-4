@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
 import { Monitor, Moon, Sun } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
+import { useUserProfileQuery } from '@/entities/profile';
 import { LayoutController } from '@/features/layout-controller';
 import type { ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
-import { useTheme } from '@/shared/lib';
-import { BackButton, KebabMenu } from '@/shared/ui';
+import { getTokenUserInfo, useTheme } from '@/shared/lib';
+import { BackButton, ErrorView, KebabMenu, LoadingState } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
 import { ProductList } from '@/widgets/product-list';
@@ -20,6 +22,11 @@ const themeIcons = {
 };
 
 export const ProfilePage = () => {
+  const { accountname } = useParams();
+  const myAccountname = getTokenUserInfo().accountname;
+  const isMe = !accountname || accountname === myAccountname;
+  const targetAccountname = isMe ? myAccountname : accountname;
+  const { data: user, isLoading, isError, refetch } = useUserProfileQuery(targetAccountname);
   const { logout } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useTheme();
@@ -40,21 +47,29 @@ export const ProfilePage = () => {
       />
 
       <main className="flex-1 overflow-y-auto pb-16">
-        <section className="border-border border-b px-4 py-6">
-          <ProfileCard />
-          <ProfileActions />
-        </section>
+        {isLoading ? (
+          <LoadingState />
+        ) : isError || !user ? (
+          <ErrorView message="프로필 불러오기 실패" onRetry={() => refetch()} />
+        ) : (
+          <>
+            <section className="border-border border-b px-4 py-6">
+              <ProfileCard user={user} />
+              <ProfileActions isMe={isMe} user={user} />
+            </section>
 
-        <ProductList />
+            <ProductList />
 
-        <section>
-          <div className="border-border flex items-center justify-end border-b px-4 py-4">
-            <LayoutController viewMode={viewMode} setViewMode={setViewMode} />
-          </div>
-          <div className="px-4 py-4">
-            <PostList />
-          </div>
-        </section>
+            <section>
+              <div className="border-border flex items-center justify-end border-b px-4 py-4">
+                <LayoutController viewMode={viewMode} setViewMode={setViewMode} />
+              </div>
+              <div className="px-4 py-4">
+                <PostList viewMode={viewMode} />
+              </div>
+            </section>
+          </>
+        )}
       </main>
     </>
   );
