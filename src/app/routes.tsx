@@ -15,6 +15,9 @@ const AccountSearchPage = lazy(() =>
   import('@/pages/account-search').then((m) => ({ default: m.AccountSearchPage })),
 );
 const ChatPage = lazy(() => import('@/pages/chat').then((m) => ({ default: m.ChatPage })));
+const ChatDetailPage = lazy(() =>
+  import('@/pages/chat-detail').then((m) => ({ default: m.ChatDetailPage })),
+);
 const ProfilePage = lazy(() => import('@/pages/profile').then((m) => ({ default: m.ProfilePage })));
 const ProductCreatePage = lazy(() =>
   import('@/pages/product-create').then((m) => ({ default: m.ProductCreatePage })),
@@ -58,6 +61,7 @@ export const router = createBrowserRouter([
           { path: 'feed', element: <FeedPage /> },
           { path: 'feed/search', element: <AccountSearchPage /> },
           { path: 'chat', element: <ChatPage /> },
+          { path: 'chat/:chatId', element: <ChatDetailPage /> },
           { path: 'profile', element: <ProfilePage /> },
           { path: 'profile/:accountname', element: <ProfilePage /> },
           { path: 'followers/:accountname', element: <FollowersPage /> },
