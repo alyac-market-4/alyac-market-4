@@ -1,10 +1,11 @@
 import { ProductCard, useUserProductsQuery } from '@/entities/product';
-import { useMyInfoQuery } from '@/entities/user';
+import { useUserProfileQuery } from '@/entities/profile';
+import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView, LoadingState } from '@/shared/ui';
 
 export const ProductList = () => {
-  // TODO: URL params가 없는 경우만 useMyInfoQuery 사용해야 함
-  const { data: user } = useMyInfoQuery();
+  // TODO: URL params에 따라 다르게 처리
+  const { data: user } = useUserProfileQuery(getTokenUserInfo().accountname);
   const {
     data: products = [],
     isLoading,
