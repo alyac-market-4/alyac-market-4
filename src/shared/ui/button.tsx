@@ -20,6 +20,7 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         alyac:
           'transition-colors items-center justify-center gap-2 rounded-full bg-[var(--main-button)]  inline-flex text-white hover:bg-[var(--main-button-hover)]',
+        login: 'bg-card ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
@@ -31,6 +32,7 @@ const buttonVariants = cva(
         'icon-sm': 'size-8',
         'icon-lg': 'size-10',
         lgbtn: 'h-14 w-full px-4 py-2 text-base font-semibold',
+        loginBtn: 'h-auto w-full max-w-[448px] min-w-[322px] rounded-full border-2 px-6 py-4',
       },
     },
     defaultVariants: {
