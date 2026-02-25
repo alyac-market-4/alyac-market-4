@@ -1,9 +1,7 @@
-import { EllipsisVertical } from 'lucide-react';
-
 import { ChatSummary } from '@/entities/chat';
-import { ProfileAvatar } from '@/shared/ui';
+import { themeIcons, useTheme } from '@/shared/lib';
+import { KebabMenu, ProfileAvatar } from '@/shared/ui';
 import { BackButton } from '@/shared/ui/BackButton';
-import { IconButton } from '@/shared/ui/IconButton';
 import { Header } from '@/widgets/header';
 
 const CHAT_LIST = [
@@ -34,16 +32,19 @@ const CHAT_LIST = [
 ];
 
 export const ChatPage = () => {
+  const { theme, switchTheme } = useTheme();
+
   return (
     <>
       <Header
         left={<BackButton />}
         right={
-          <IconButton>
-            <EllipsisVertical />
-          </IconButton>
+          <KebabMenu
+            items={[{ label: '테마:', icon: themeIcons[theme], onClick: () => switchTheme() }]}
+          />
         }
       />
+
       <main className="flex flex-1 flex-col overflow-y-auto">
         <div className="flex flex-col">
           {CHAT_LIST.map((chat) => {
