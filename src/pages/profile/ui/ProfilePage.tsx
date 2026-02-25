@@ -3,17 +3,15 @@ import { useState } from 'react';
 import { Monitor, Moon, Sun } from 'lucide-react';
 
 import { useAuth } from '@/entities/auth';
-import { useTheme } from '@/shared/lib/theme/useTheme';
-import { BackButton } from '@/shared/ui';
-import { KebabMenu } from '@/shared/ui/KebabMenu';
+import { LayoutController } from '@/features/layout-controller';
+import type { ViewMode } from '@/features/layout-controller';
+import { ProfileActions } from '@/features/profile-actions';
+import { useTheme } from '@/shared/lib';
+import { BackButton, KebabMenu } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
 import { ProductList } from '@/widgets/product-list';
 import { ProfileCard } from '@/widgets/profile-card';
-
-import type { ViewMode } from '../model/types';
-import { LayoutController } from './LayoutController';
-import { ProfileActions } from './ProfileActions';
 
 const themeIcons = {
   system: <Monitor />,

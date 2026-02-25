@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CommentButton, usePostMutation } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
+import { useConfirmDialog } from '@/shared/lib';
 import type { Post } from '@/shared/model';
 import { KebabMenu } from '@/shared/ui';
 
@@ -13,6 +14,7 @@ interface PostSummaryProps {
 export const PostSummary = ({ post }: PostSummaryProps) => {
   const navigate = useNavigate();
   const { deleteMutation } = usePostMutation();
+  const { openConfirm } = useConfirmDialog();
 
   return (
     <article key={post.id} className="border-border border-b pb-4">
@@ -28,7 +30,12 @@ export const PostSummary = ({ post }: PostSummaryProps) => {
             {
               label: '삭제',
               onClick: () => {
-                deleteMutation.mutate(post.id);
+                openConfirm({
+                  title: '정말 삭제하시겠습니까?',
+                  description: '삭제된 게시물은 복구할 수 없습니다.',
+                  actionText: '삭제',
+                  onConfirm: () => deleteMutation.mutate(post.id),
+                });
               },
             },
           ]}

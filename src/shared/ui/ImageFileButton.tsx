@@ -1,6 +1,6 @@
 import { ImagePlus } from 'lucide-react';
 
-import { Button } from '@/shared/ui';
+import { Button } from './button';
 
 type ImageFileButtonProps = {
   // (e: React.MouseEvent<HTMLButtonElement>) => void

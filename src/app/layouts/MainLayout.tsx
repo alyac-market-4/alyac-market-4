@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
 import { SuspenseWrapper } from '@/shared/ui';
-import { Nav } from '@/widgets/nav/ui/Nav';
+import { Nav } from '@/widgets/nav';
 
 export const MainLayout = () => {
   return (

@@ -1,6 +1,7 @@
 export * from './avatar';
 export * from './BackButton';
 export * from './button';
+export * from './ConfirmDialog';
 export * from './dropdown-menu';
 export * from './ErrorView';
 export * from './IconButton';

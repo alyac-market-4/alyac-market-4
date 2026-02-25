@@ -1,14 +1,16 @@
 import { useCommentMutation } from '@/entities/comment';
+import { useConfirmDialog } from '@/shared/lib';
 import type { Comment } from '@/shared/model';
 import { KebabMenu, ProfileAvatar } from '@/shared/ui';
 
-interface CommentDetailProps {
+interface CommentListProps {
   postId: string;
   comment: Comment;
 }
 
-export default function CommentDetail({ postId, comment }: CommentDetailProps) {
+export function CommentList({ postId, comment }: CommentListProps) {
   const { deleteMutation, reportMutation } = useCommentMutation();
+  const { openConfirm } = useConfirmDialog();
 
   return (
     <>
@@ -26,13 +28,23 @@ export default function CommentDetail({ postId, comment }: CommentDetailProps) {
               {
                 label: '신고하기',
                 onClick: () => {
-                  reportMutation.mutate({ postId, commentId: comment.id });
+                  openConfirm({
+                    title: '정말 신고하시겠습니까?',
+                    description: '신고는 취소할 수 없습니다.',
+                    actionText: '신고',
+                    onConfirm: () => reportMutation.mutate({ postId, commentId: comment.id }),
+                  });
                 },
               },
               {
                 label: '삭제',
                 onClick: () => {
-                  deleteMutation.mutate({ postId, commentId: comment.id });
+                  openConfirm({
+                    title: '정말 삭제하시겠습니까?',
+                    description: '삭제된 댓글은 복구할 수 없습니다.',
+                    actionText: '삭제',
+                    onConfirm: () => deleteMutation.mutate({ postId, commentId: comment.id }),
+                  });
                 },
               },
             ]}

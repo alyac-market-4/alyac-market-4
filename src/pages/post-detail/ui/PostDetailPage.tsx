@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
 import { useMyInfoQuery } from '@/entities/user';
+import { useConfirmDialog } from '@/shared/lib';
 import {
   BackButton,
   Button,
@@ -14,10 +15,9 @@ import {
   KebabMenu,
   ProfileAvatar,
 } from '@/shared/ui';
+import { CommentList } from '@/widgets/comment-list';
 import { Header } from '@/widgets/header';
-
-import CommentDetail from './CommentDetail';
-import { PostDetail } from './PostDetail';
+import { PostDetail } from '@/widgets/post-detail';
 
 export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
@@ -25,6 +25,7 @@ export const PostDetailPage = () => {
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
   const { createMutation } = useCommentMutation();
   const { deleteMutation, reportMutation } = usePostMutation();
+  const { openConfirm } = useConfirmDialog();
 
   const {
     data: comments,
@@ -53,13 +54,23 @@ export const PostDetailPage = () => {
               {
                 label: '신고하기',
                 onClick: () => {
-                  reportMutation.mutate(postId);
+                  openConfirm({
+                    title: '정말 신고하시겠습니까?',
+                    description: '신고는 취소할 수 없습니다.',
+                    actionText: '신고',
+                    onConfirm: () => reportMutation.mutate(postId),
+                  });
                 },
               },
               {
                 label: '삭제',
                 onClick: () => {
-                  deleteMutation.mutate(postId);
+                  openConfirm({
+                    title: '정말 삭제하시겠습니까?',
+                    description: '삭제된 게시물은 복구할 수 없습니다.',
+                    actionText: '삭제',
+                    onConfirm: () => deleteMutation.mutate(postId),
+                  });
                 },
               },
             ]}
@@ -74,7 +85,7 @@ export const PostDetailPage = () => {
           {Number(post.commentCount) > 0 ? (
             comments?.map((comment) => (
               <div key={comment.id} className="flex gap-3 px-4 py-4">
-                <CommentDetail postId={postId} comment={comment} />
+                <CommentList postId={postId} comment={comment} />
               </div>
             ))
           ) : (
