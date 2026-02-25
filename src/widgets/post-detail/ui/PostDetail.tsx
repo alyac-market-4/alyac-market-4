@@ -2,6 +2,7 @@ import { CommentButton } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
 import type { Post } from '@/shared/model';
+import { PostImage } from '@/shared/ui';
 
 export const PostDetail = ({ post }: { post: Post }) => {
   return (
@@ -19,12 +20,8 @@ export const PostDetail = ({ post }: { post: Post }) => {
         </p>
       </div>
       {post.image && (
-        <div className="mb-4 space-y-2 px-4">
-          <img
-            alt="Post image 1"
-            className="h-auto w-full rounded-xl object-cover"
-            src={post.image}
-          />
+        <div className="mb-4 px-4">
+          <PostImage src={post.image} alt="Post image" />
         </div>
       )}
       <div className="flex items-center gap-4 px-4">

@@ -54,7 +54,9 @@ export const PostCreatePage = () => {
 
       if (safeFiles.length > 0) {
         const uploaded = await uploadMutation.mutateAsync(safeFiles);
-        image = uploaded.map((item) => item.filename).join(',');
+        // 서버는 업로드된 파일을 /uploadFiles/<filename> 경로로 제공
+        // DB에는 filename만 저장하지 말고, 실제 접근 가능한 경로까지 저장해야 화면에서 깨지지 않음
+        image = uploaded.map((item) => `uploadFiles/${item.filename}`).join(',');
       }
 
       createMutation.mutate({
