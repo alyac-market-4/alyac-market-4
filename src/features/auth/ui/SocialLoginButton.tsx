@@ -1,7 +1,6 @@
 import { FacebookIcon, GoogleIcon, KakaoIcon } from '@/shared/assets';
 import { Button } from '@/shared/ui';
 
-// 브랜드별 설정 정보 객체화
 const SOCIAL_CONFIG = {
   kakao: {
     icon: <KakaoIcon />,
