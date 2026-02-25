@@ -1,4 +1,4 @@
-import type { Post } from '@/shared/model/post';
+import type { Post } from '@/shared/model';
 
 export interface CreatePostRequest {
   post: { content: string; image: string };

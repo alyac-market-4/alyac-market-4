@@ -17,7 +17,7 @@ export const ProfileActions = () => {
         프로필 수정
       </Button>
       <Button
-        onClick={() => navigate('/product/create')}
+        onClick={() => navigate('/product-create')}
         variant="outline"
         size="lg"
         className="flex-1"

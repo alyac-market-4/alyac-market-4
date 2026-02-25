@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { type VariantProps, cva } from 'class-variance-authority';
 
-import { cn } from '@/shared/lib/index';
-import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
-import { Textarea } from '@/shared/ui/textarea';
+import { cn } from '../lib';
+import { Button } from './button';
+import { Input } from './input';
+import { Textarea } from './textarea';
 
 const inputGroupVariants = cva(
   'group/input-group border-input dark:bg-input/30 relative flex w-full items-center rounded-full border shadow-xs transition-[color,box-shadow] outline-none h-9 min-w-0 has-[>textarea]:h-auto',

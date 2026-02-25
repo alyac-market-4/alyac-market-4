@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { getRefreshToken, getToken, removeToken, saveToken } from '@/shared/lib';
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
 });
@@ -94,5 +94,3 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export default axiosInstance;

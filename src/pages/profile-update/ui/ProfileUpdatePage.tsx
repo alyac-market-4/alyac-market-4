@@ -1,5 +1,4 @@
-import { Button } from '@/shared/ui';
-import { BackButton } from '@/shared/ui/BackButton';
+import { BackButton, Button } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const ProfileUpdatePage = () => {

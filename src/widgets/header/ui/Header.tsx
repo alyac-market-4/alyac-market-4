@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Title } from '@/widgets/header/ui/Title';
+import { Title } from './Title';
 
 interface HeaderProps {
   left?: ReactNode | string;
