@@ -43,7 +43,7 @@ export const PostList = ({ viewMode }: PostListProps) => {
     );
   else {
     return (
-      <div className="grid grid-cols-3 gap-1">
+      <div className="grid grid-cols-3 gap-1 py-4">
         {posts.map((post) => {
           return <PostThumbnail key={post.id} image={post.image} to={`/post/${post.id}`} />;
         })}
