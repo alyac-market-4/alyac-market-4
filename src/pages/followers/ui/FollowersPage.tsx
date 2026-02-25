@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { useFollowersQuery, useFollowingsQuery, useProfileMutation } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
@@ -54,7 +54,7 @@ export const FollowersPage = () => {
         <div className="divide-border divide-y">
           {isFollowersLoading || isFollowingsLoading ? (
             <LoadingState />
-          ) : isFollowersError || isFollowingsError ? (
+          ) : isFollowersError || isFollowingsError || !accountname ? (
             <ErrorView
               message="팔로워 불러오기 실패"
               onRetry={() => {
@@ -65,15 +65,15 @@ export const FollowersPage = () => {
           ) : followersWithIsFollow.length > 0 ? (
             followersWithIsFollow.map((follower) => (
               <div key={follower.accountname} className="flex items-center gap-3 px-4 py-4">
-                <button type="button" className="flex-shrink-0">
+                <Link to={`/profile/${follower.accountname}`} className="flex-shrink-0">
                   <ProfileAvatar src={follower.image} alt={follower.username} size="lg" />
-                </button>
-                <button type="button" className="min-w-0 flex-1 text-left">
+                </Link>
+                <Link to={`/profile/${follower.accountname}`} className="min-w-0 flex-1 text-left">
                   <p className="text-foreground truncate text-sm font-semibold">
                     {follower.username}
                   </p>
                   <p className="text-muted-foreground truncate text-xs">{follower.intro}</p>
-                </button>
+                </Link>
                 {follower.accountname ===
                 getTokenUserInfo().accountname ? null : follower.isFollow ? (
                   <Button
