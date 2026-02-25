@@ -2,7 +2,7 @@ import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useProductMutation } from '@/entities/product';
-import { useConfirmDialog } from '@/shared/lib';
+import { formatCurrency, useConfirmDialog } from '@/shared/lib';
 import type { ProductDetail } from '@/shared/model';
 import { IconButton } from '@/shared/ui';
 
@@ -20,7 +20,7 @@ export const ProductCard = ({ product, to }: ProductCardProps) => {
       <img alt={product.itemName} className="h-32 w-full object-cover" src={product.itemImage} />
       <div className="mt-2">
         <p className="text-foreground text-sm font-medium">{product.itemName}</p>
-        <p className="text-sm font-bold text-green-600">{product.price}</p>
+        <p className="text-sm font-bold text-green-600">{formatCurrency(product.price)}</p>
       </div>
 
       <Link to={to} className="absolute inset-0" />
