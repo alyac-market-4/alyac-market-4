@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // 프로젝트 컴포넌트
 import { useFeedPostsQuery } from '@/entities/post';
 // assets
-import alyacImage from '@/shared/assets/images/full-logo-alyac-gray.png';
+import { fullLogoAlyacGray } from '@/shared/assets';
 import { Button, ErrorView, IconButton, LoadingState } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostSummary } from '@/widgets/post-list/ui/PostSummary';
@@ -52,7 +52,11 @@ const EmptyFeed = ({ onSearch }: { onSearch: () => void }) => {
   return (
     <section className="flex min-h-[70vh] flex-col items-center justify-center">
       <div className="mb-6 flex flex-col items-center">
-        <img src={alyacImage} alt="알약 이미지" className="h-[120px] w-[120px] object-contain" />
+        <img
+          src={fullLogoAlyacGray}
+          alt="알약 이미지"
+          className="h-[120px] w-[120px] object-contain"
+        />
       </div>
 
       <p className="text-sm opacity-70">유저를 검색해 팔로우 해보세요!</p>
