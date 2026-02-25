@@ -61,7 +61,6 @@ export const router = createBrowserRouter([
           { path: 'feed', element: <FeedPage /> },
           { path: 'feed/search', element: <AccountSearchPage /> },
           { path: 'chat', element: <ChatPage /> },
-          { path: 'chat/:chatId', element: <ChatDetailPage /> },
           { path: 'profile', element: <ProfilePage /> },
           { path: 'profile/:accountname', element: <ProfilePage /> },
           { path: 'followers/:accountname', element: <FollowersPage /> },
@@ -79,6 +78,7 @@ export const router = createBrowserRouter([
         path: '',
         element: <RequireAuth />,
         children: [
+          { path: 'chat/:chatId', element: <ChatDetailPage /> },
           { path: 'post-create', element: <PostCreatePage /> },
           { path: 'post-update/:postId', element: <PostUpdatePage /> },
           { path: 'product-create', element: <ProductCreatePage /> },
