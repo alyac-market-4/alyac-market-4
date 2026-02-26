@@ -80,8 +80,8 @@ export const ProductCreatePage = () => {
     const productPayload = {
       itemName: data.productName,
       price: data.price,
-      link: data.saleLink ?? '', // undefined 제거
       itemImage: uploadedImageNames.map((name) => `uploadFiles/${name}`).join(','),
+      link: data.saleLink ?? '',
     };
 
     createMutation.mutate(productPayload, {
@@ -174,8 +174,16 @@ export const ProductCreatePage = () => {
           <div>
             <label className="text-foreground text-sm font-medium">가격</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric" // 모바일에서 숫자 키패드 표시
               {...register('price')}
+              onBlur={(e) => {
+                const value = e.target.value.replaceAll(',', '');
+                if (!value) return;
+
+                const formatted = Number(value).toLocaleString();
+                e.target.value = formatted;
+              }}
               placeholder="숫자만 입력 가능합니다."
               className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
             />
