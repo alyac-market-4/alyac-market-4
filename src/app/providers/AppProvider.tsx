@@ -2,14 +2,14 @@ import type { ReactNode } from 'react';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 
-import { useTheme } from '@/shared/lib';
+import { useApplyTheme } from '@/shared/lib';
 import { ConfirmRenderer } from '@/shared/lib';
 import { Toaster } from '@/shared/ui';
 
 import { queryClient } from './queryClient';
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  useTheme();
+  useApplyTheme();
 
   return (
     <QueryClientProvider client={queryClient}>

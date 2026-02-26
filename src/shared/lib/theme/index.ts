@@ -1,3 +1,3 @@
 export * from './constants';
 export * from './themeStore';
-export * from './useTheme';
+export * from './useApplyTheme';
