@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useProductMutation } from '@/entities/product';
-import { formatCurrency, useConfirmDialogStore } from '@/shared/lib';
+import { formatCurrency, imageUrl, useConfirmDialogStore } from '@/shared/lib';
 import type { ProductDetail } from '@/shared/model';
 import { IconButton } from '@/shared/ui';
 
@@ -18,7 +18,11 @@ export const ProductCard = ({ product, to }: ProductCardProps) => {
 
   return (
     <div className="group relative flex w-32 shrink-0 cursor-pointer flex-col overflow-hidden rounded-lg">
-      <img alt={product.itemName} className="h-32 w-full object-cover" src={product.itemImage} />
+      <img
+        alt={product.itemName}
+        className="h-32 w-full object-cover"
+        src={imageUrl(product.itemImage)}
+      />
       <div className="mt-2">
         <p className="text-foreground text-sm font-medium">{product.itemName}</p>
         <p className="text-sm font-bold text-green-600">{formatCurrency(product.price)}</p>
