@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { RequireAuth } from '@/entities/auth';
 import { RequireGuest } from '@/entities/auth';
+import { RequireSignUpFormData } from '@/entities/auth';
 
 import { MainLayout } from './layouts/MainLayout';
 
@@ -95,7 +96,10 @@ export const router = createBrowserRouter([
         children: [
           { path: 'sign-in', element: <SignInPage /> },
           { path: 'sign-up', element: <SignUpPage /> },
-          { path: 'profile-setting', element: <ProfileSettingPage /> },
+          {
+            element: <RequireSignUpFormData />,
+            children: [{ path: 'profile-setting', element: <ProfileSettingPage /> }],
+          },
         ],
       },
     ],
