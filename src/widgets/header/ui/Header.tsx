@@ -14,10 +14,10 @@ export const Header = ({ left, center, right }: HeaderProps) => {
   const renderRight = typeof right === 'string' ? <Title>{right}</Title> : right;
 
   return (
-    <header className="border-border bg-background sticky top-0 z-10 flex h-16 items-center justify-between border-b px-4">
-      <div>{renderLeft}</div>
-      <div>{renderCenter}</div>
-      <div>{renderRight}</div>
+    <header className="border-border bg-background sticky top-0 z-10 flex h-16 items-center gap-3 border-b px-4">
+      <div className="shrink-0">{renderLeft}</div>
+      <div className="min-w-0 flex-1">{renderCenter}</div>
+      <div className="shrink-0">{renderRight}</div>
     </header>
   );
 };
