@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useThemeStore } from './themeStore';
 
-export const useTheme = () => {
+export const useApplyTheme = () => {
   const { theme } = useThemeStore();
 
   useEffect(() => {
