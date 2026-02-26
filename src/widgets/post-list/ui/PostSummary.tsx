@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CommentButton, usePostMutation } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
-import { useConfirmDialog } from '@/shared/lib';
+import { useConfirmDialogStore } from '@/shared/lib';
 import type { Post } from '@/shared/model';
 import { KebabMenu, PostImage } from '@/shared/ui';
 
@@ -15,7 +15,7 @@ interface PostSummaryProps {
 export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const navigate = useNavigate();
   const { deleteMutation } = usePostMutation();
-  const { openConfirm } = useConfirmDialog();
+  const { openConfirm } = useConfirmDialogStore();
 
   const goDetail = () => navigate(to);
 

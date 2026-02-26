@@ -2,7 +2,7 @@ import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useProductMutation } from '@/entities/product';
-import { formatCurrency, useConfirmDialog } from '@/shared/lib';
+import { formatCurrency, useConfirmDialogStore } from '@/shared/lib';
 import type { ProductDetail } from '@/shared/model';
 import { IconButton } from '@/shared/ui';
 
@@ -12,7 +12,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, to }: ProductCardProps) => {
-  const { openConfirm } = useConfirmDialog();
+  const { openConfirm } = useConfirmDialogStore();
   const { deleteMutation } = useProductMutation();
 
   return (

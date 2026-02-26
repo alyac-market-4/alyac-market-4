@@ -1,7 +1,7 @@
 import type { ConfirmDialogProps } from '@/shared/ui';
 
-export interface ConfirmDialogContextType {
+export interface ConfirmDialogStore {
   confirmDialog: ConfirmDialogProps | null;
-  openConfirm: (config: ConfirmDialogProps) => void;
+  openConfirm: (props: ConfirmDialogProps) => void;
   closeConfirm: () => void;
 }

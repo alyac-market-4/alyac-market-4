@@ -1,2 +1,2 @@
-export * from './ConfirmDialogProvider';
-export * from './useConfirmDialog';
+export * from './confirmDialogStore';
+export * from './ConfirmRenderer';
