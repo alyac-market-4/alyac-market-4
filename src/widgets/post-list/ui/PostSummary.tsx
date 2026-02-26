@@ -1,3 +1,4 @@
+import { Layers } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import { CommentButton, usePostMutation } from '@/entities/post';
@@ -20,10 +21,12 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const goDetail = () => navigate(to);
 
   // 이미지 개수 계산
-  const imageCount = (post.image ?? '')
+  const images = (post.image ?? '')
     .split(',')
     .map((v) => v.trim())
-    .filter(Boolean).length;
+    .filter(Boolean);
+
+  const imageCount = images.length;
 
   return (
     <article
@@ -62,15 +65,20 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
       {/* 본문 */}
       <p className="text-foreground mb-3 ml-12 text-sm leading-relaxed">{post.content}</p>
 
-      {/* 이미지 */}
-      {post.image && (
+      {/* 이미지 + 인스타 스타일 배지 */}
+      {imageCount > 0 && (
         <div className="ml-12">
-          <PostImage src={post.image} alt="Post image" />
+          <div className="relative">
+            <PostImage src={post.image} alt="Post image" />
 
-          {/* 여러 장일 때만 표시 */}
-          {imageCount > 1 && (
-            <div className="text-muted-foreground mt-1 text-xs">{imageCount}장</div>
-          )}
+            {/* 2장 이상일 때만 우측 상단 배지 표시 */}
+            {imageCount > 1 && (
+              <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                <Layers className="h-6 w-6" />
+                {imageCount}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
