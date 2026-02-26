@@ -19,6 +19,12 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
 
   const goDetail = () => navigate(to);
 
+  // 이미지 개수 계산
+  const imageCount = (post.image ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean).length;
+
   return (
     <article
       key={post.id}
@@ -32,7 +38,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
           image={post.author.image}
         />
 
-        {/* 메뉴 클릭은 게시물 이동이랑 분리 (전파 차단은 wrapper에서) */}
+        {/* 메뉴 클릭 시 게시물 이동 방지 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
           <KebabMenu
             items={[
@@ -53,21 +59,27 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
         </div>
       </div>
 
+      {/* 본문 */}
       <p className="text-foreground mb-3 ml-12 text-sm leading-relaxed">{post.content}</p>
 
+      {/* 이미지 */}
       {post.image && (
         <div className="ml-12">
           <PostImage src={post.image} alt="Post image" />
+
+          {/* 여러 장일 때만 표시 */}
+          {imageCount > 1 && (
+            <div className="text-muted-foreground mt-1 text-xs">{imageCount}장</div>
+          )}
         </div>
       )}
 
+      {/* 좋아요 / 댓글 */}
       <div className="mt-3 ml-12 flex gap-4">
-        {/*  좋아요 영역도 전파 차단 (좋아요 누를 때 상세로 이동 못하도록) */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
           <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
         </div>
 
-        {/*  댓글 버튼도 마찬가지로 wrapper에서 전파 차단 + 클릭 시 이동 */}
         <div
           onClick={(e) => {
             e.stopPropagation();
