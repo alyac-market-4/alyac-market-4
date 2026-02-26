@@ -19,7 +19,7 @@ export const productCreateSchema = z.object({
     .trim()
     .min(1, '가격을 입력해주세요.')
     .regex(/^\d+$/, '숫자만 입력 가능합니다.')
-    .transform(Number),
+    .transform((val) => Number(val.replaceAll(',', ''))),
 
   saleLink: z.string().trim().url('올바른 URL 형식을 입력해주세요.').optional().or(z.literal('')),
 });
