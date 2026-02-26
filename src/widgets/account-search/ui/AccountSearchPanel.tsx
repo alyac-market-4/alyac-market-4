@@ -38,7 +38,8 @@ export const AccountSearchPanel = () => {
           <ul className="flex flex-col divide-y">
             {users.map((u) => (
               <li key={u.accountname} className="flex items-center gap-3 py-3">
-                <ProfileAvatar size="md" src={u.image} alt={u.username} />
+                {/* ✅ md -> default 로 변경 */}
+                <ProfileAvatar size="default" src={u.image} alt={u.username} />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{u.username}</p>
                   <p className="truncate text-xs opacity-60">@{u.accountname}</p>
