@@ -88,7 +88,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
                   <img
                     src={imageUrl(img)}
                     alt={`Post image ${idx + 1}`}
-                    className="h-28 w-full object-cover"
+                    className="h-50 w-full object-cover"
                     loading="lazy"
                   />
                 </button>
