@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { CommentButton, usePostMutation } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
-import { useConfirmDialogStore } from '@/shared/lib';
+import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
 import type { Post } from '@/shared/model';
 import { KebabMenu, PostImage } from '@/shared/ui';
 
@@ -29,6 +29,43 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
 
   const imageCount = images.length;
 
+  const { reportMutation } = usePostMutation();
+  const isMe = post.author.accountname === getTokenUserInfo().accountname;
+  const kebabMenuItems = isMe
+    ? [
+        { label: '수정', onClick: () => navigate(`/post-update/${post.id}`) },
+        {
+          label: '삭제',
+          onClick: () => {
+            openConfirm({
+              title: '정말 삭제하시겠습니까?',
+              description: '삭제된 게시물은 복구할 수 없습니다.',
+              actionText: '삭제',
+              onConfirm: () => {
+                deleteMutation.mutate(post.id);
+                toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
+              },
+            });
+          },
+        },
+      ]
+    : [
+        {
+          label: '신고하기',
+          onClick: () => {
+            openConfirm({
+              title: '정말 신고하시겠습니까?',
+              description: '신고는 취소할 수 없습니다.',
+              actionText: '신고',
+              onConfirm: () => {
+                reportMutation.mutate(post.id);
+                toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+              },
+            });
+          },
+        },
+      ];
+
   return (
     <article
       key={post.id}
@@ -44,25 +81,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
 
         {/* 메뉴 클릭 시 게시물 이동 방지 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <KebabMenu
-            items={[
-              { label: '수정', onClick: () => navigate(`/post-update/${post.id}`) },
-              {
-                label: '삭제',
-                onClick: () => {
-                  openConfirm({
-                    title: '정말 삭제하시겠습니까?',
-                    description: '삭제된 게시물은 복구할 수 없습니다.',
-                    actionText: '삭제',
-                    onConfirm: () => {
-                      deleteMutation.mutate(post.id);
-                      toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
-                    },
-                  });
-                },
-              },
-            ]}
-          />
+          <KebabMenu items={kebabMenuItems} />
         </div>
       </div>
 
