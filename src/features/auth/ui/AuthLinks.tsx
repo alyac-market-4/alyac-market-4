@@ -1,33 +1,46 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/shared/ui';
 
-const AUTH_LINKS = [
-  { label: '이메일로 로그인', to: '/sign-in' },
-  { label: '회원가입', to: '/sign-up' },
-] as const;
+interface LinkButtonProps {
+  label: string;
+  path: string;
+}
 
-export const AuthLinks = () => {
+const LinkButton = ({ label, path }: LinkButtonProps) => {
+  const navigate = useNavigate();
   return (
-    <div className="text-muted-foreground mt-4 flex items-center justify-center text-sm">
-      {AUTH_LINKS.map((item, index) => (
-        <div key={item.to} className="flex items-center">
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="hover:text-foreground hover:bg-transparent"
-          >
-            <Link to={item.to}>{item.label}</Link>
-          </Button>
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={() => navigate(path)}
+      className="hover:text-foreground text-muted-foreground hover:bg-transparent"
+    >
+      {label}
+    </Button>
+  );
+};
 
-          {index < AUTH_LINKS.length - 1 && (
-            <span className="text-muted-foreground/30 mx-2" aria-hidden="true">
-              |
-            </span>
-          )}
-        </div>
-      ))}
+interface AuthLinksProps {
+  mode?: 'all' | 'signin' | 'signup';
+}
+
+export const AuthLinks = ({ mode = 'all' }: AuthLinksProps) => {
+  const signUpLabel = mode === 'signin' ? '이메일로 회원가입' : '회원가입';
+
+  return (
+    <div className="mt-4 flex items-center justify-center gap-2 text-sm">
+      {(mode === 'all' || mode === 'signup') && (
+        <LinkButton label="이메일로 로그인" path="/sign-in" />
+      )}
+
+      {mode === 'all' && (
+        <span className="text-muted-foreground/30" aria-hidden="true">
+          |
+        </span>
+      )}
+
+      {(mode === 'all' || mode === 'signin') && <LinkButton label={signUpLabel} path="/sign-up" />}
     </div>
   );
 };
