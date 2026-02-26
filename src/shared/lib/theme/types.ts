@@ -1,6 +1,6 @@
 export type Theme = 'light' | 'dark' | 'system';
 
-export interface ThemeContextType {
+export interface ThemeState {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   switchTheme: () => void;

@@ -7,7 +7,7 @@ import { useUserProfileQuery } from '@/entities/profile';
 import { LayoutController } from '@/features/layout-controller';
 import type { ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
-import { getTokenUserInfo, themeIcons, useTheme } from '@/shared/lib';
+import { getTokenUserInfo, themeIcons, useThemeStore } from '@/shared/lib';
 import { BackButton, ErrorView, KebabMenu, LoadingState } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
@@ -22,7 +22,7 @@ export const ProfilePage = () => {
   const { data: user, isLoading, isError, refetch } = useUserProfileQuery(targetAccountname);
   const { logout } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
-  const { theme, switchTheme } = useTheme();
+  const { theme, switchTheme } = useThemeStore();
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { ChatSummary } from '@/entities/chat';
-import { themeIcons, useTheme } from '@/shared/lib';
+import { themeIcons, useThemeStore } from '@/shared/lib';
 import { KebabMenu, ProfileAvatar } from '@/shared/ui';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Header } from '@/widgets/header';
@@ -32,7 +32,7 @@ const CHAT_LIST = [
 ];
 
 export const ChatPage = () => {
-  const { theme, switchTheme } = useTheme();
+  const { theme, switchTheme } = useThemeStore();
 
   return (
     <>
