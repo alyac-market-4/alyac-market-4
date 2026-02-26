@@ -1,5 +1,6 @@
 import { Layers } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { CommentButton, usePostMutation } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
@@ -53,7 +54,10 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
                     title: '정말 삭제하시겠습니까?',
                     description: '삭제된 게시물은 복구할 수 없습니다.',
                     actionText: '삭제',
-                    onConfirm: () => deleteMutation.mutate(post.id),
+                    onConfirm: () => {
+                      deleteMutation.mutate(post.id);
+                      toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
+                    },
                   });
                 },
               },

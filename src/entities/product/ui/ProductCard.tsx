@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useProductMutation } from '@/entities/product';
 import { formatCurrency, useConfirmDialogStore } from '@/shared/lib';
@@ -34,6 +35,7 @@ export const ProductCard = ({ product, to }: ProductCardProps) => {
             description: '해당 제품을 삭제하시겠습니까?',
             onConfirm: () => {
               deleteMutation.mutate(product.id);
+              toast.info('제품이 삭제되었습니다.', { position: 'top-right' });
             },
             actionText: '삭제',
           })
