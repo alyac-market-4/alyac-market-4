@@ -37,9 +37,6 @@ export const useCommentMutation = () => {
   const reportMutation = useMutation({
     mutationFn: ({ postId, commentId }: DeleteCommentRequest) =>
       commentApi.reportComment({ postId, commentId }),
-    onSuccess: () => {
-      alert('신고되었습니다.');
-    },
   });
 
   return { createMutation, deleteMutation, reportMutation };

@@ -1,3 +1,5 @@
+import { toast } from 'sonner';
+
 import { useCommentMutation } from '@/entities/comment';
 import { useConfirmDialogStore } from '@/shared/lib';
 import type { Comment } from '@/shared/model';
@@ -32,7 +34,10 @@ export function CommentList({ postId, comment }: CommentListProps) {
                     title: '정말 신고하시겠습니까?',
                     description: '신고는 취소할 수 없습니다.',
                     actionText: '신고',
-                    onConfirm: () => reportMutation.mutate({ postId, commentId: comment.id }),
+                    onConfirm: () => {
+                      reportMutation.mutate({ postId, commentId: comment.id });
+                      toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+                    },
                   });
                 },
               },
@@ -43,7 +48,10 @@ export function CommentList({ postId, comment }: CommentListProps) {
                     title: '정말 삭제하시겠습니까?',
                     description: '삭제된 댓글은 복구할 수 없습니다.',
                     actionText: '삭제',
-                    onConfirm: () => deleteMutation.mutate({ postId, commentId: comment.id }),
+                    onConfirm: () => {
+                      deleteMutation.mutate({ postId, commentId: comment.id });
+                      toast.info('댓글이 삭제되었습니다.', { position: 'top-right' });
+                    },
                   });
                 },
               },

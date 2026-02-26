@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
@@ -59,7 +60,10 @@ export const PostDetailPage = () => {
                     title: '정말 신고하시겠습니까?',
                     description: '신고는 취소할 수 없습니다.',
                     actionText: '신고',
-                    onConfirm: () => reportMutation.mutate(postId),
+                    onConfirm: () => {
+                      reportMutation.mutate(postId);
+                      toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+                    },
                   });
                 },
               },
@@ -70,7 +74,10 @@ export const PostDetailPage = () => {
                     title: '정말 삭제하시겠습니까?',
                     description: '삭제된 게시물은 복구할 수 없습니다.',
                     actionText: '삭제',
-                    onConfirm: () => deleteMutation.mutate(postId),
+                    onConfirm: () => {
+                      deleteMutation.mutate(postId);
+                      toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
+                    },
                   });
                 },
               },

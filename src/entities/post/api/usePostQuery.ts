@@ -51,9 +51,6 @@ export const usePostMutation = () => {
 
   const reportMutation = useMutation({
     mutationFn: (postId: string) => postApi.reportPost(postId),
-    onSuccess: (post) => {
-      alert(`신고 접수: ${post}`);
-    },
   });
 
   const toggleLikeMutation = useMutation({
