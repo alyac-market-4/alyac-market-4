@@ -174,7 +174,9 @@ export const ProductCreatePage = () => {
           <div>
             <label className="text-foreground text-sm font-medium">가격</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric" // 모바일에서 숫자 키패드 표시
+              pattern="[0-9]*" // 보조용 검증
               {...register('price')}
               placeholder="숫자만 입력 가능합니다."
               className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
