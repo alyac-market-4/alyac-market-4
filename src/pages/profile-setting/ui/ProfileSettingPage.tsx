@@ -146,9 +146,9 @@ export const ProfileSettingPage = () => {
                 variant="alyac"
                 size="lgbtn"
                 type="submit"
-                disabled={!form.formState.isValid || validateAccountnameMutation.isPending}
+                disabled={!form.formState.isValid || signUpMutation.isPending}
               >
-                {validateAccountnameMutation.isPending ? '처리 중...' : '알약마켓 시작하기'}
+                {signUpMutation.isPending ? '처리 중...' : '알약마켓 시작하기'}
               </Button>
             </form>
           </div>

@@ -22,7 +22,7 @@ export const AuthSection = ({ isVisible }: AuthSectionProps) => {
             <SocialLoginButton provider="kakao" />
             <SocialLoginButton provider="google" />
             <SocialLoginButton provider="facebook" />
-            <AuthLinks />
+            <AuthLinks mode="all" />
           </div>
         </div>
       </div>
