@@ -2,21 +2,12 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
+import { AuthLinks, FormSubmitButton } from '@/features/auth';
 import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
-import {
-  Button,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  InputGroup,
-  InputGroupInput,
-} from '@/shared/ui';
+import { Form, FormErrorMessage, FormInputField } from '@/shared/ui';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
@@ -53,74 +44,34 @@ export const SignInPage = () => {
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-foreground text-3xl font-bold">로그인</h1>
-
-          {serverError && (
-            <div className="bg-destructive/10 text-destructive mt-8 flex rounded-lg p-4 text-sm">
-              <p className="text-sm font-medium text-red-600">{serverError}</p>
-            </div>
-          )}
         </div>
-
+        <FormErrorMessage message={serverError} />
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6">
-            {/* 이메일 */}
-            <FormField
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormInputField
               control={form.control}
               name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>이메일</FormLabel>
-                  <FormControl>
-                    <InputGroup variant="auth" size="auth">
-                      <InputGroupInput placeholder="이메일을 입력하세요." type="email" {...field} />
-                    </InputGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="이메일"
+              placeholder="이메일을 입력하세요."
+              type="email"
             />
-
-            {/* 비밀번호 */}
-            <FormField
+            <FormInputField
               control={form.control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>비밀번호</FormLabel>
-                  <FormControl>
-                    <InputGroup variant="auth" size="auth">
-                      <InputGroupInput
-                        placeholder="비밀번호를 입력하세요."
-                        type="password"
-                        {...field}
-                      />
-                    </InputGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="비밀번호"
+              placeholder="비밀번호를 입력하세요."
+              type="password"
             />
-
-            <Button
-              type="submit"
-              variant="alyac"
-              size="lgbtn"
-              disabled={!form.formState.isValid || signInMutation.isPending}
-            >
-              {signInMutation.isPending ? '로그인 중...' : '로그인'}
-            </Button>
+            <FormSubmitButton
+              label="로그인"
+              pendingLabel="로그인 중..."
+              isPending={signInMutation.isPending}
+              isValid={form.formState.isValid}
+            />
           </form>
         </Form>
-        <div className="text-muted-foreground flex items-center justify-center text-sm">
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="hover:text-foreground hover:bg-transparent"
-          >
-            <Link to="/sign-up">{'이메일로 회원가입'}</Link>
-          </Button>
-        </div>
+
+        <AuthLinks mode="signin" />
       </div>
     </div>
   );
