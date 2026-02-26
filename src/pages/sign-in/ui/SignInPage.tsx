@@ -6,7 +6,17 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
-import { Button } from '@/shared/ui';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  InputGroup,
+  InputGroupInput,
+} from '@/shared/ui';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
@@ -51,59 +61,66 @@ export const SignInPage = () => {
           )}
         </div>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6">
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-foreground block text-sm font-medium">
-              이메일
-            </label>
-            <input
-              {...form.register('email')}
-              className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              id="email"
-              placeholder="이메일을 입력하세요."
-              type="email"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6">
+            {/* 이메일 */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>이메일</FormLabel>
+                  <FormControl>
+                    <InputGroup variant="auth" size="auth">
+                      <InputGroupInput placeholder="이메일을 입력하세요." type="email" {...field} />
+                    </InputGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {form.formState.errors.email && (
-              <p className="mt-1 text-sm text-red-500">{form.formState.errors.email.message}</p>
-            )}
-          </div>
 
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-foreground block text-sm font-medium">
-              비밀번호
-            </label>
-            <input
-              {...form.register('password')}
-              className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              id="password"
-              placeholder="비밀번호를 입력하세요."
-              type="password"
+            {/* 비밀번호 */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>비밀번호</FormLabel>
+                  <FormControl>
+                    <InputGroup variant="auth" size="auth">
+                      <InputGroupInput
+                        placeholder="비밀번호를 입력하세요."
+                        type="password"
+                        {...field}
+                      />
+                    </InputGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {form.formState.errors.password?.message && (
-              <p className="mt-1 text-sm text-red-500">{form.formState.errors.password.message}</p>
-            )}
-          </div>
 
-          <Button
-            variant="alyac"
-            size="lgbtn"
-            type="submit"
-            disabled={!form.formState.isValid || signInMutation.isPending}
-          >
-            {signInMutation.isPending ? '로그인 중...' : '로그인'}
-          </Button>
-
-          <div className="text-muted-foreground flex items-center justify-center text-sm">
             <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="hover:text-foreground hover:bg-transparent"
+              type="submit"
+              variant="alyac"
+              size="lgbtn"
+              disabled={!form.formState.isValid || signInMutation.isPending}
             >
-              <Link to="/sign-up">{'이메일로 회원가입'}</Link>
+              {signInMutation.isPending ? '로그인 중...' : '로그인'}
             </Button>
-          </div>
-        </form>
+          </form>
+        </Form>
+        <div className="text-muted-foreground flex items-center justify-center text-sm">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="hover:text-foreground hover:bg-transparent"
+          >
+            <Link to="/sign-up">{'이메일로 회원가입'}</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

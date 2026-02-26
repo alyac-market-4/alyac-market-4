@@ -16,11 +16,13 @@ const inputGroupVariants = cva(
         ghost: 'hover:bg-accent/50',
         outline: 'border-b border-input rounded-none',
         error: 'text-destructive placeholder:text-destructive/50',
+        auth: ' bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring rounded-md file:border-0 file:bg-transparent file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 ',
       },
       size: {
         sm: 'h-8 text-xs px-2',
         md: 'h-10 text-sm px-3',
         lg: 'h-12 text-base px-4',
+        auth: 'text-base md:text-sm file:text-sm  py-2 h-12',
       },
     },
     defaultVariants: {
@@ -41,18 +43,15 @@ function InputGroup({
       data-slot="input-group"
       role="group"
       className={cn(
-        inputGroupVariants(),
+        inputGroupVariants({ variant, size }),
 
-        // Variants based on alignment.
         'has-[>[data-align=inline-start]]:[&>input]:pl-2',
         'has-[>[data-align=inline-end]]:[&>input]:pr-2',
         'has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-start]]:[&>input]:pb-3',
         'has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3',
 
-        // Focus state.
         'has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot=input-group-control]:focus-visible]:ring-[3px]',
 
-        // Error state.
         'has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
 
         className,
