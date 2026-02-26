@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { type Chat, ReceivedBubble, SentBubble } from '@/entities/chat';
 import { fullLogoAlyac } from '@/shared/assets';
-import { themeIcons, useTheme } from '@/shared/lib';
+import { themeIcons, useThemeStore } from '@/shared/lib';
 import {
   BackButton,
   Button,
@@ -51,7 +51,7 @@ const CHAT_DETAIL_LIST: Chat[] = [
 export function ChatDetailPage() {
   const { chatId } = useParams();
   const [comment, setComment] = useState<string>('');
-  const { theme, switchTheme } = useTheme();
+  const { theme, switchTheme } = useThemeStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Chat[]>(CHAT_DETAIL_LIST);
 

@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
+import { useSignUpStore } from '@/features/auth';
 import { type ProfileFormData, profileSchema } from '@/features/profile/model/schemas';
 import { Button, ProfileAvatarEditor } from '@/shared/ui';
 
@@ -25,6 +28,19 @@ export const ProfileSettingPage = () => {
       intro: '',
     },
   });
+
+  const { reset } = useSignUpStore();
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    return () => {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+      }
+
+      reset();
+    };
+  }, []);
 
   //TODO: 프로필 이미지 업로드 구현.
 

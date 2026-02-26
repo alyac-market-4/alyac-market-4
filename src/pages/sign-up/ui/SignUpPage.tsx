@@ -5,10 +5,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useUserMutation } from '@/entities/user';
+import { useSignUpStore } from '@/features/auth';
 import { type SignUpFormData, signUpSchema } from '@/features/auth/model/schemas';
 import { Button } from '@/shared/ui';
 
 export const SignUpPage = () => {
+  const { setValidated } = useSignUpStore();
   const navigate = useNavigate();
   const { validateEmailMutation } = useUserMutation();
 
@@ -31,6 +33,7 @@ export const SignUpPage = () => {
           setServerError(response.message);
           return;
         }
+        setValidated();
         navigate('/profile-setting', { state: { user: data } });
       },
       onError: () => {

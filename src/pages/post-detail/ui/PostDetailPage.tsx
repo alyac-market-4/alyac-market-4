@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
 import { useUserProfileQuery } from '@/entities/profile';
-import { useConfirmDialog } from '@/shared/lib';
+import { useConfirmDialogStore } from '@/shared/lib';
 import { getTokenUserInfo } from '@/shared/lib';
 import {
   BackButton,
@@ -26,7 +26,7 @@ export const PostDetailPage = () => {
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
   const { createMutation } = useCommentMutation();
   const { deleteMutation, reportMutation } = usePostMutation();
-  const { openConfirm } = useConfirmDialog();
+  const { openConfirm } = useConfirmDialogStore();
 
   const {
     data: comments,

@@ -1,5 +1,5 @@
 import { useCommentMutation } from '@/entities/comment';
-import { useConfirmDialog } from '@/shared/lib';
+import { useConfirmDialogStore } from '@/shared/lib';
 import type { Comment } from '@/shared/model';
 import { KebabMenu, ProfileAvatar } from '@/shared/ui';
 
@@ -10,7 +10,7 @@ interface CommentListProps {
 
 export function CommentList({ postId, comment }: CommentListProps) {
   const { deleteMutation, reportMutation } = useCommentMutation();
-  const { openConfirm } = useConfirmDialog();
+  const { openConfirm } = useConfirmDialogStore();
 
   return (
     <>
