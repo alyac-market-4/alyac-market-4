@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { type Post, postKeys } from '@/shared/model';
+import { postKeys } from '@/shared/model';
 
 import { postApi } from './postApi';
 
@@ -63,8 +63,9 @@ export const usePostMutation = () => {
     },
   });
 
+  // ✅ 여기만 핵심 수정: update는 Post 전체가 아니라 { content, image }만 받도록 변경
   const updateMutation = useMutation({
-    mutationFn: ({ postId, post }: { postId: string; post: Post }) =>
+    mutationFn: ({ postId, post }: { postId: string; post: { content: string; image: string } }) =>
       postApi.updatePost({ postId, post }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: postKeys.all });
