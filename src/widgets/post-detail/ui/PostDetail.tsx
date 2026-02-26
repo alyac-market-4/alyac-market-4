@@ -70,18 +70,20 @@ export const PostDetail = ({ post }: { post: Post }) => {
         <p className="text-base leading-relaxed whitespace-pre-wrap">{post.content}</p>
       </div>
 
-      {/* ✅ 이미지 썸네일/갤러리 */}
+      {/* ✅ 이미지 썸네일/캐러셀 */}
       {images.length > 0 && (
         <div className="mb-4 px-4">
-          <div className="overflow-hidden rounded-2xl border bg-white">
+          {/* ✅ 다크모드 배경색 적용 */}
+          <div className="overflow-hidden rounded-2xl border bg-white dark:bg-zinc-900">
             <div className="flex gap-2 overflow-x-auto px-3 py-3">
               {images.map((img, idx) => (
                 <button
                   key={`${img}-${idx}`}
                   type="button"
                   onClick={() => open(idx)}
-                  className="min-w-[20%] shrink-0 overflow-hidden rounded-xl border bg-white p-1"
                   aria-label={`이미지 ${idx + 1} 크게 보기`}
+                  /* ✅ 카드도 다크 배경 적용 */
+                  className="min-w-[20%] shrink-0 overflow-hidden rounded-xl border bg-white p-1 dark:bg-zinc-800"
                 >
                   <img
                     src={imageUrl(img)}
@@ -151,8 +153,8 @@ export const PostDetail = ({ post }: { post: Post }) => {
               </>
             )}
 
-            {/* 이미지 */}
-            <div className="overflow-hidden rounded-2xl bg-white">
+            {/* ✅ 모달 카드도 다크모드 배경 적용 */}
+            <div className="overflow-hidden rounded-2xl bg-white dark:bg-zinc-900">
               <div className="flex items-center justify-center p-4">
                 <img
                   src={imageUrl(images[activeIndex])}
