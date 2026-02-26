@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { ImagePlus } from 'lucide-react';
 
@@ -10,15 +10,11 @@ interface ProductImageUploadProps {
 }
 
 export const ProductImageUpload = ({ onUploadComplete }: ProductImageUploadProps) => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const uploadMutation = useUploadFiles();
 
-  const handleOpenFile = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 전체 영역 클릭 핸들러
+  const handleAreaFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -29,12 +25,18 @@ export const ProductImageUpload = ({ onUploadComplete }: ProductImageUploadProps
         onUploadComplete(data.map((item) => item.filename));
       },
       onError: (error) => {
-        if (error instanceof Error) {
-          alert('업로드 실패: ' + error.message);
-        }
+        if (error instanceof Error) alert('업로드 실패: ' + error.message);
         setImagePreview(null);
       },
     });
+
+    e.target.value = '';
+  };
+
+  // 버튼 업로드 완료 시 미리보기 갱신은 불가 (버튼이 파일 객체를 외부에 노출 안 함)
+  // filename만 전달받아 상위로 전달
+  const handleButtonUploadComplete = (filename: string) => {
+    onUploadComplete([filename]);
   };
 
   return (
@@ -42,40 +44,33 @@ export const ProductImageUpload = ({ onUploadComplete }: ProductImageUploadProps
       <label className="text-muted-foreground block text-sm">이미지 등록</label>
 
       <div className="bg-card border-border relative h-64 w-full overflow-hidden rounded-2xl border">
-        <div
-          onClick={handleOpenFile}
-          className="hover:bg-muted flex h-full w-full cursor-pointer flex-col items-center justify-center transition-colors"
-        >
+        {/* 이미지 업로드*/}
+        <label className="hover:bg-muted/60 flex h-full w-full cursor-pointer flex-col items-center justify-center transition-colors">
+          <input type="file" accept="image/*" className="hidden" onChange={handleAreaFileChange} />
           {imagePreview ? (
             <img src={imagePreview} alt="상품 이미지" className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full flex-col items-center justify-center">
-              <ImagePlus className="text-muted-foreground mb-2 size-8" />
+            <div className="flex flex-col items-center justify-center gap-2">
+              <ImagePlus className="text-muted-foreground size-8" />
               <span className="text-muted-foreground text-sm">이미지를 선택하세요</span>
             </div>
           )}
-        </div>
+        </label>
 
-        <ImageFileButton
-          onClick={(e) => {
-            e.stopPropagation();
-            handleOpenFile();
-          }}
-          className="ring-offset-background border-border right-4 bottom-4 z-10 h-10 w-10 cursor-pointer border bg-white/60 backdrop-blur-sm transition-colors duration-200 hover:bg-white"
-        />
+        {/* 이미지 업로드 버튼 */}
+        <div className="absolute right-4 bottom-4 z-10" onClick={(e) => e.stopPropagation()}>
+          <ImageFileButton
+            onFileSelect={(file) => setImagePreview(URL.createObjectURL(file))}
+            onUploadComplete={handleButtonUploadComplete}
+            onUploadError={(error) => alert('업로드 실패: ' + error.message)}
+            className="ring-offset-background border-border right-3 bottom-3 z-10 h-12 w-12 cursor-pointer border bg-white/60 backdrop-blur-sm transition-colors duration-200 hover:bg-white"
+          />
+        </div>
       </div>
 
       {uploadMutation.isPending && (
         <p className="text-muted-foreground text-xs">이미지 업로드 중...</p>
       )}
-
-      <input
-        ref={fileInputRef}
-        onChange={handleImageChange}
-        type="file"
-        accept="image/*"
-        className="hidden"
-      />
     </div>
   );
 };
