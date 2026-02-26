@@ -71,8 +71,9 @@ export const postApi = {
     return data.post;
   },
 
+  // ✅ 여기 핵심 수정: update도 create처럼 { post: { ... } }로 감싸서 전송
   updatePost: async ({ postId, post }: UpdatePostRequest): Promise<Post> => {
-    const { data } = await axiosInstance.put<PostResponse>(`/api/post/${postId}`, post);
+    const { data } = await axiosInstance.put<PostResponse>(`/api/post/${postId}`, { post });
     return data.post;
   },
 

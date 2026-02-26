@@ -18,19 +18,33 @@ type Props = {
   };
 };
 
+function splitImages(value?: string | null) {
+  return (value ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
 function PostUpdateView({ post }: Props) {
   const uploadMutation = useUploadFiles();
   const { updateMutation } = usePostMutation();
 
-  // ✅ post가 준비된 시점에만 렌더링되므로, 초기값을 useState 초기화 함수로 안전하게 세팅 가능
   const [content, setContent] = useState(() => post.content ?? '');
   const [files, setFiles] = useState<File[]>([]);
   const [isTouched, setIsTouched] = useState(false);
+
+  // ✅ 기존 이미지(서버에서 내려온 것) 상태로 관리
+  const [existingImages, setExistingImages] = useState<string[]>(() => splitImages(post.image));
 
   const zodResult = useMemo(() => postCreateSchema.safeParse({ content, files }), [content, files]);
 
   const canSubmit = zodResult.success;
   const isSubmitting = uploadMutation.isPending || updateMutation.isPending;
+
+  const onRemoveExistingImage = (index: number) => {
+    setIsTouched(true);
+    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const onClickUpdate = async () => {
     if (!canSubmit || isSubmitting) return;
@@ -39,18 +53,22 @@ function PostUpdateView({ post }: Props) {
     const safeContent = parsed.content;
     const safeFiles = parsed.files;
 
-    let image = post.image ?? '';
+    let newImageSegments: string[] = [];
 
+    // ✅ 새로 선택한 파일이 있으면 업로드 후 경로 만들기
     if (safeFiles.length > 0) {
       const uploaded = await uploadMutation.mutateAsync(safeFiles);
-      image = uploaded.map((item) => `uploadFiles/${item.filename}`).join(',');
+      newImageSegments = uploaded.map((item) => `uploadFiles/${item.filename}`);
     }
+
+    // ✅ 기존(남은) + 새로 업로드한 것 합치기
+    const merged = [...existingImages, ...newImageSegments].join(',');
 
     updateMutation.mutate({
       postId: post.id,
       post: {
         content: safeContent,
-        image,
+        image: merged,
       },
     });
   };
@@ -59,12 +77,7 @@ function PostUpdateView({ post }: Props) {
     <>
       <Header
         left={<BackButton />}
-        right={
-          <PostSubmitButton
-            disabled={!canSubmit || isSubmitting || !isTouched}
-            onClick={onClickUpdate}
-          />
-        }
+        right={<PostSubmitButton disabled={!canSubmit || isSubmitting} onClick={onClickUpdate} />}
       />
 
       <main className="px-4 py-6">
@@ -79,6 +92,8 @@ function PostUpdateView({ post }: Props) {
             if (!isTouched) setIsTouched(true);
             setFiles(next);
           }}
+          existingImages={existingImages}
+          onRemoveExistingImage={onRemoveExistingImage}
         />
       </main>
     </>
@@ -87,7 +102,6 @@ function PostUpdateView({ post }: Props) {
 
 export const PostUpdatePage = () => {
   const { postId = '' } = useParams();
-
   const { data: post, isLoading } = usePostDetailQuery(postId);
 
   if (isLoading) {
