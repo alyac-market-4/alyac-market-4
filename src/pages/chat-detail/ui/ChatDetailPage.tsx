@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -52,10 +52,28 @@ export function ChatDetailPage() {
   const { chatId } = useParams();
   const [comment, setComment] = useState<string>('');
   const { theme, switchTheme } = useTheme();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState<Chat[]>(CHAT_DETAIL_LIST);
+
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(comment);
+    if (!comment) return;
+
+    const newMessage: Chat = {
+      id: Date.now(),
+      content: comment,
+      timestamp: new Date(),
+      contentType: 'text',
+      type: 'sent',
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
     setComment('');
   };
 
@@ -71,18 +89,19 @@ export function ChatDetailPage() {
         }
       />
 
-      <main className="flex flex-1 flex-col overflow-y-auto px-4 py-4">
+      <main ref={scrollRef} className="flex flex-1 flex-col overflow-y-auto px-4 py-4">
         <div className="flex flex-col gap-3">
-          {CHAT_DETAIL_LIST.map((chat) => {
+          {messages.map((chat) => {
             if (chat.type === 'received') {
               return <ReceivedBubble key={chat.id} chat={chat} />;
             }
             return <SentBubble key={chat.id} chat={chat} />;
           })}
         </div>
+        <div ref={bottomRef} />
       </main>
 
-      <div className="border-border bg-background sticky right-0 bottom-0 left-0 border-t px-4 py-3">
+      <div className="border-border bg-background border-t px-4 py-3">
         <form className="flex items-center gap-3" onSubmit={handleCommentSubmit}>
           <ProfileAvatar alt="프로필 이미지" size="default" />
           <div className="relative flex-1">

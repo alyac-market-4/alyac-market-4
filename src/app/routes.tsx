@@ -22,6 +22,9 @@ const ProfilePage = lazy(() => import('@/pages/profile').then((m) => ({ default:
 const ProductCreatePage = lazy(() =>
   import('@/pages/product-create').then((m) => ({ default: m.ProductCreatePage })),
 );
+const ProductUpdatePage = lazy(() =>
+  import('@/pages/product-update').then((m) => ({ default: m.ProductUpdatePage })),
+);
 const ProfileUpdatePage = lazy(() =>
   import('@/pages/profile-update').then((m) => ({ default: m.ProfileUpdatePage })),
 );
@@ -82,6 +85,7 @@ export const router = createBrowserRouter([
           { path: 'post-create', element: <PostCreatePage /> },
           { path: 'post-update/:postId', element: <PostUpdatePage /> },
           { path: 'product-create', element: <ProductCreatePage /> },
+          { path: 'product-update/:productId', element: <ProductUpdatePage /> },
           { path: 'profile-update', element: <ProfileUpdatePage /> },
           { path: 'post/:postId', element: <PostDetailPage /> },
         ],
