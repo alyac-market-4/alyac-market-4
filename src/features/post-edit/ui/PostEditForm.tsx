@@ -4,14 +4,20 @@ import { X } from 'lucide-react';
 
 import { useUserProfileQuery } from '@/entities/profile';
 import PostContentInput from '@/features/post-create/ui/PostContentInput';
-import { getTokenUserInfo } from '@/shared/lib';
+import { getTokenUserInfo, imageUrls } from '@/shared/lib';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
 
 export type PostEditFormProps = {
   content: string;
   onChangeContent: (next: string) => void;
+
+  // 새로 선택한 파일들
   files: File[];
   onChangeFiles: (next: File[]) => void;
+
+  // ✅ 기존 이미지(수정 화면에서 서버에서 내려온 이미지) 지원
+  existingImages?: string[]; // post.image 원본 조각들(콤마 split 결과)
+  onRemoveExistingImage?: (index: number) => void;
 };
 
 export const PostEditForm = ({
@@ -19,10 +25,13 @@ export const PostEditForm = ({
   onChangeContent,
   files,
   onChangeFiles,
+  existingImages = [],
+  onRemoveExistingImage,
 }: PostEditFormProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { data: me } = useUserProfileQuery(getTokenUserInfo().accountname);
 
+  // ✅ 새로 선택한 파일 preview
   const previews = useMemo(() => {
     return files.map((file) => ({
       file,
@@ -34,6 +43,11 @@ export const PostEditForm = ({
   useEffect(() => {
     return () => previews.forEach((p) => URL.revokeObjectURL(p.url));
   }, [previews]);
+
+  // ✅ 기존 이미지(문자열) -> 브라우저에서 열 수 있는 URL로 변환
+  const existingPreviewUrls = useMemo(() => {
+    return imageUrls(existingImages.join(','));
+  }, [existingImages]);
 
   const onPickImages = () => fileInputRef.current?.click();
 
@@ -74,6 +88,32 @@ export const PostEditForm = ({
         <div className="flex-1 space-y-3">
           <PostContentInput value={content} onChangeValue={onChangeContent} />
 
+          {/* ✅ 기존 이미지 미리보기 */}
+          {existingPreviewUrls.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {existingPreviewUrls.map((url, idx) => (
+                <div key={`${url}-${idx}`} className="relative overflow-hidden rounded-xl border">
+                  <img
+                    src={url}
+                    alt={`existing-${idx}`}
+                    className="aspect-square w-full object-cover"
+                  />
+                  {onRemoveExistingImage && (
+                    <button
+                      type="button"
+                      onClick={() => onRemoveExistingImage(idx)}
+                      className="absolute top-1 right-1 grid h-7 w-7 place-items-center rounded-full bg-black/60 text-white"
+                      aria-label="기존 이미지 제거"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ✅ 새로 추가한 이미지 미리보기 */}
           {previews.length > 0 && (
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {previews.map((p) => (
