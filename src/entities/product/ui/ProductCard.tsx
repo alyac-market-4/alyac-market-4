@@ -39,7 +39,7 @@ export const ProductCard = ({ product, to }: ProductCardProps) => {
             description: '해당 제품을 삭제하시겠습니까?',
             onConfirm: () => {
               deleteMutation.mutate(product.id);
-              toast.info('제품이 삭제되었습니다.', { position: 'top-right' });
+              toast.info('제품이 삭제되었습니다.');
             },
             actionText: '삭제',
           })

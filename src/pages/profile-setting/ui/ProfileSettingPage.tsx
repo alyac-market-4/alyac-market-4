@@ -1,17 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
 import { FormSubmitButton, useSignUpStore } from '@/features/auth';
 import { type ProfileFormData, profileSchema } from '@/features/profile';
+import { ProfileImageUpload } from '@/features/profile';
 import { Form, FormInputField } from '@/shared/ui';
-
-// import { Form, FormInputField, ProfileAvatarEditor } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
   const navigate = useNavigate();
@@ -20,6 +18,8 @@ export const ProfileSettingPage = () => {
 
   const location = useLocation();
   const user = location.state?.user;
+
+  const [profileImageUrl, setProfileImageUrl] = useState<string>(user?.image ?? '');
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -39,16 +39,13 @@ export const ProfileSettingPage = () => {
         isFirstRender.current = false;
         return;
       }
-
       reset();
     };
   }, []);
 
-  //TODO: 프로필 이미지 업로드 구현.
-
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) {
-      alert('이전 단계 데이터가 없습니다.'); //TODO 모달로 변경
+      alert('이전 단계 데이터가 없습니다.');
       navigate('/sign-up');
       return;
     }
@@ -66,7 +63,7 @@ export const ProfileSettingPage = () => {
       const userInfo = {
         ...user,
         ...data,
-        image: `${user?.image}`, //TODO: 업로드한 이미지가 들어오도록 변경
+        image: profileImageUrl,
       };
 
       await signUpMutation.mutateAsync(userInfo);
@@ -89,9 +86,11 @@ export const ProfileSettingPage = () => {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                 <div className="flex justify-center">
-                  <div className="relative">
-                    {/* <ProfileAvatarEditor src={user?.image} alt="프로필 이미지" /> */}
-                  </div>
+                  <ProfileImageUpload
+                    initialImage={user?.image}
+                    alt={user?.username ?? '프로필 이미지'}
+                    onUploadComplete={(filename) => setProfileImageUrl(filename)}
+                  />
                 </div>
 
                 <FormInputField

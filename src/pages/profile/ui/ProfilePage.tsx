@@ -58,7 +58,7 @@ export const ProfilePage = () => {
                 <LayoutController viewMode={viewMode} setViewMode={setViewMode} />
               </div>
               <div className="px-4">
-                <PostList viewMode={viewMode} />
+                <PostList viewMode={viewMode} user={user} />
               </div>
             </section>
           </>

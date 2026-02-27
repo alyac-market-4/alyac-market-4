@@ -8,7 +8,9 @@
  * - 여러 장(콤마로 연결)인 경우 -> split 후 각각 변환
  */
 
-const isAbsoluteUrl = (value: string) => /^https?:\/\//i.test(value) || value.startsWith('data:');
+// const isAbsoluteUrl = (value: string) => /^https?:\/\//i.test(value) || value.startsWith('data:');
+const isAbsoluteUrl = (value: string) =>
+  /^https?:\/\//i.test(value) || value.startsWith('data:') || value.startsWith('blob:');
 
 const joinUrl = (base: string, path: string) => {
   const normalizedBase = (base ?? '').replace(/\/+$/, '');

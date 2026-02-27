@@ -43,7 +43,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
               actionText: '삭제',
               onConfirm: () => {
                 deleteMutation.mutate(post.id);
-                toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
+                toast.info('게시글이 삭제되었습니다.');
               },
             });
           },
@@ -59,7 +59,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
               actionText: '신고',
               onConfirm: () => {
                 reportMutation.mutate(post.id);
-                toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+                toast.info('신고가 접수되었습니다.');
               },
             });
           },

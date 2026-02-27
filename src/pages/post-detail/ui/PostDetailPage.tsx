@@ -58,7 +58,7 @@ export const PostDetailPage = () => {
               actionText: '삭제',
               onConfirm: () => {
                 deleteMutation.mutate(postId);
-                toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
+                toast.info('게시글이 삭제되었습니다.');
               },
             });
           },
@@ -74,7 +74,7 @@ export const PostDetailPage = () => {
               actionText: '신고',
               onConfirm: () => {
                 reportMutation.mutate(postId);
-                toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+                toast.info('신고가 접수되었습니다.');
               },
             });
           },
