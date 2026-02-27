@@ -25,7 +25,7 @@ export function CommentList({ postId, comment }: CommentListProps) {
               actionText: '삭제',
               onConfirm: () => {
                 deleteMutation.mutate({ postId, commentId: comment.id });
-                toast.info('댓글이 삭제되었습니다.', { position: 'top-right' });
+                toast.info('댓글이 삭제되었습니다.');
               },
             });
           },
@@ -41,7 +41,7 @@ export function CommentList({ postId, comment }: CommentListProps) {
               actionText: '신고',
               onConfirm: () => {
                 reportMutation.mutate({ postId, commentId: comment.id });
-                toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+                toast.info('신고가 접수되었습니다.');
               },
             });
           },
