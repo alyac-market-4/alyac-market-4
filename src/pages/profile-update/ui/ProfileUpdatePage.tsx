@@ -1,10 +1,12 @@
+import { useState } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
-import { type ProfileFormData, profileSchema } from '@/features/profile';
+import { type ProfileFormData, ProfileImageUpload, profileSchema } from '@/features/profile';
 import { BackButton, Button, Form, FormInputField } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -15,6 +17,7 @@ export const ProfileUpdatePage = () => {
 
   const location = useLocation();
   const user = location.state?.user;
+  const [profileImageUrl, setProfileImageUrl] = useState<string>(user?.image ?? '');
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -47,7 +50,11 @@ export const ProfileUpdatePage = () => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                   <div className="flex justify-center">
-                    <div className="relative"></div>
+                    <ProfileImageUpload
+                      initialImage={user?.image}
+                      alt={user?.username ?? '프로필 이미지'}
+                      onUploadComplete={(filename) => setProfileImageUrl(filename)}
+                    />
                   </div>
 
                   <FormInputField
@@ -65,6 +72,9 @@ export const ProfileUpdatePage = () => {
                     placeholder="계정 아이디를 입력하세요."
                     type="text"
                   />
+                  <div>
+                    <p className="text-muted-foreground text-xs">계정 ID는 변경할 수 없습니다.</p>
+                  </div>
 
                   <FormInputField
                     control={form.control}
@@ -73,6 +83,9 @@ export const ProfileUpdatePage = () => {
                     placeholder="간단한 자기 소개를 입력하세요."
                     type="text"
                   />
+                  <div>
+                    <p className="text-muted-foreground text-xs">계정 ID는 변경할 수 없습니다.</p>
+                  </div>
                 </form>
               </Form>
             </div>
