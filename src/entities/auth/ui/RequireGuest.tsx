@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { getToken } from '@/shared/lib';
+import { useAuth } from '@/entities/auth';
 
 export const RequireGuest = () => {
-  const token = getToken();
+  const { checkTokenQuery } = useAuth();
 
-  if (token) {
+  if (checkTokenQuery.data) {
     return <Navigate to="/feed" replace />;
   }
 
