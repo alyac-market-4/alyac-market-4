@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
 
 import { X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { useUserProfileQuery } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
-import { ProfileAvatar } from '@/shared/ui';
-import { ImageFileButton } from '@/shared/ui';
+import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
 
 import PostContentInput from './PostContentInput';
 
@@ -44,19 +44,73 @@ export default function PostCreateForm({
     fileInputRef.current?.click();
   };
 
-  const onChangeFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const MAX_FILES = 3;
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+  const onChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     const picked = Array.from(e.target.files ?? []);
     if (picked.length === 0) return;
 
+    // 남은 슬롯 체크 (이미 3장 꽉 찼으면 바로 안내)
+    const remaining = MAX_FILES - files.length;
+    if (remaining <= 0) {
+      toast.warning(`이미지는 최대 ${MAX_FILES}장까지 업로드할 수 있어요.`);
+      e.target.value = '';
+      return;
+    }
+
     // 같은 파일 중복 방지 (name/size/lastModified 기준)
-    const nextUnique = picked.filter((f) => {
+    const deduped = picked.filter((f) => {
       return !files.some(
         (prev) =>
           prev.name === f.name && prev.size === f.size && prev.lastModified === f.lastModified,
       );
     });
 
-    onChangeFiles([...files, ...nextUnique]);
+    const dupCount = picked.length - deduped.length;
+    if (dupCount > 0) {
+      toast.info(`이미 추가된 파일 ${dupCount}장은 제외했어요.`);
+    }
+
+    let invalidTypeCount = 0;
+    let tooLargeCount = 0;
+
+    // 타입/용량 필터
+    const valid = deduped.filter((f) => {
+      const isImage = f.type?.startsWith('image/');
+      if (!isImage) {
+        invalidTypeCount += 1;
+        return false;
+      }
+      if (f.size > MAX_FILE_SIZE) {
+        tooLargeCount += 1;
+        return false;
+      }
+      return true;
+    });
+
+    if (invalidTypeCount > 0) {
+      toast.error('이미지 파일만 업로드할 수 있어요.');
+    }
+    if (tooLargeCount > 0) {
+      toast.error('이미지는 1장당 5MB 이하만 업로드 가능해요.');
+    }
+
+    if (valid.length === 0) {
+      e.target.value = '';
+      return;
+    }
+
+    // 최대 3장 제한 적용 (초과분 자동 제외)
+    if (valid.length > remaining) {
+      const ignored = valid.length - remaining;
+      toast.warning(`이미지는 최대 ${MAX_FILES}장까지예요. ${ignored}장은 제외했어요.`);
+    }
+
+    const toAdd = valid.slice(0, remaining);
+    onChangeFiles([...files, ...toAdd]);
+
+    // 같은 파일 다시 선택 가능하도록 초기화
     e.target.value = '';
   };
 

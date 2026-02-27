@@ -1,5 +1,5 @@
 import { Layers } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { CommentButton, usePostMutation } from '@/entities/post';
@@ -16,7 +16,7 @@ interface PostSummaryProps {
 
 export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const navigate = useNavigate();
-  const { deleteMutation } = usePostMutation();
+  const { deleteMutation, reportMutation } = usePostMutation();
   const { openConfirm } = useConfirmDialogStore();
 
   const goDetail = () => navigate(to);
@@ -29,8 +29,8 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
 
   const imageCount = images.length;
 
-  const { reportMutation } = usePostMutation();
   const isMe = post.author.accountname === getTokenUserInfo().accountname;
+
   const kebabMenuItems = isMe
     ? [
         { label: '수정', onClick: () => navigate(`/post-update/${post.id}`) },
@@ -73,11 +73,16 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
       onClick={goDetail}
     >
       <div className="mb-3 flex items-center justify-between">
-        <ProfileBadge
-          username={post.author.username}
-          accountname={post.author.accountname}
-          image={post.author.image}
-        />
+        {/* ✅ 작성자 클릭 시 프로필로 이동 + 상세 클릭 전파 방지 */}
+        <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+          <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
+            <ProfileBadge
+              username={post.author.username}
+              accountname={post.author.accountname}
+              image={post.author.image}
+            />
+          </Link>
+        </div>
 
         {/* 메뉴 클릭 시 게시물 이동 방지 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>

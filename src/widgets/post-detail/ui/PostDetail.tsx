@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { CommentButton } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
@@ -58,11 +60,14 @@ export const PostDetail = ({ post }: { post: Post }) => {
     <>
       {/* 작성자 */}
       <div className="flex items-center gap-3 px-4 py-4">
-        <ProfileBadge
-          accountname={post.author.accountname}
-          image={post.author.image}
-          username={post.author.username}
-        />
+        {/* ✅ 프로필 클릭 시 상대 프로필로 이동 */}
+        <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
+          <ProfileBadge
+            accountname={post.author.accountname}
+            image={post.author.image}
+            username={post.author.username}
+          />
+        </Link>
       </div>
 
       {/* 본문 */}

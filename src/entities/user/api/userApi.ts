@@ -1,3 +1,6 @@
+// src/entities/user/api/userApi.ts
+import { z } from 'zod';
+
 import { axiosInstance } from '@/shared/api';
 import type { User } from '@/shared/model';
 
@@ -12,24 +15,40 @@ import type {
 
 type SearchUserResponse = User[] | { users: User[] } | { user: User[] };
 
+/**
+ * 최소 Zod: 배열 형태만 검증
+ */
+const searchUserSchema = z
+  .union([
+    z.array(z.any()),
+    z.object({ users: z.array(z.any()) }),
+    z.object({ user: z.array(z.any()) }),
+  ])
+  .transform((val) => {
+    if (Array.isArray(val)) return val;
+    if ('users' in val) return val.users;
+    return val.user;
+  });
+
 export const userApi = {
   getMyInfo: async (): Promise<User> => {
     const { data } = await axiosInstance.get<UserResponse>(`/api/user/myinfo`);
     return data.user;
   },
 
-  // ✅ 여기만 핵심 수정: /search -> /searchuser
+  // ✅ 여기만 Zod 추가
   searchUser: async (keyword: string): Promise<User[]> => {
     const { data } = await axiosInstance.get<SearchUserResponse>(`/api/user/searchuser`, {
       params: { keyword },
     });
 
-    // 서버 응답 형태가 어떤 경우든 User[]로 통일
-    if (Array.isArray(data)) return data;
-    if ('users' in data && Array.isArray(data.users)) return data.users;
-    if ('user' in data && Array.isArray(data.user)) return data.user;
+    const parsed = searchUserSchema.safeParse(data);
+    if (!parsed.success) {
+      console.error('Invalid searchUser response:', parsed.error);
+      return [];
+    }
 
-    return [];
+    return parsed.data as User[];
   },
 
   validateEmail: async (email: ValidateEmailRequest): Promise<ValidateEmailResponse> => {
