@@ -1,8 +1,11 @@
-import { MessageCircle, Share2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { type Profile, useProfileMutation } from '@/entities/profile';
-import { Button } from '@/shared/ui';
+import {
+  MyProfileActionButtons,
+  type Profile,
+  ProfileActionButtons,
+  useProfileMutation,
+} from '@/entities/profile';
 
 interface ProfileActionsProps {
   isMe: boolean;
@@ -24,47 +27,23 @@ export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   };
 
   return (
-    <div className="mt-4 flex gap-2 px-20">
+    <div className="mt-4 flex justify-center gap-2 px-20">
       {isMe ? (
-        <>
-          <Button
-            onClick={() => navigate('/profile-update')}
-            variant="outline"
-            size="lg"
-            className="flex-1"
-            type="button"
-          >
-            프로필 수정
-          </Button>
-          <Button
-            onClick={() => navigate('/product-create')}
-            variant="outline"
-            size="lg"
-            className="flex-1"
-            type="button"
-          >
-            상품 등록
-          </Button>
-        </>
+        <MyProfileActionButtons
+          update={() => {
+            navigate('/profile-update');
+          }}
+          create={() => {
+            navigate('/product-create');
+          }}
+        />
       ) : (
-        <>
-          <div className="flex w-full items-center justify-center gap-3">
-            <Button type="button">
-              <MessageCircle />
-            </Button>
-            <Button
-              variant={user.isfollow ? 'default' : 'alyac'}
-              className="w-32"
-              type="button"
-              onClick={() => handleFollow(user.isfollow)}
-            >
-              {user.isfollow ? '언팔로우' : '팔로우'}
-            </Button>
-            <Button type="button">
-              <Share2 />
-            </Button>
-          </div>
-        </>
+        <ProfileActionButtons
+          handleFollow={() => {
+            handleFollow(user.isfollow);
+          }}
+          user={user}
+        />
       )}
     </div>
   );
