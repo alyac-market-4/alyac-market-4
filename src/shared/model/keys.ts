@@ -12,6 +12,7 @@ export const postKeys = {
     [...postKeys.lists(), 'user', { accountname, limit, skip }] as const,
   details: () => [...postKeys.all, 'detail'] as const,
   detail: (postId: string) => [...postKeys.details(), postId] as const,
+  toggleLike: () => ['posts', 'toggleLike'] as const,
 };
 
 export const userKeys = {

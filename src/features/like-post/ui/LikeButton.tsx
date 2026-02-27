@@ -22,11 +22,7 @@ export const LikeButton = ({ postId, heartCount, hearted }: LikeButtonProps) => 
       type="button"
     >
       <Heart className={cn(hearted && 'fill-current')} />
-      {toggleLikeMutation.isPending ? (
-        '좋아요 중...'
-      ) : (
-        <span className="text-muted-foreground text-sm">{heartCount}</span>
-      )}
+      <span className="text-muted-foreground text-sm">{heartCount}</span>
     </button>
   );
 };
