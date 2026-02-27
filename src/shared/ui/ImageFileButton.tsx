@@ -5,6 +5,7 @@ import { Button } from './button';
 type ImageFileButtonProps = {
   // (e: React.MouseEvent<HTMLButtonElement>) => void
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
   className?: string;
 };
 
