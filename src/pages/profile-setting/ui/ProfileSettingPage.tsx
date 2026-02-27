@@ -7,9 +7,9 @@ import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
-import { useSignUpStore } from '@/features/auth';
+import { FormSubmitButton, useSignUpStore } from '@/features/auth';
 import { type ProfileFormData, profileSchema } from '@/features/profile/model/schemas';
-import { Button, ProfileAvatarEditor } from '@/shared/ui';
+import { Form, FormInputField, ProfileAvatarEditor } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ export const ProfileSettingPage = () => {
       const userInfo = {
         ...user,
         ...data,
-        image: `${user?.image}`,
+        image: `${user?.image}`, //TODO: 업로드한 이미지가 들어오도록 변경
       };
 
       await signUpMutation.mutateAsync(userInfo);
@@ -82,75 +82,48 @@ export const ProfileSettingPage = () => {
             <h1 className="text-foreground mb-2 text-3xl font-bold">프로필 설정</h1>
             <p className="text-muted-foreground text-sm">나중에 언제든지 변경할 수 있습니다.</p>
           </div>
-          <div className="space-y-8">
-            <div className="flex justify-center">
-              <div className="relative">
-                <ProfileAvatarEditor src={user?.image} alt="프로필 이미지" />
-              </div>
-            </div>
 
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-              <div className="space-y-2">
-                <label htmlFor="username" className="text-foreground block text-sm font-medium">
-                  사용자 이름
-                </label>
-                <input
-                  {...form.register('username')}
-                  className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                  id="username"
+          <div className="space-y-8">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                <div className="flex justify-center">
+                  <div className="relative">
+                    <ProfileAvatarEditor src={user?.image} alt="프로필 이미지" />
+                  </div>
+                </div>
+
+                <FormInputField
+                  control={form.control}
+                  name="username"
+                  label="사용자 이름"
                   placeholder="이름을 입력하세요."
                   type="text"
                 />
-                {form.formState.errors.username && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {form.formState.errors.username.message}
-                  </p>
-                )}
-              </div>
 
-              <div className="space-y-2">
-                <label htmlFor="accountname" className="text-foreground block text-sm font-medium">
-                  계정 ID
-                </label>
-                <input
-                  {...form.register('accountname')}
-                  className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                  id="accountname"
+                <FormInputField
+                  control={form.control}
+                  name="accountname"
+                  label="계정 ID"
                   placeholder="계정 아이디를 입력하세요."
                   type="text"
                 />
-                {form.formState.errors.accountname && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {form.formState.errors.accountname.message}
-                  </p>
-                )}
-              </div>
 
-              <div className="space-y-2">
-                <label htmlFor="소개" className="text-foreground block text-sm font-medium">
-                  소개
-                </label>
-                <input
-                  {...form.register('intro')}
-                  className="bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-md border border-b-2 border-[#6FCA3C] px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:border-[#6FCA3C] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                  id="소개"
+                <FormInputField
+                  control={form.control}
+                  name="intro"
+                  label="소개"
                   placeholder="간단한 자기 소개를 입력하세요."
                   type="text"
                 />
-                {form.formState.errors.intro && (
-                  <p className="mt-1 text-sm text-red-500">{form.formState.errors.intro.message}</p>
-                )}
-              </div>
 
-              <Button
-                variant="alyac"
-                size="lgbtn"
-                type="submit"
-                disabled={!form.formState.isValid || signUpMutation.isPending}
-              >
-                {signUpMutation.isPending ? '처리 중...' : '알약마켓 시작하기'}
-              </Button>
-            </form>
+                <FormSubmitButton
+                  label="알약마켓 시작하기"
+                  pendingLabel="처리 중..."
+                  isPending={signUpMutation.isPending}
+                  isValid={form.formState.isValid}
+                />
+              </form>
+            </Form>
           </div>
         </div>
       </div>
