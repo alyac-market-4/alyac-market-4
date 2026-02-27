@@ -5,7 +5,7 @@ import { useAuth } from '@/entities/auth';
 export const RequireAuth = () => {
   const { checkTokenQuery } = useAuth();
 
-  if (!checkTokenQuery) {
+  if (!checkTokenQuery.data) {
     return <Navigate to="/sign-in" replace />;
   }
 

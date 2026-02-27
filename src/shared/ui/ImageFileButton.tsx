@@ -6,7 +6,7 @@ import { useUploadFile } from '@/entities/upload/hooks/useUploadFile';
 
 import { Button } from './button';
 
-type ImageFileButtonProps = {
+export type ImageFileButtonProps = {
   onUploadComplete: (filename: string) => void;
   onUploadError?: (error: Error) => void;
   onFileSelect?: (file: File) => void;
