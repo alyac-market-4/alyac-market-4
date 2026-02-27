@@ -31,7 +31,7 @@ export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
       {isMe ? (
         <MyProfileActionButtons
           update={() => {
-            navigate('/profile-update');
+            navigate('/profile-update', { state: { user } });
           }}
           create={() => {
             navigate('/product-create');
