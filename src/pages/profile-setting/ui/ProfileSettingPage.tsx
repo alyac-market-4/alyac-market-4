@@ -8,8 +8,10 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
 import { FormSubmitButton, useSignUpStore } from '@/features/auth';
-import { type ProfileFormData, profileSchema } from '@/features/profile/model/schemas';
-import { Form, FormInputField, ProfileAvatarEditor } from '@/shared/ui';
+import { type ProfileFormData, profileSchema } from '@/features/profile';
+import { Form, FormInputField } from '@/shared/ui';
+
+// import { Form, FormInputField, ProfileAvatarEditor } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
   const navigate = useNavigate();
@@ -88,7 +90,7 @@ export const ProfileSettingPage = () => {
               <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                 <div className="flex justify-center">
                   <div className="relative">
-                    <ProfileAvatarEditor src={user?.image} alt="프로필 이미지" />
+                    {/* <ProfileAvatarEditor src={user?.image} alt="프로필 이미지" /> */}
                   </div>
                 </div>
 
