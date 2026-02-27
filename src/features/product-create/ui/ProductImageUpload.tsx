@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { ImagePlus } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
 import { ImageFileButton } from '@/shared/ui/ImageFileButton';
@@ -25,7 +26,7 @@ export const ProductImageUpload = ({ onUploadComplete }: ProductImageUploadProps
         onUploadComplete(data.map((item) => item.filename));
       },
       onError: (error) => {
-        if (error instanceof Error) alert('업로드 실패: ' + error.message);
+        if (error instanceof Error) toast.error('이미지 업로드에 실패했습니다.');
         setImagePreview(null);
       },
     });

@@ -1,22 +1,23 @@
 import { useRef, useState } from 'react';
 
 import { ImagePlus } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
 import { imageUrl } from '@/shared/lib/imageUrl';
 import { ImageFileButton } from '@/shared/ui/ImageFileButton';
 
 interface ProductUpdateImageUploadProps {
-  initialImage?: string; // ✅ 추가
+  initialImage?: string; // 추가
   onUploadComplete: (filenames: string[]) => void;
 }
 
 export const ProductUpdateImageUpload = ({
-  initialImage, // ✅ 추가
+  initialImage, // 추가
   onUploadComplete,
 }: ProductUpdateImageUploadProps) => {
   const [imagePreview, setImagePreview] = useState<string | null>(
-    initialImage ? imageUrl(initialImage) : null, // ✅ 기존 이미지 초기값
+    initialImage ? imageUrl(initialImage) : null, // 기존 이미지 초기값
   );
   const uploadMutation = useUploadFiles();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,8 +31,8 @@ export const ProductUpdateImageUpload = ({
         onUploadComplete(data.map((item) => item.filename));
       },
       onError: (error) => {
-        if (error instanceof Error) alert('업로드 실패: ' + error.message);
-        setImagePreview(initialImage ? imageUrl(initialImage) : null); // ✅ 실패 시 기존 이미지로 복구
+        if (error instanceof Error) toast.error('이미지 업로드에 실패했습니다.');
+        setImagePreview(initialImage ? imageUrl(initialImage) : null); // 실패 시 기존 이미지로 복구
       },
     });
     e.target.value = '';

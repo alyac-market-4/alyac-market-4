@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { useProductDetailQuery, useProductMutation } from '@/entities/product';
@@ -68,7 +69,7 @@ export const ProductUpdateForm = ({
         : (product?.itemImage ?? '');
 
     if (!itemImage) {
-      alert('이미지를 업로드해 주세요.');
+      toast.info('이미지를 업로드 해주세요.');
       return;
     }
 
@@ -83,12 +84,12 @@ export const ProductUpdateForm = ({
       { productId, product: productPayload },
       {
         onSuccess: () => {
-          alert('상품이 수정되었습니다.');
+          toast.success('상품이 수정되었습니다.');
           navigate(-1);
         },
         onError: (error) => {
           if (error instanceof Error) {
-            alert('수정 실패: ' + error.message);
+            toast.error('상품 수정에 실패했습니다.');
           }
         },
       },
