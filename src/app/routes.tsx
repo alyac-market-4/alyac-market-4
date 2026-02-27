@@ -55,33 +55,24 @@ const NotFoundPage = lazy(() =>
 
 export const router = createBrowserRouter([
   {
-    // MainLayout
     path: '/',
-    element: <MainLayout />,
+    element: <RequireAuth />,
     children: [
       {
-        element: <RequireAuth />,
         children: [
-          { path: 'feed', element: <FeedPage /> },
-          { path: 'feed/search', element: <AccountSearchPage /> },
-          { path: 'chat', element: <ChatPage /> },
-          { path: 'profile', element: <ProfilePage /> },
-          { path: 'profile/:accountname', element: <ProfilePage /> },
-          { path: 'followers/:accountname', element: <FollowersPage /> },
-          { path: 'followings/:accountname', element: <FollowingsPage /> },
-        ],
-      },
-    ],
-  },
-  {
-    // 레이아웃 없음
-    path: '/',
-    children: [
-      { index: true, element: <HomePage /> },
-      {
-        path: '',
-        element: <RequireAuth />,
-        children: [
+          {
+            element: <MainLayout />,
+            children: [
+              { path: 'feed', element: <FeedPage /> },
+              { path: 'feed/search', element: <AccountSearchPage /> },
+              { path: 'chat', element: <ChatPage /> },
+              { path: 'profile', element: <ProfilePage /> },
+              { path: 'profile/:accountname', element: <ProfilePage /> },
+              { path: 'followers/:accountname', element: <FollowersPage /> },
+              { path: 'followings/:accountname', element: <FollowingsPage /> },
+            ],
+          },
+
           { path: 'chat/:chatId', element: <ChatDetailPage /> },
           { path: 'post-create', element: <PostCreatePage /> },
           { path: 'post-update/:postId', element: <PostUpdatePage /> },
@@ -91,16 +82,18 @@ export const router = createBrowserRouter([
           { path: 'post/:postId', element: <PostDetailPage /> },
         ],
       },
+    ],
+  },
+  {
+    path: '/',
+    element: <RequireGuest />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'sign-in', element: <SignInPage /> },
+      { path: 'sign-up', element: <SignUpPage /> },
       {
-        element: <RequireGuest />,
-        children: [
-          { path: 'sign-in', element: <SignInPage /> },
-          { path: 'sign-up', element: <SignUpPage /> },
-          {
-            element: <RequireSignUpFormData />,
-            children: [{ path: 'profile-setting', element: <ProfileSettingPage /> }],
-          },
-        ],
+        element: <RequireSignUpFormData />,
+        children: [{ path: 'profile-setting', element: <ProfileSettingPage /> }],
       },
     ],
   },
