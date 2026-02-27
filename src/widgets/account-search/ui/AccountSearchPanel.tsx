@@ -7,9 +7,10 @@ import { ProfileAvatar } from '@/shared/ui';
 
 type Props = {
   keyword: string;
+  keywordError?: string | null;
 };
 
-export const AccountSearchPanel = ({ keyword }: Props) => {
+export const AccountSearchPanel = ({ keyword, keywordError }: Props) => {
   const navigate = useNavigate();
 
   const trimmed = useMemo(() => keyword.trim(), [keyword]);
@@ -17,7 +18,9 @@ export const AccountSearchPanel = ({ keyword }: Props) => {
 
   return (
     <main className="px-4 py-4">
-      {!trimmed ? (
+      {keywordError ? (
+        <div className="py-8 text-center text-sm text-red-500">{keywordError}</div>
+      ) : !trimmed ? (
         <div className="flex h-[calc(100vh-160px)] items-center justify-center text-center text-sm opacity-60">
           계정을 검색해보세요.
         </div>
@@ -36,7 +39,6 @@ export const AccountSearchPanel = ({ keyword }: Props) => {
         <ul className="flex flex-col divide-y">
           {users.map((u) => (
             <li key={u.accountname}>
-              {/* ✅ 버튼으로 만들어 접근성/클릭 처리 */}
               <button
                 type="button"
                 className="flex w-full items-center gap-3 py-3 text-left"
