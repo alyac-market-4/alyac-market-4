@@ -1,9 +1,6 @@
-import { useParams } from 'react-router-dom';
-
 import { useUserPostsQuery } from '@/entities/post';
-import { useUserProfileQuery } from '@/entities/profile';
+import { type Profile } from '@/entities/profile';
 import type { ViewMode } from '@/features/layout-controller';
-import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView, LoadingState } from '@/shared/ui';
 
 import { PostSummary } from './PostSummary';
@@ -11,12 +8,10 @@ import { PostThumbnail } from './PostThumbnail';
 
 interface PostListProps {
   viewMode: ViewMode;
+  user: Profile;
 }
 
-export const PostList = ({ viewMode }: PostListProps) => {
-  const { accountname = '' } = useParams();
-  const targetAccountname = accountname || getTokenUserInfo().accountname;
-  const { data: user } = useUserProfileQuery(targetAccountname);
+export const PostList = ({ viewMode, user }: PostListProps) => {
   const {
     data: posts = [],
     isLoading,
