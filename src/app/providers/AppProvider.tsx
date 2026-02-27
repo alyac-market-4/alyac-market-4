@@ -13,7 +13,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="bg-background flex min-h-screen flex-col">{children}</div>
+      {children}
       <Toaster position="top-right" />
       <ConfirmRenderer />
     </QueryClientProvider>

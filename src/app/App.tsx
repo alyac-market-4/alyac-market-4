@@ -6,7 +6,9 @@ import { router } from './routes';
 function App() {
   return (
     <AppProvider>
-      <RouterProvider router={router} />
+      <div className="bg-background flex min-h-screen flex-col">
+        <RouterProvider router={router} />
+      </div>
     </AppProvider>
   );
 }
