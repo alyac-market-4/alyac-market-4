@@ -3,37 +3,40 @@ import { useRef, useState } from 'react';
 import { ImagePlus } from 'lucide-react';
 
 import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
+import { imageUrl } from '@/shared/lib/imageUrl';
 import { ImageFileButton } from '@/shared/ui/ImageFileButton';
 
-interface ProductImageUploadProps {
+interface ProductUpdateImageUploadProps {
+  initialImage?: string; // ✅ 추가
   onUploadComplete: (filenames: string[]) => void;
 }
 
-export const ProductImageUpload = ({ onUploadComplete }: ProductImageUploadProps) => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+export const ProductUpdateImageUpload = ({
+  initialImage, // ✅ 추가
+  onUploadComplete,
+}: ProductUpdateImageUploadProps) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    initialImage ? imageUrl(initialImage) : null, // ✅ 기존 이미지 초기값
+  );
   const uploadMutation = useUploadFiles();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setImagePreview(URL.createObjectURL(file));
-
     uploadMutation.mutate([file], {
       onSuccess: (data) => {
         onUploadComplete(data.map((item) => item.filename));
       },
       onError: (error) => {
         if (error instanceof Error) alert('업로드 실패: ' + error.message);
-        setImagePreview(null);
+        setImagePreview(initialImage ? imageUrl(initialImage) : null); // ✅ 실패 시 기존 이미지로 복구
       },
     });
-
     e.target.value = '';
   };
 
-  // 버튼 클릭 시 숨겨진 input을 트리거
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
