@@ -64,7 +64,7 @@ axiosInstance.interceptors.response.use(
         // Refresh token으로 새 토큰 요청
         const response = await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/api/user/refresh`,
-          {},
+          { refreshToken },
           {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
@@ -72,7 +72,7 @@ axiosInstance.interceptors.response.use(
           },
         );
 
-        const { token: newToken, refreshToken: newRefreshToken } = response.data;
+        const { accessToken: newToken, refreshToken: newRefreshToken } = response.data;
         saveToken(newToken, newRefreshToken);
 
         // 대기 중인 요청들에 새 토큰 전달

@@ -46,45 +46,44 @@ export const PostDetailPage = () => {
   if (isErrorPost || isErrorComments) return <div>에러</div>;
   if (!post) return <div>게시글을 찾을 수 없습니다</div>;
 
+  const isMe = post.author.accountname === getTokenUserInfo().accountname;
+  const kebabMenuItems = isMe
+    ? [
+        {
+          label: '삭제',
+          onClick: () => {
+            openConfirm({
+              title: '정말 삭제하시겠습니까?',
+              description: '삭제된 게시물은 복구할 수 없습니다.',
+              actionText: '삭제',
+              onConfirm: () => {
+                deleteMutation.mutate(postId);
+                toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
+              },
+            });
+          },
+        },
+      ]
+    : [
+        {
+          label: '신고하기',
+          onClick: () => {
+            openConfirm({
+              title: '정말 신고하시겠습니까?',
+              description: '신고는 취소할 수 없습니다.',
+              actionText: '신고',
+              onConfirm: () => {
+                reportMutation.mutate(postId);
+                toast.info('신고가 접수되었습니다.', { position: 'top-right' });
+              },
+            });
+          },
+        },
+      ];
+
   return (
     <>
-      <Header
-        left={<BackButton />}
-        right={
-          <KebabMenu
-            items={[
-              {
-                label: '신고하기',
-                onClick: () => {
-                  openConfirm({
-                    title: '정말 신고하시겠습니까?',
-                    description: '신고는 취소할 수 없습니다.',
-                    actionText: '신고',
-                    onConfirm: () => {
-                      reportMutation.mutate(postId);
-                      toast.info('신고가 접수되었습니다.', { position: 'top-right' });
-                    },
-                  });
-                },
-              },
-              {
-                label: '삭제',
-                onClick: () => {
-                  openConfirm({
-                    title: '정말 삭제하시겠습니까?',
-                    description: '삭제된 게시물은 복구할 수 없습니다.',
-                    actionText: '삭제',
-                    onConfirm: () => {
-                      deleteMutation.mutate(postId);
-                      toast.info('게시글이 삭제되었습니다.', { position: 'top-right' });
-                    },
-                  });
-                },
-              },
-            ]}
-          />
-        }
-      />
+      <Header left={<BackButton />} right={<KebabMenu items={kebabMenuItems} />} />
       <main className="flex-1 overflow-y-auto">
         <article className="border-border border-b pb-4">
           <PostDetail post={post} />
