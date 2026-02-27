@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { uploadImage } from '../assets';
-
-import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from './avatar';
 import { imageUrl } from '../lib';
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from './avatar';
 
 interface ProfileAvatarProps {
   src?: string | null;
@@ -21,10 +20,15 @@ export const ProfileAvatar = ({
   const initial = useMemo(() => {
     const trimmed = src?.trim();
     if (!trimmed) return uploadImage;
-    // 서버가 filename만 주는 경우에도 정상 표시되도록 변환
     return imageUrl(trimmed, uploadImage);
   }, [src]);
+
   const [imgSrc, setImgSrc] = useState<string>(initial);
+
+  // src가 바뀔 때 imgSrc도 업데이트
+  useEffect(() => {
+    setImgSrc(initial);
+  }, [initial]);
 
   return (
     <Avatar size={size}>
@@ -32,7 +36,6 @@ export const ProfileAvatar = ({
         alt={alt}
         src={imgSrc}
         onError={() => {
-          // 이미지 링크가 깨지거나 로딩 실패하면 기본 알약으로
           setImgSrc(uploadImage);
         }}
       />
