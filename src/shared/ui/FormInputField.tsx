@@ -16,6 +16,7 @@ interface FormInputFieldProps<T extends FieldValues> {
   label: string;
   placeholder?: string;
   type?: string;
+  disabled?: boolean;
 }
 
 export const FormInputField = <T extends FieldValues>({
@@ -24,6 +25,7 @@ export const FormInputField = <T extends FieldValues>({
   label,
   placeholder,
   type = 'text',
+  disabled,
 }: FormInputFieldProps<T>) => {
   return (
     <FormField
@@ -34,7 +36,12 @@ export const FormInputField = <T extends FieldValues>({
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <InputGroup variant="auth" size="auth">
-              <InputGroupInput placeholder={placeholder} type={type} {...field} />
+              <InputGroupInput
+                placeholder={placeholder}
+                type={type}
+                disabled={disabled}
+                {...field}
+              />
             </InputGroup>
           </FormControl>
           <FormMessage />

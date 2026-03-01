@@ -23,3 +23,16 @@ export interface FollowUserResponse {
 export interface UnfollowUserResponse {
   profile: User;
 }
+
+export interface ProfileUpdateRequest {
+  user: {
+    username: string;
+    accountname: string;
+    intro: string;
+    image: string;
+  };
+}
+
+export interface ProfileUpdateResponse {
+  profile: User;
+}
