@@ -8,9 +8,7 @@ import { RequireSignUpFormData } from '@/entities/auth';
 
 import { MainLayout } from './layouts/MainLayout';
 
-const HomePage = lazy(() =>
-  import('@/pages/home/ui/HomePage').then((m) => ({ default: m.HomePage })),
-);
+const HomePage = lazy(() => import('@/pages/home').then((m) => ({ default: m.HomePage })));
 const FeedPage = lazy(() => import('@/pages/feed').then((m) => ({ default: m.FeedPage })));
 const AccountSearchPage = lazy(() =>
   import('@/pages/account-search').then((m) => ({ default: m.AccountSearchPage })),
