@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { userKeys } from '@/shared/model';
+import { profileKeys, userKeys } from '@/shared/model';
 
 import type { UpdateProfileRequest } from '../model/types';
 import { userApi } from './userApi';
@@ -34,8 +34,8 @@ export const useUserMutation = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: (userInfo: UpdateProfileRequest) => userApi.updateProfile(userInfo),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: userKeys.me() });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: profileKeys.detail(variables.user.accountname) });
     },
   });
 
