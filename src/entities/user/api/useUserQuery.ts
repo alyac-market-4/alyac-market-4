@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 import { userKeys } from '@/shared/model';
 
@@ -25,7 +24,6 @@ export const useSearchUserQuery = (keyword: string) => {
 
 export const useUserMutation = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const validateEmailMutation = useMutation({
     mutationFn: (email: string) => userApi.validateEmail({ user: { email } }),
@@ -38,7 +36,6 @@ export const useUserMutation = () => {
     mutationFn: (userInfo: UpdateProfileRequest) => userApi.updateProfile(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.me() });
-      navigate(`/profile`);
     },
   });
 

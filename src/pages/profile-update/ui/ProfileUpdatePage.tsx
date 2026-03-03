@@ -5,20 +5,18 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-import { useProfile } from '@/entities/profile';
+import { useUserMutation } from '@/entities/user';
 import { type ProfileFormData, ProfileImageUpload, profileSchema } from '@/features/profile';
 import { BackButton, Button, Form, FormInputField } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 /*
-TODO : 엔티티에 들어가있는 뮤테이트 api 위치 수정
-트라이 캐치 구현
-컴포넌트화
-App.css의 primary 컬러 주석 누가한거임?
+TODO : 컴포넌트화
+
 */
 export const ProfileUpdatePage = () => {
   const navigate = useNavigate();
-  const { profileUpdateMutation } = useProfile();
+  const { updateProfileMutation } = useUserMutation();
 
   const location = useLocation();
   const user = location.state?.user;
@@ -35,15 +33,19 @@ export const ProfileUpdatePage = () => {
   });
 
   const onSubmit = async (data: ProfileFormData) => {
-    await profileUpdateMutation.mutateAsync({
-      user: {
-        username: data.username,
-        accountname: data.accountname,
-        intro: data.intro ?? '',
-        image: profileImageUrl,
-      },
-    });
-    navigate('/profile');
+    try {
+      await updateProfileMutation.mutateAsync({
+        user: {
+          username: data.username,
+          accountname: data.accountname,
+          intro: data.intro ?? '',
+          image: profileImageUrl,
+        },
+      });
+      navigate('/profile');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
