@@ -1,10 +1,10 @@
 import { useUserPostsQuery } from '@/entities/post';
+import { PostSummarySkeleton } from '@/entities/post';
 import { type Profile } from '@/entities/profile';
 import type { ViewMode } from '@/features/layout-controller';
 import { ErrorView } from '@/shared/ui';
 
 import { PostSummary } from './PostSummary';
-import { PostSummarySkeleton } from './PostSummarySkeleton';
 import { PostThumbnail } from './PostThumbnail';
 import { PostThumbnailSkeleton } from './PostThumbnailSkeleton';
 
