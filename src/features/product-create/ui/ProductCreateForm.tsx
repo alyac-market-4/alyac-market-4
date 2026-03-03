@@ -47,7 +47,7 @@ export const ProductCreateForm = ({ showSubmitButton = false }: ProductCreateFor
       {
         itemName: data.productName,
         price: data.price,
-        itemImage: uploadedImageNames.map((name) => `uploadFiles/${name}`).join(','),
+        itemImage: uploadedImageNames.map((name) => name).join(','),
         link: data.saleLink ?? '',
       },
       {

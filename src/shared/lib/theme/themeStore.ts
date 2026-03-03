@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 import { storageKey, themeMap } from './constants';
 
@@ -11,23 +12,27 @@ export interface ThemeState {
   switchTheme: () => void;
 }
 
-export const useThemeStore = create<ThemeState>((set) => ({
-  theme: (localStorage.getItem(storageKey) as Theme) || 'system',
-  initThemeByLocalStorage: () =>
-    set(() => {
-      const theme = (localStorage.getItem(storageKey) as Theme) || 'system';
-      localStorage.setItem(storageKey, theme);
-      return { theme };
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set) => ({
+      theme: 'system',
+      initThemeByLocalStorage: () =>
+        set(() => {
+          const theme = 'system';
+          return { theme };
+        }),
+      setTheme: (theme) =>
+        set(() => {
+          return { theme };
+        }),
+      switchTheme: () =>
+        set((prev) => {
+          const theme = themeMap[prev.theme];
+          return { theme };
+        }),
     }),
-  setTheme: (theme) =>
-    set(() => {
-      localStorage.setItem(storageKey, theme);
-      return { theme };
-    }),
-  switchTheme: () =>
-    set((prev) => {
-      const theme = themeMap[prev.theme];
-      localStorage.setItem(storageKey, theme);
-      return { theme };
-    }),
-}));
+    {
+      name: storageKey,
+    },
+  ),
+);
