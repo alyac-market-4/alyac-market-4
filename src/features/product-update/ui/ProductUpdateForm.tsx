@@ -55,7 +55,7 @@ export const ProductUpdateForm = ({
   const onSubmit: SubmitHandler<ProductUpdateFormOutput> = (data) => {
     const itemImage =
       uploadedImageNames !== null
-        ? uploadedImageNames.map((name) => `uploadFiles/${name}`).join(',')
+        ? uploadedImageNames.map((name) => name).join(',')
         : (product?.itemImage ?? '');
 
     if (!itemImage) {

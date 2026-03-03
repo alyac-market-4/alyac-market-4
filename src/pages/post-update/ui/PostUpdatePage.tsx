@@ -58,7 +58,7 @@ function PostUpdateView({ post }: Props) {
     // ✅ 새로 선택한 파일이 있으면 업로드 후 경로 만들기
     if (safeFiles.length > 0) {
       const uploaded = await uploadMutation.mutateAsync(safeFiles);
-      newImageSegments = uploaded.map((item) => `uploadFiles/${item.filename}`);
+      newImageSegments = uploaded.map((item) => item.filename);
     }
 
     // ✅ 기존(남은) + 새로 업로드한 것 합치기
