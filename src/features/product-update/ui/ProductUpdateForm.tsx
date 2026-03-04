@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -21,11 +21,13 @@ export const PRODUCT_UPDATE_FORM_ID = 'product-update-form';
 interface ProductUpdateFormProps {
   productId: string;
   showSubmitButton?: boolean;
+  onValidChange?: (isValid: boolean) => void;
 }
 
 export const ProductUpdateForm = ({
   productId,
   showSubmitButton = false,
+  onValidChange,
 }: ProductUpdateFormProps) => {
   const navigate = useNavigate();
   const { updateMutation } = useProductMutation();
@@ -36,6 +38,8 @@ export const ProductUpdateForm = ({
     register,
     handleSubmit,
     reset,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<ProductUpdateFormInput, undefined, ProductUpdateFormOutput>({
     resolver: zodResolver(productUpdateSchema),
@@ -43,20 +47,39 @@ export const ProductUpdateForm = ({
   });
 
   // 상품 데이터 로드 후 폼 초기값 세팅
+  // toLocaleString() 대신 toString() → 콤마 없는 숫자만 저장
   useEffect(() => {
     if (!product) return;
     reset({
       productName: product.itemName,
-      price: product.price.toLocaleString(),
+      price: product.price.toString(),
       saleLink: product.link ?? '',
     });
   }, [product, reset]);
 
+  const productName = useWatch({ control, name: 'productName' });
+  const price = useWatch({ control, name: 'price' });
+
+  const currentImage =
+    uploadedImageNames !== null ? uploadedImageNames.length > 0 : !!product?.itemImage;
+
+  // 버튼 활성화 조건
+  const isFormValid =
+    !errors.productName &&
+    !errors.price &&
+    !errors.saleLink &&
+    (productName?.trim().length ?? 0) >= 2 &&
+    (price?.trim().length ?? 0) > 0 &&
+    currentImage;
+
+  // 부모(ProductUpdatePage)에 활성화 상태 전달
+  useEffect(() => {
+    onValidChange?.(isFormValid);
+  }, [isFormValid, onValidChange]);
+
   const onSubmit: SubmitHandler<ProductUpdateFormOutput> = (data) => {
     const itemImage =
-      uploadedImageNames !== null
-        ? uploadedImageNames.map((name) => name).join(',')
-        : (product?.itemImage ?? '');
+      uploadedImageNames !== null ? uploadedImageNames.join(',') : (product?.itemImage ?? '');
 
     if (!itemImage) {
       toast.info('이미지를 업로드 해주세요.');
@@ -110,13 +133,16 @@ export const ProductUpdateForm = ({
       onSubmit={onSubmit}
       isPending={updateMutation.isPending}
       showSubmitButton={showSubmitButton}
+      isFormValid={isFormValid}
       imageUploadSlot={
         <ProductUpdateImageUpload
           initialImage={initialImage}
           onUploadComplete={setUploadedImageNames}
         />
       }
-      formFieldsSlot={<ProductUpdateFormFields register={register} errors={errors} />}
+      formFieldsSlot={
+        <ProductUpdateFormFields register={register} errors={errors} setValue={setValue} />
+      }
     />
   );
 };

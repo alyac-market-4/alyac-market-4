@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -20,9 +20,13 @@ export const PRODUCT_FORM_ID = 'product-form';
 
 interface ProductCreateFormProps {
   showSubmitButton?: boolean;
+  onValidChange?: (isValid: boolean) => void;
 }
 
-export const ProductCreateForm = ({ showSubmitButton = false }: ProductCreateFormProps) => {
+export const ProductCreateForm = ({
+  showSubmitButton = false,
+  onValidChange,
+}: ProductCreateFormProps) => {
   const navigate = useNavigate();
   const { createMutation } = useProductMutation();
   const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
@@ -30,12 +34,31 @@ export const ProductCreateForm = ({ showSubmitButton = false }: ProductCreateFor
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<ProductFormInput, undefined, ProductFormOutput>({
     resolver: zodResolver(productCreateSchema),
     mode: 'onChange',
     defaultValues: { productName: '', price: '', saleLink: '' },
   });
+
+  const productName = useWatch({ control, name: 'productName' });
+  const price = useWatch({ control, name: 'price' });
+
+  // 버튼 활성화 조건: 상품명 + 가격 + 이미지 모두 있어야 활성화
+  const isFormValid =
+    !errors.productName &&
+    !errors.price &&
+    !errors.saleLink &&
+    (productName?.trim().length ?? 0) >= 2 &&
+    (price?.trim().length ?? 0) > 0 &&
+    uploadedImageNames.length > 0;
+
+  // 부모(ProductCreatePage)에 활성화 상태 전달
+  useEffect(() => {
+    onValidChange?.(isFormValid);
+  }, [isFormValid, onValidChange]);
 
   const onSubmit: SubmitHandler<ProductFormOutput> = (data) => {
     if (!uploadedImageNames.length) {
@@ -47,7 +70,7 @@ export const ProductCreateForm = ({ showSubmitButton = false }: ProductCreateFor
       {
         itemName: data.productName,
         price: data.price,
-        itemImage: uploadedImageNames.map((name) => name).join(','),
+        itemImage: uploadedImageNames.join(','),
         link: data.saleLink ?? '',
       },
       {
@@ -69,8 +92,9 @@ export const ProductCreateForm = ({ showSubmitButton = false }: ProductCreateFor
       onSubmit={onSubmit}
       isPending={createMutation.isPending}
       showSubmitButton={showSubmitButton}
+      isFormValid={isFormValid}
       imageUploadSlot={<ProductImageUpload onUploadComplete={setUploadedImageNames} />}
-      formFieldsSlot={<ProductFormFields register={register} errors={errors} />}
+      formFieldsSlot={<ProductFormFields register={register} errors={errors} setValue={setValue} />}
     />
   );
 };

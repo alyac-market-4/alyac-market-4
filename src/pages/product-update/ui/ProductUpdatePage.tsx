@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useParams } from 'react-router-dom';
 
 import { useProductMutation } from '@/entities/product';
@@ -9,8 +11,8 @@ import { Header } from '@/widgets/header';
 export const ProductUpdatePage = () => {
   const { productId } = useParams<{ productId: string }>();
   const { updateMutation } = useProductMutation();
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  // productId가 없는 경우 (비정상 접근)
   if (!productId) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -27,16 +29,19 @@ export const ProductUpdatePage = () => {
           <Button
             type="submit"
             form={PRODUCT_UPDATE_FORM_ID}
-            disabled={updateMutation.isPending}
-            className="h-10 cursor-pointer rounded-full bg-[#6FCA3C]/50 px-6 py-1 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[#5CB32A]"
+            disabled={updateMutation.isPending || !isFormValid}
+            className={`h-10 rounded-full px-6 py-1 text-sm font-medium whitespace-nowrap text-white transition-colors ${
+              isFormValid
+                ? 'cursor-pointer bg-[#6FCA3C]/50 hover:bg-[#5CB32A]'
+                : 'pointer-events-none cursor-not-allowed bg-gray-300'
+            }`}
           >
             {updateMutation.isPending ? '저장 중...' : '저장'}
           </Button>
         }
       />
-
       <main className="bg-background flex-1 px-4 py-6">
-        <ProductUpdateForm productId={productId} />
+        <ProductUpdateForm productId={productId} onValidChange={setIsFormValid} />
       </main>
     </>
   );

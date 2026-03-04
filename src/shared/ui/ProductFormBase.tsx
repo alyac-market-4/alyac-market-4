@@ -8,6 +8,7 @@ interface ProductFormBaseProps<T extends FieldValues> {
   onSubmit: SubmitHandler<T>;
   isPending: boolean;
   showSubmitButton?: boolean;
+  isFormValid?: boolean;
   imageUploadSlot: React.ReactNode;
   formFieldsSlot: React.ReactNode;
 }
@@ -18,6 +19,7 @@ export const ProductFormBase = <T extends FieldValues>({
   onSubmit,
   isPending,
   showSubmitButton = false,
+  isFormValid = false,
   imageUploadSlot,
   formFieldsSlot,
 }: ProductFormBaseProps<T>) => {
@@ -32,8 +34,12 @@ export const ProductFormBase = <T extends FieldValues>({
       {showSubmitButton && (
         <Button
           type="submit"
-          disabled={isPending}
-          className="h-10 w-full cursor-pointer rounded-full bg-[#6FCA3C]/50 text-sm font-medium text-white transition-colors hover:bg-[#5CB32A]"
+          disabled={isPending || !isFormValid}
+          className={`h-10 w-full rounded-full text-sm font-medium text-white transition-colors ${
+            isFormValid
+              ? 'cursor-pointer bg-[#6FCA3C]/50 hover:bg-[#5CB32A]'
+              : 'pointer-events-none cursor-not-allowed bg-gray-300'
+          }`}
         >
           {isPending ? '저장 중...' : '저장'}
         </Button>
