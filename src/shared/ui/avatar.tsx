@@ -29,7 +29,8 @@ function AvatarImage({ className, ...props }: React.ComponentProps<typeof Avatar
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
-      className={cn('aspect-square size-full', className)}
+      // 이미지 자체도 원형 + 찌그러짐 방지
+      className={cn('aspect-square size-full rounded-full object-cover', className)}
       {...props}
     />
   );

@@ -1,3 +1,4 @@
+// 게시물 본문 텍스트 입력 textarea UI를 담당하는 컴포넌트
 type Props = {
   value: string;
   onChangeValue: (next: string) => void;

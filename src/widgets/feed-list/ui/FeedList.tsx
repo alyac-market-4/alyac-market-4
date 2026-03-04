@@ -1,3 +1,4 @@
+// 피드 API(/api/post/feed)로 게시물 목록을 조회하고 로딩/에러/빈상태/리스트 UI를 처리하는 컴포넌트
 import { useNavigate } from 'react-router-dom';
 
 import { useFeedPostsQuery } from '@/entities/post';
@@ -13,6 +14,7 @@ export const FeedList = () => {
 
   const isEmptyFeed = posts.length === 0;
 
+  // LoadingState가 기본으로 중앙정렬
   if (isLoading) return <LoadingState />;
 
   if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => refetch()} />;
