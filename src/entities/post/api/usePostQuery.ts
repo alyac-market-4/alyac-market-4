@@ -39,12 +39,12 @@ export const useUserPostsQuery = (accountname: string, limit: number = 10, skip:
 export const usePostMutation = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
+  const { navigateBackOrTo } = useReplaceNavigate();
 
   const createMutation = useMutation({
     mutationFn: ({ content, image }: { content: string; image: string }) =>
       postApi.createPost({ post: { content, image } }),
     onSuccess: (data) => {
-      const { navigateBackOrTo } = useReplaceNavigate();
       queryClient.invalidateQueries({ queryKey: postKeys.all });
       navigateBackOrTo(`/post/${data.id}`);
     },
@@ -105,7 +105,6 @@ export const usePostMutation = () => {
     mutationFn: ({ postId, post }: { postId: string; post: { content: string; image: string } }) =>
       postApi.updatePost({ postId, post }),
     onSuccess: (data) => {
-      const { navigateBackOrTo } = useReplaceNavigate();
       queryClient.invalidateQueries({ queryKey: postKeys.all });
       navigateBackOrTo(`/post/${data.id}`);
     },
@@ -114,7 +113,6 @@ export const usePostMutation = () => {
   const deleteMutation = useMutation({
     mutationFn: (postId: string) => postApi.deletePost(postId),
     onSuccess: () => {
-      const { navigateBackOrTo } = useReplaceNavigate();
       queryClient.invalidateQueries({ queryKey: postKeys.all });
       if (!location.pathname.includes('/profile')) {
         navigateBackOrTo('/profile');
