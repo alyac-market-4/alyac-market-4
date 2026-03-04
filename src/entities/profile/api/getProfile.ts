@@ -15,7 +15,6 @@ export const profileApi = {
     const { data } = await axiosInstance.get<GetUserProfileResponse>(
       API_ENDPOINTS.PROFILE.GET_PROFILE(accountname),
     );
-    console.log(data);
     return data.profile;
   },
   getFollowings: async (
