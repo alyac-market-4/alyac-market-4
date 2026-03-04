@@ -1,5 +1,6 @@
 import { axiosInstance } from '@/shared/api';
 import type { Comment } from '@/shared/model';
+import { API_ENDPOINTS } from '@/shared/model';
 
 import type {
   CreateCommentRequest,
@@ -18,7 +19,7 @@ export const commentApi = {
     skip: number = 0,
   ): Promise<Comment[]> => {
     const { data } = await axiosInstance.get<GetPostCommentsResponse>(
-      `/api/post/${postId}/comments`,
+      API_ENDPOINTS.POST.COMMENTS.GET_LIST(postId),
       {
         params: {
           limit,
@@ -31,7 +32,7 @@ export const commentApi = {
 
   createComment: async ({ postId, comment }: CreateCommentRequest): Promise<Comment> => {
     const { data } = await axiosInstance.post<CreateCommentResponse>(
-      `/api/post/${postId}/comments`,
+      API_ENDPOINTS.POST.COMMENTS.CREATE(postId),
       {
         comment,
       },
@@ -41,14 +42,14 @@ export const commentApi = {
 
   deleteComment: async ({ postId, commentId }: DeleteCommentRequest): Promise<string> => {
     const { data } = await axiosInstance.delete<DeleteCommentResponse>(
-      `/api/post/${postId}/comments/${commentId}`,
+      API_ENDPOINTS.POST.COMMENTS.DELETE(postId, commentId),
     );
     return data.message;
   },
 
   reportComment: async ({ postId, commentId }: ReportCommentRequest): Promise<string> => {
     const { data } = await axiosInstance.post<ReportCommentResponse>(
-      `/api/post/${postId}/comments/${commentId}/report`,
+      API_ENDPOINTS.POST.COMMENTS.REPORT(postId, commentId),
     );
     return data.report.content;
   },
