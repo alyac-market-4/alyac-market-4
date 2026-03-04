@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { FollowStat, ProfileInfo } from '@/entities/profile';
 import type { User } from '@/shared/model';
 import { ProfileAvatar } from '@/shared/ui';
@@ -15,7 +17,11 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
           count={user.followerCount}
           link={`/followers/${user.accountname}`}
         />
-        <ProfileAvatar src={user.image} alt={user.username} size="xl" />
+
+        <Link to={`/profile-update`} state={{ user }} className="rounded-full">
+          <ProfileAvatar src={user.image} alt={user.username} size="xl" />
+        </Link>
+
         <FollowStat
           label="Followings"
           count={user.followingCount}

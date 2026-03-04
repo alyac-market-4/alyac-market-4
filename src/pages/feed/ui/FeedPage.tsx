@@ -1,3 +1,4 @@
+// 팔로우 피드 화면을 구성하고(헤더/검색 이동) 피드 목록 위젯을 렌더링하는 페이지
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

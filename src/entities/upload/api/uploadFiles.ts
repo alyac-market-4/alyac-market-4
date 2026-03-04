@@ -1,3 +1,4 @@
+// 여러 이미지 파일을 FormData로 묶어 /api/image/uploadfiles로 업로드하고 파일명을 반환하는 API 함수
 import { uploadApi } from '@/shared/api';
 
 export interface UploadResponse {

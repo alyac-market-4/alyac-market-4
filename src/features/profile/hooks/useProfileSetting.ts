@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
@@ -38,7 +39,7 @@ export const useProfileSetting = (user: ReturnType<typeof useLocation>['state'][
 
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) {
-      alert('이전 단계 데이터가 없습니다.');
+      toast.success('이전 단계 데이터가 없습니다.');
       navigate('/sign-up');
       return;
     }
@@ -52,8 +53,8 @@ export const useProfileSetting = (user: ReturnType<typeof useLocation>['state'][
 
       await signUpMutation.mutateAsync({ ...user, ...data, image: profileImageUrl });
       navigate('/sign-in');
-    } catch (error) {
-      console.error(error);
+    } catch {
+      toast.error('서버 오류가 발생했습니다.');
     }
   };
 

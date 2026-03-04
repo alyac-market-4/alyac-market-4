@@ -1,3 +1,4 @@
+// 계정 검색 키워드 입력(자동 포커스/옵션 백버튼 포함)을 담당하는 입력 UI 컴포넌트
 import { useEffect, useRef } from 'react';
 
 import { BackButton } from '@/shared/ui';

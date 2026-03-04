@@ -16,7 +16,9 @@ export const ConfirmRenderer = () => {
         if (!open) closeConfirm();
       }}
       onConfirm={() => {
-        confirmDialog.onConfirm();
+        if (confirmDialog.onConfirm) {
+          confirmDialog.onConfirm();
+        }
         closeConfirm();
       }}
     />

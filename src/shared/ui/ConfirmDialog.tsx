@@ -13,10 +13,12 @@ export interface ConfirmDialogProps {
   title: string;
   description: string;
   onCancel?: () => void;
-  onConfirm: () => void;
-  actionText: string;
+  onConfirm?: () => void;
+  cancelText?: string;
+  actionText?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  isAlert?: boolean;
 }
 
 export function ConfirmDialog({
@@ -24,9 +26,11 @@ export function ConfirmDialog({
   description,
   onCancel,
   onConfirm,
-  actionText,
+  cancelText = '취소',
+  actionText = '확인',
   open,
   onOpenChange,
+  isAlert = false,
 }: ConfirmDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -37,19 +41,21 @@ export function ConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-1 gap-0">
           <AlertDialogCancel
-            className="h-12 flex-1 rounded-none rounded-bl-lg border-t border-r px-4 py-2"
+            className={`h-12 flex-1 divide-x rounded-none border-t px-4 py-2 ${isAlert ? 'rounded-b-lg' : 'rounded-bl-lg'}`}
             variant="ghost"
             onClick={onCancel}
           >
-            취소
+            {cancelText}
           </AlertDialogCancel>
-          <AlertDialogAction
-            className="h-12 flex-1 rounded-none rounded-br-lg border-t border-l px-4 py-2"
-            variant="ghost"
-            onClick={onConfirm}
-          >
-            {actionText}
-          </AlertDialogAction>
+          {!isAlert && (
+            <AlertDialogAction
+              className="h-12 flex-1 rounded-none rounded-br-lg border-t border-l px-4 py-2"
+              variant="ghost"
+              onClick={onConfirm}
+            >
+              {actionText}
+            </AlertDialogAction>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

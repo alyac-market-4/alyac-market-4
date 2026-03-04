@@ -1,3 +1,4 @@
+// 계정 검색 화면에서 입력값을 디바운스+Zod 검증 후 검색 패널에 전달하는 페이지
 import { useMemo, useState } from 'react';
 
 import { accountSearchKeywordSchema } from '@/features/account-search/model/schemas';
@@ -10,7 +11,7 @@ import { Header } from '@/widgets/header';
 export const AccountSearchPage = () => {
   const [keyword, setKeyword] = useState('');
 
-  // ✅ 입력 자체를 디바운스한 뒤, Zod로 trim + 검증
+  // 입력 자체를 디바운스한 뒤, Zod로 trim + 검증
   const debouncedRaw = useDebouncedValue(keyword, 300);
 
   const { normalizedKeyword, keywordError } = useMemo(() => {

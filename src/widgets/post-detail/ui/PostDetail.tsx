@@ -5,18 +5,11 @@ import { Link } from 'react-router-dom';
 import { CommentButton } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
-import { imageUrl } from '@/shared/lib/imageUrl';
+import { imageUrl, splitImageSegments } from '@/shared/lib/imageUrl';
 import type { Post } from '@/shared/model';
 
 export const PostDetail = ({ post }: { post: Post }) => {
-  const images = useMemo(
-    () =>
-      (post.image ?? '')
-        .split(',')
-        .map((v) => v.trim())
-        .filter(Boolean),
-    [post.image],
-  );
+  const images = useMemo(() => splitImageSegments(post.image), [post.image]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -60,7 +53,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
     <>
       {/* 작성자 */}
       <div className="flex items-center gap-3 px-4 py-4">
-        {/* ✅ 프로필 클릭 시 상대 프로필로 이동 */}
+        {/* 프로필 클릭 시 상대 프로필로 이동 */}
         <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
           <ProfileBadge
             accountname={post.author.accountname}

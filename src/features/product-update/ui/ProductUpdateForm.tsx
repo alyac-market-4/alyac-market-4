@@ -8,6 +8,7 @@ import { z } from 'zod';
 
 import { useProductDetailQuery, useProductMutation } from '@/entities/product';
 import { productUpdateSchema } from '@/features/product-update/model/schemas';
+import { splitImageSegments } from '@/shared/lib/imageUrl';
 import { ProductFormBase } from '@/shared/ui/ProductFormBase';
 
 import { ProductUpdateFormFields } from './ProductUpdateFormFields';
@@ -124,7 +125,7 @@ export const ProductUpdateForm = ({
     );
   }
 
-  const initialImage = product.itemImage?.split(',')[0];
+  const initialImage = splitImageSegments(product.itemImage)[0];
 
   return (
     <ProductFormBase

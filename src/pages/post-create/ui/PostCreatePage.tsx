@@ -1,5 +1,7 @@
-// src/pages/post-create/ui/PostCreatePage.tsx
+// 게시물 내용/이미지 입력 상태를 관리하고 이미지 업로드 후 게시물 생성 API를 호출하는 업로드 페이지
 import { useMemo, useState } from 'react';
+
+import axios from 'axios';
 
 import { usePostMutation } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
@@ -13,36 +15,46 @@ export const PostCreatePage = () => {
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
 
-  // 처음엔 에러 안 보여주고, 한 번이라도 건드리면 보여주기
+  // 처음엔 에러/안내문을 숨기고, 한 번이라도 입력/선택을 하면 그때부터 보여주기
   const [isTouched, setIsTouched] = useState(false);
 
   const uploadMutation = useUploadFiles();
   const { createMutation } = usePostMutation();
 
+  // 업로드 요청 or 게시물 생성 요청 중 하나라도 진행중이면 제출중 처리
+  // (중복 클릭 방지 / 버튼 비활성화)
   const isSubmitting = uploadMutation.isPending || createMutation.isPending;
 
+  // Zod로 "현재 입력 상태"가 유효한지 검사
+  // - content / files 규칙(예: 글자수, 이미지 개수, 용량 등)을 스키마에서 판단
   const zodResult = useMemo(() => {
     return postCreateSchema.safeParse({ content, files });
   }, [content, files]);
 
+  // 스키마 통과하면 업로드 버튼 활성화
   const canUpload = zodResult.success;
 
+  // 화면 하단 안내 문구
   const helperText = useMemo(() => {
-    if (!isTouched) return ''; // 처음 진입 시엔 아무것도 안 보여줌
+    // 처음 진입 시엔 아무것도 안 보여줌 (예제 UX처럼)
+    if (!isTouched) return '';
 
-    // 빈 상태면 예제처럼 “내용 입력” 안내
+    // 빈 상태면 “내용 입력” 안내
     const isEmpty = content.trim().length === 0 && files.length === 0;
     if (isEmpty) return '게시글 내용을 입력해주세요.';
 
-    // 그 외(이미지 4개, 용량 초과 등)도 바로 안내
-    if (!zodResult.success) {
-      return zodResult.error.issues[0]?.message ?? '';
-    }
+    // 그 외(이미지 4개 초과, 용량 초과 등) 스키마 에러 표시
+    if (!zodResult.success) return zodResult.error.issues[0]?.message ?? '';
 
     return '';
-  }, [isTouched, content, files.length, zodResult]);
+  }, [isTouched, content, files, zodResult]);
 
   const onClickUpload = async () => {
+    // 업로드 버튼을 눌렀다는 것 자체도 "사용자가 상호작용했다"로 보고
+    // 아무것도 입력 안 했을 때 안내문이 뜨도록 touched 처리
+    if (!isTouched) setIsTouched(true);
+
+    // 유효하지 않거나(스키마 실패), 제출중이면 막기
     if (!canUpload || isSubmitting) return;
 
     const parsed = postCreateSchema.parse({ content, files });
@@ -54,18 +66,30 @@ export const PostCreatePage = () => {
 
       if (safeFiles.length > 0) {
         const uploaded = await uploadMutation.mutateAsync(safeFiles);
-        // 서버는 업로드된 파일을 /uploadFiles/<filename> 경로로 제공
-        // DB에는 filename만 저장하지 말고, 실제 접근 가능한 경로까지 저장해야 화면에서 깨지지 않음
         image = uploaded.map((item) => item.filename).join(',');
       }
 
-      createMutation.mutate({
+      await createMutation.mutateAsync({
         content: safeContent,
         image,
       });
     } catch (err) {
-      if (err instanceof Error) alert(err.message);
-      else alert('업로드/등록 중 오류가 발생했습니다.');
+      // 실패 원인은 개발자가 콘솔에서 확인할 수 있게 남김
+      if (axios.isAxiosError(err)) {
+        console.error('UPLOAD/CREATE AXIOS ERROR', {
+          message: err.message,
+          code: err.code,
+          url: err.config?.url,
+          baseURL: err.config?.baseURL,
+          method: err.config?.method,
+          status: err.response?.status,
+          data: err.response?.data,
+        });
+      } else {
+        console.error('UPLOAD/CREATE ERROR:', err);
+      }
+
+      alert('업로드/등록 중 오류가 발생했습니다.');
     }
   };
 
@@ -80,12 +104,14 @@ export const PostCreatePage = () => {
         <PostCreateForm
           content={content}
           onChangeContent={(next) => {
-            if (!isTouched) setIsTouched(true); // ✅ 한 번이라도 입력하면 touched
+            // 한 번이라도 입력하면 touched
+            if (!isTouched) setIsTouched(true);
             setContent(next);
           }}
           files={files}
           onChangeFiles={(next) => {
-            if (!isTouched) setIsTouched(true); // ✅ 이미지 선택도 touched로 취급
+            // 이미지 선택도 touched로 취급
+            if (!isTouched) setIsTouched(true);
             setFiles(next);
           }}
         />

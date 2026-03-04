@@ -1,3 +1,4 @@
+// 유저 검색/내정보/프로필 업데이트 등 유저 관련 react-query 훅을 제공하는 모듈
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { profileKeys, userKeys } from '@/shared/model';

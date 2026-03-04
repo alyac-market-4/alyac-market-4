@@ -76,14 +76,17 @@ export const FollowPage = () => {
                 {user.accountname === getTokenUserInfo().accountname ? null : user.isFollow ? (
                   <Button
                     onClick={() => handleUnfollow(user.accountname)}
+                    disabled={unfollowMutation.isPending}
                     type="button"
-                    variant="default"
+                    variant="outline"
+                    className="rounded-full"
                   >
                     언팔로우
                   </Button>
                 ) : (
                   <Button
                     onClick={() => handleFollow(user.accountname)}
+                    disabled={followMutation.isPending}
                     type="button"
                     variant="alyac"
                   >
