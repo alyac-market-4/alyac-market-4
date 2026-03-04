@@ -16,7 +16,8 @@ function Avatar({
       data-slot="avatar"
       data-size={size}
       className={cn(
-        'group/avatar relative flex size-8 shrink-0 rounded-full select-none data-[size=lg]:size-12 data-[size=sm]:size-6',
+        // 원형으로 "잘라내기" 위해 overflow-hidden 추가
+        'group/avatar relative flex size-8 shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-12 data-[size=sm]:size-6',
         'data-[size=xl]:size-24',
         className,
       )}
@@ -29,7 +30,8 @@ function AvatarImage({ className, ...props }: React.ComponentProps<typeof Avatar
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
-      className={cn('aspect-square size-full', className)}
+      // 이미지 자체도 원형 + 찌그러짐 방지
+      className={cn('aspect-square size-full rounded-full object-cover', className)}
       {...props}
     />
   );
