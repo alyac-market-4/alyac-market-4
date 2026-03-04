@@ -2,17 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { useUserMutation } from '@/entities/user';
 import { FormSubmitButton, useSignUpStore } from '@/features/auth';
 import { type ProfileFormData, profileSchema } from '@/features/profile';
 import { ProfileImageUpload } from '@/features/profile';
+import { useReplaceNavigate } from '@/shared/lib';
 import { Form, FormInputField } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
-  const navigate = useNavigate();
+  const { navigateBackOrTo } = useReplaceNavigate();
   const { signUpMutation } = useAuth();
   const { validateAccountnameMutation } = useUserMutation();
 
@@ -47,7 +48,7 @@ export const ProfileSettingPage = () => {
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) {
       alert('이전 단계 데이터가 없습니다.');
-      navigate('/sign-up');
+      navigateBackOrTo('/sign-up');
       return;
     }
 
@@ -68,7 +69,7 @@ export const ProfileSettingPage = () => {
       };
 
       await signUpMutation.mutateAsync(userInfo);
-      navigate('/sign-in');
+      navigateBackOrTo('/sign-in');
     } catch (error) {
       console.error(error);
     }

@@ -2,15 +2,15 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { FormSubmitButton } from '@/features/auth';
 import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
+import { useReplaceNavigate } from '@/shared/lib';
 import { Form, FormErrorMessage, FormInputField } from '@/shared/ui';
 
 export const SignInForm = () => {
-  const navigate = useNavigate();
+  const { navigateBackOrTo } = useReplaceNavigate();
   const { signInMutation } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -25,7 +25,7 @@ export const SignInForm = () => {
     signInMutation.mutate(
       { user: data },
       {
-        onSuccess: () => navigate('/feed'),
+        onSuccess: () => navigateBackOrTo('/feed'),
         onError: () => setServerError('이메일 또는 비밀번호가 일치하지 않습니다.'),
       },
     );

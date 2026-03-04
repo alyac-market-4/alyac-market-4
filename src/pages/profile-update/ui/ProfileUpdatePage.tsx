@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 import { useUserMutation } from '@/entities/user';
 import { type ProfileFormData, ProfileImageUpload, profileSchema } from '@/features/profile';
+import { useReplaceNavigate } from '@/shared/lib';
 import { BackButton, Button, Form, FormInputField } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -15,7 +15,7 @@ TODO : 컴포넌트화
 
 */
 export const ProfileUpdatePage = () => {
-  const navigate = useNavigate();
+  const { navigateBackOrTo } = useReplaceNavigate();
   const { updateProfileMutation } = useUserMutation();
 
   const location = useLocation();
@@ -42,7 +42,7 @@ export const ProfileUpdatePage = () => {
           image: profileImageUrl,
         },
       });
-      navigate('/profile');
+      navigateBackOrTo('/profile');
     } catch (error) {
       console.error(error);
     }
