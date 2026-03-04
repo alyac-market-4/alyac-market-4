@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/shared/api';
-import type { User } from '@/shared/model';
+import { API_ENDPOINTS, type User } from '@/shared/model';
 
 import type {
   FollowUserResponse,
@@ -12,7 +12,10 @@ import type {
 
 export const profileApi = {
   getUserProfile: async (accountname: string): Promise<Profile> => {
-    const { data } = await axiosInstance.get<GetUserProfileResponse>(`/api/profile/${accountname}`);
+    const { data } = await axiosInstance.get<GetUserProfileResponse>(
+      API_ENDPOINTS.PROFILE.GET_PROFILE(accountname),
+    );
+    console.log(data);
     return data.profile;
   },
   getFollowings: async (
@@ -21,7 +24,7 @@ export const profileApi = {
     skip: number = 0,
   ): Promise<User[]> => {
     const { data } = await axiosInstance.get<GetFollowingsResponse>(
-      `/api/profile/${accountname}/following`,
+      API_ENDPOINTS.PROFILE.GET_FOLLOWINGS(accountname),
       { params: { limit, skip } },
     );
     return data.following || [];
@@ -32,7 +35,7 @@ export const profileApi = {
     skip: number = 0,
   ): Promise<User[]> => {
     const { data } = await axiosInstance.get<GetFollowersResponse>(
-      `/api/profile/${accountname}/follower`,
+      API_ENDPOINTS.PROFILE.GET_FOLLOWERS(accountname),
       { params: { limit, skip } },
     );
     return data.follower || [];
@@ -40,14 +43,14 @@ export const profileApi = {
 
   followUser: async (accountname: string): Promise<User> => {
     const { data } = await axiosInstance.post<FollowUserResponse>(
-      `/api/profile/${accountname}/follow`,
+      API_ENDPOINTS.PROFILE.FOLLOW(accountname),
     );
     return data.profile;
   },
 
   unfollowUser: async (accountname: string): Promise<User> => {
     const { data } = await axiosInstance.delete<UnfollowUserResponse>(
-      `/api/profile/${accountname}/unfollow`,
+      API_ENDPOINTS.PROFILE.UNFOLLOW(accountname),
     );
     return data.profile;
   },
