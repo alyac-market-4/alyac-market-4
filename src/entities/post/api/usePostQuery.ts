@@ -101,7 +101,7 @@ export const usePostMutation = () => {
     },
   });
 
-  // ✅ 여기만 핵심 수정: update는 Post 전체가 아니라 { content, image }만 받도록 변경
+  // update는 Post 전체가 아니라 { content, image }만 받도록 변경
   const updateMutation = useMutation({
     mutationFn: ({ postId, post }: { postId: string; post: { content: string; image: string } }) =>
       postApi.updatePost({ postId, post }),
