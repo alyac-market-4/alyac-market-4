@@ -6,8 +6,7 @@ import { toast } from 'sonner';
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
 import { useUserProfileQuery } from '@/entities/profile';
-import { useConfirmDialogStore } from '@/shared/lib';
-import { getTokenUserInfo } from '@/shared/lib';
+import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
 import {
   BackButton,
   Button,
@@ -15,6 +14,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
   KebabMenu,
+  LoadingState,
   ProfileAvatar,
 } from '@/shared/ui';
 import { CommentList } from '@/widgets/comment-list';
@@ -23,8 +23,10 @@ import { PostDetail } from '@/widgets/post-detail';
 
 export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
+
   const { data: user } = useUserProfileQuery(getTokenUserInfo().accountname);
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
+
   const { createMutation } = useCommentMutation();
   const { deleteMutation, reportMutation } = usePostMutation();
   const { openConfirm } = useConfirmDialogStore();
@@ -36,17 +38,20 @@ export const PostDetailPage = () => {
   } = usePostCommentsQuery(postId);
 
   const [comment, setComment] = useState<string>('');
+
   const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     createMutation.mutate({ postId, content: comment });
     setComment('');
   };
 
-  if (isLoadingPost || isLoadingComments) return <div>로딩 중...</div>;
+  // 공통 LoadingState
+  if (isLoadingPost || isLoadingComments) return <LoadingState />;
   if (isErrorPost || isErrorComments) return <div>에러</div>;
   if (!post) return <div>게시글을 찾을 수 없습니다</div>;
 
   const isMe = post.author.accountname === getTokenUserInfo().accountname;
+
   const kebabMenuItems = isMe
     ? [
         {
@@ -84,10 +89,12 @@ export const PostDetailPage = () => {
   return (
     <>
       <Header left={<BackButton />} right={<KebabMenu items={kebabMenuItems} />} />
+
       <main className="flex-1 overflow-y-auto">
         <article className="border-border border-b pb-4">
           <PostDetail post={post} />
         </article>
+
         <div className="divide-border divide-y">
           {Number(post.commentCount) > 0 ? (
             comments?.map((comment) => (
@@ -102,9 +109,11 @@ export const PostDetailPage = () => {
           )}
         </div>
       </main>
+
       <div className="border-border bg-background sticky right-0 bottom-0 left-0 border-t px-4 py-3">
         <form className="flex items-center gap-3" onSubmit={handleCommentSubmit}>
           <ProfileAvatar src={user?.image || ''} alt={user?.accountname || ''} size="lg" />
+
           <div className="relative flex-1">
             <InputGroup variant="default" size="lg">
               <InputGroupInput

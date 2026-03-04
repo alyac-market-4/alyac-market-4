@@ -14,6 +14,7 @@ export const FeedList = () => {
 
   const isEmptyFeed = posts.length === 0;
 
+  // LoadingState가 기본으로 중앙정렬
   if (isLoading) return <LoadingState />;
 
   if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => refetch()} />;
