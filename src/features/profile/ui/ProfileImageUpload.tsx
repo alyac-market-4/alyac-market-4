@@ -56,7 +56,7 @@ export const ProfileImageUpload = ({
       <ImageFileButton
         onClick={handleButtonClick}
         disabled={uploadMutation.isPending}
-        className="absolute right-0 bottom-0 bg-[var(--main-button)] hover:bg-[var(--main-button-hover)]"
+        className="bg-main-alyac-color hover:bg-main-alyac-color-hover absolute right-0 bottom-0"
       />
     </div>
   );
