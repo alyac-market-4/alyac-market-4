@@ -1,4 +1,4 @@
-// src/pages/post-create/ui/PostCreatePage.tsx
+// 게시물 내용/이미지 입력 상태를 관리하고 이미지 업로드 후 게시물 생성 API를 호출하는 업로드 페이지
 import { useMemo, useState } from 'react';
 
 import { usePostMutation } from '@/entities/post';
