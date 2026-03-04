@@ -2,8 +2,10 @@ import axios from 'axios';
 
 import { getRefreshToken, getToken, removeToken, saveToken } from '@/shared/lib';
 
+const API_PREFIX = '/api';
+
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}${API_PREFIX}`,
   timeout: 10000,
 });
 

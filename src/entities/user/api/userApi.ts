@@ -2,7 +2,7 @@
 import { z } from 'zod';
 
 import { axiosInstance } from '@/shared/api';
-import type { User } from '@/shared/model';
+import { API_ENDPOINTS, type User } from '@/shared/model';
 
 import type {
   UpdateProfileRequest,
@@ -32,13 +32,13 @@ const searchUserSchema = z
 
 export const userApi = {
   getMyInfo: async (): Promise<User> => {
-    const { data } = await axiosInstance.get<UserResponse>(`/api/user/myinfo`);
+    const { data } = await axiosInstance.get<UserResponse>(API_ENDPOINTS.USER.GET_MY_INFO);
     return data.user;
   },
 
   // ✅ 여기만 Zod 추가
   searchUser: async (keyword: string): Promise<User[]> => {
-    const { data } = await axiosInstance.get<SearchUserResponse>(`/api/user/searchuser`, {
+    const { data } = await axiosInstance.get<SearchUserResponse>(API_ENDPOINTS.USER.SEARCH, {
       params: { keyword },
     });
 
@@ -52,7 +52,10 @@ export const userApi = {
   },
 
   validateEmail: async (email: ValidateEmailRequest): Promise<ValidateEmailResponse> => {
-    const { data } = await axiosInstance.post<ValidateEmailResponse>(`/api/user/emailvalid`, email);
+    const { data } = await axiosInstance.post<ValidateEmailResponse>(
+      API_ENDPOINTS.USER.VALID_EMAIL,
+      email,
+    );
     return data;
   },
 
@@ -60,14 +63,14 @@ export const userApi = {
     accountname: ValidateAccountnameRequest,
   ): Promise<ValidateAccountnameResponse> => {
     const { data } = await axiosInstance.post<ValidateAccountnameResponse>(
-      `/api/user/accountnamevalid`,
+      API_ENDPOINTS.USER.VALID_ACCOUNT,
       accountname,
     );
     return data;
   },
 
   updateProfile: async (userInfo: UpdateProfileRequest): Promise<User> => {
-    const { data } = await axiosInstance.put<User>(`/api/user`, userInfo);
+    const { data } = await axiosInstance.put<User>(API_ENDPOINTS.USER.UPDATE_PROFILE, userInfo);
     return data;
   },
 };
