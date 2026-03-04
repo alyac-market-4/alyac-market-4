@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
+import { useReplaceNavigate } from '@/shared/lib';
 import { type Post, postKeys } from '@/shared/model';
 
 import { postApi } from './postApi';
@@ -37,15 +38,15 @@ export const useUserPostsQuery = (accountname: string, limit: number = 10, skip:
 
 export const usePostMutation = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const createMutation = useMutation({
     mutationFn: ({ content, image }: { content: string; image: string }) =>
       postApi.createPost({ post: { content, image } }),
     onSuccess: (data) => {
+      const { navigateBackOrTo } = useReplaceNavigate();
       queryClient.invalidateQueries({ queryKey: postKeys.all });
-      navigate(`/post/${data.id}`);
+      navigateBackOrTo(`/post/${data.id}`);
     },
   });
 
@@ -104,17 +105,19 @@ export const usePostMutation = () => {
     mutationFn: ({ postId, post }: { postId: string; post: { content: string; image: string } }) =>
       postApi.updatePost({ postId, post }),
     onSuccess: (data) => {
+      const { navigateBackOrTo } = useReplaceNavigate();
       queryClient.invalidateQueries({ queryKey: postKeys.all });
-      navigate(`/post/${data.id}`);
+      navigateBackOrTo(`/post/${data.id}`);
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (postId: string) => postApi.deletePost(postId),
     onSuccess: () => {
+      const { navigateBackOrTo } = useReplaceNavigate();
       queryClient.invalidateQueries({ queryKey: postKeys.all });
       if (!location.pathname.includes('/profile')) {
-        navigate('/profile');
+        navigateBackOrTo('/profile');
       }
     },
   });

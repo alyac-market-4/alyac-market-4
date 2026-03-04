@@ -1,14 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
-import { getToken, removeToken, saveToken } from '@/shared/lib';
+import { getToken, removeToken, saveToken, useReplaceNavigate } from '@/shared/lib';
 import { authKeys } from '@/shared/model';
 
 import { authApi } from '../api/auth';
 import type { SignInRequest, SignUpFormData } from './types';
 
 export const useAuth = () => {
-  const navigate = useNavigate();
+  const { navigateBackOrTo } = useReplaceNavigate();
   const queryClient = useQueryClient();
 
   const checkTokenQuery = useQuery({
@@ -35,7 +34,7 @@ export const useAuth = () => {
   const logout = () => {
     removeToken();
     queryClient.clear();
-    navigate('/sign-in');
+    navigateBackOrTo('/sign-in');
   };
 
   const isAuthenticated = !!getToken();
