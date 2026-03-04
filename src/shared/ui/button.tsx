@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         alyac:
-          'transition-colors items-center justify-center gap-2 rounded-full bg-[var(--main-button)]  inline-flex text-white hover:bg-[var(--main-button-hover)]',
+          'transition-colors items-center justify-center gap-2 rounded-full bg-main-alyac-color  inline-flex text-white hover:bg-main-alyac-color-hover',
         login: 'bg-card ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2',
       },
       size: {

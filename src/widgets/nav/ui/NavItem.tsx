@@ -20,7 +20,7 @@ export const NavItem = ({ to, icon, label, isActive }: NavItemProps) => {
         'flex flex-col items-center justify-center gap-1 p-2',
         buttonVariants({ variant: 'ghost', size: 'icon-lg' }),
         'h-auto w-auto',
-        isActive && 'text-primary',
+        isActive && 'text-main-alyac-color',
       )}
     >
       {icon}

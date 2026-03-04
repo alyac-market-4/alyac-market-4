@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useUserMutation } from '@/entities/user';
 import { type ProfileFormData, profileSchema } from '@/features/profile';
@@ -33,9 +34,10 @@ export const useProfileUpdate = (user: ProfileFormData & { image?: string }) => 
           image: profileImageUrl,
         },
       });
+      toast.success('프로필 정보가 수정되었습니다.');
       navigate('/profile');
-    } catch (error) {
-      console.error(error);
+    } catch {
+      toast.error('서버 오류가 발생했습니다.');
     }
   };
 

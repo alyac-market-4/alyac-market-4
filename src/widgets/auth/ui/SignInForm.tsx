@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
 import { useAuth } from '@/entities/auth';
@@ -26,7 +27,15 @@ export const SignInForm = () => {
       { user: data },
       {
         onSuccess: () => navigateBackOrTo('/feed'),
-        onError: () => setServerError('이메일 또는 비밀번호가 일치하지 않습니다.'),
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            if (error.status === 422) {
+              setServerError('이메일 또는 비밀번호가 일치하지 않습니다.');
+            } else {
+              setServerError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            }
+          }
+        },
       },
     );
   };

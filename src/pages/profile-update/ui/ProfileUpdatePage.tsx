@@ -1,14 +1,33 @@
+import { skipToken } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
-import { ProfileFormFields } from '@/features/profile';
-import { useProfileUpdate } from '@/features/profile/hooks/useProfileUpdate';
-import { BackButton, Button, Form } from '@/shared/ui';
+import { type Profile, useUserProfileQuery } from '@/entities/profile';
+import { ProfileFormFields, useProfileUpdate } from '@/features/profile';
+import { getTokenUserInfo } from '@/shared/lib';
+import { BackButton, Button, Form, Spinner } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const ProfileUpdatePage = () => {
   const location = useLocation();
-  const user = location.state?.user;
+  const locationUser: Profile = location.state?.user;
+  const { data: profileData, isLoading } = useUserProfileQuery(
+    locationUser ? skipToken : getTokenUserInfo().accountname,
+  );
 
+  const user = locationUser ?? profileData;
+
+  if (!locationUser && isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner className="text-primary size-16" />
+      </div>
+    );
+  if (!user) return null;
+
+  return <ProfileUpdateForm user={user} />;
+};
+
+const ProfileUpdateForm = ({ user }: { user: Profile }) => {
   const { form, setProfileImageUrl, onSubmit } = useProfileUpdate(user);
 
   return (
