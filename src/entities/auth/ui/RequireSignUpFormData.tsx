@@ -6,7 +6,7 @@ export const RequireSignUpFormData = () => {
   const { isValidated } = useSignUpStore();
 
   if (!isValidated) {
-    return <Navigate to="/sign-up" replace />;
+    return <Navigate to="/sign-up" />;
   }
 
   return <Outlet />;

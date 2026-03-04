@@ -16,6 +16,7 @@ export * from './label';
 export * from './LoadingState';
 export * from './PostImage';
 export * from './ProfileAvatar';
+export * from './skeleton';
 export * from './sonner';
 export * from './SuspenseWrapper';
 export * from './toggle-group';

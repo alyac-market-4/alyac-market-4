@@ -1,9 +1,12 @@
 import { useParams } from 'react-router-dom';
 
 import { ProductCard, useUserProductsQuery } from '@/entities/product';
+import { ProductCardSkeleton } from '@/entities/product';
 import { useUserProfileQuery } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
-import { ErrorView, LoadingState } from '@/shared/ui';
+import { ErrorView } from '@/shared/ui';
+
+const PRODUCT_CARD_SKELETON_COUNT = 3;
 
 export const ProductList = () => {
   const { accountname = '' } = useParams();
@@ -23,7 +26,11 @@ export const ProductList = () => {
       </div>
       <div className="scrollbar-hide flex gap-3 overflow-x-auto px-4 pb-2">
         {isLoading ? (
-          <LoadingState />
+          <>
+            {Array.from({ length: PRODUCT_CARD_SKELETON_COUNT }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </>
         ) : isError ? (
           <ErrorView message={'상품 목록 불러오기 실패'} onRetry={() => refetch()} />
         ) : products.length > 0 ? (
