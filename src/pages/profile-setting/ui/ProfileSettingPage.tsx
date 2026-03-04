@@ -1,134 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
-
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
-import { useAuth } from '@/entities/auth';
-import { useUserMutation } from '@/entities/user';
-import { FormSubmitButton, useSignUpStore } from '@/features/auth';
-import { type ProfileFormData, profileSchema } from '@/features/profile';
-import { ProfileImageUpload } from '@/features/profile';
-import { useReplaceNavigate } from '@/shared/lib';
-import { Form, FormInputField } from '@/shared/ui';
+import { FormSubmitButton } from '@/features/auth';
+import { useProfileSetting } from '@/features/profile/hooks/useProfileSetting';
+import { ProfileFormFields } from '@/features/profile/ui/ProfileFormFields';
+import { Form } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
-  const { navigateBackOrTo } = useReplaceNavigate();
-  const { signUpMutation } = useAuth();
-  const { validateAccountnameMutation } = useUserMutation();
-
   const location = useLocation();
   const user = location.state?.user;
 
-  const [profileImageUrl, setProfileImageUrl] = useState<string>(user?.image ?? '');
-
-  const form = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
-    mode: 'onChange',
-    defaultValues: {
-      username: '',
-      accountname: '',
-      intro: '',
-    },
-  });
-
-  const { reset } = useSignUpStore();
-  const isFirstRender = useRef(true);
-  useEffect(() => {
-    return () => {
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-        return;
-      }
-      reset();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSubmit = async (data: ProfileFormData) => {
-    if (!user) {
-      alert('이전 단계 데이터가 없습니다.');
-      navigateBackOrTo('/sign-up');
-      return;
-    }
-
-    try {
-      const response = await validateAccountnameMutation.mutateAsync(data.accountname);
-      if (!response.ok) {
-        form.setError('accountname', {
-          type: 'server',
-          message: response.message,
-        });
-        return;
-      }
-
-      const userInfo = {
-        ...user,
-        ...data,
-        image: profileImageUrl,
-      };
-
-      await signUpMutation.mutateAsync(userInfo);
-      navigateBackOrTo('/sign-in');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { form, setProfileImageUrl, onSubmit, isPending } = useProfileSetting(user);
 
   return (
-    <div>
-      <div className="bg-background flex min-h-screen justify-center px-4 pt-20">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center">
-            <h1 className="text-foreground mb-2 text-3xl font-bold">프로필 설정</h1>
-            <p className="text-muted-foreground text-sm">나중에 언제든지 변경할 수 있습니다.</p>
-          </div>
-
-          <div className="space-y-8">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                <div className="flex justify-center">
-                  <ProfileImageUpload
-                    initialImage={user?.image}
-                    alt={user?.username ?? '프로필 이미지'}
-                    onUploadComplete={(filename) => setProfileImageUrl(filename)}
-                  />
-                </div>
-
-                <FormInputField
-                  control={form.control}
-                  name="username"
-                  label="사용자 이름"
-                  placeholder="이름을 입력하세요."
-                  type="text"
-                />
-
-                <FormInputField
-                  control={form.control}
-                  name="accountname"
-                  label="계정 ID"
-                  placeholder="계정 아이디를 입력하세요."
-                  type="text"
-                />
-
-                <FormInputField
-                  control={form.control}
-                  name="intro"
-                  label="소개"
-                  placeholder="간단한 자기 소개를 입력하세요."
-                  type="text"
-                />
-
-                <FormSubmitButton
-                  label="알약마켓 시작하기"
-                  pendingLabel="처리 중..."
-                  isPending={signUpMutation.isPending}
-                  isValid={form.formState.isValid}
-                />
-              </form>
-            </Form>
-          </div>
+    <div className="bg-background flex min-h-screen justify-center px-4 pt-20">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-foreground mb-2 text-3xl font-bold">프로필 설정</h1>
+          <p className="text-muted-foreground text-sm">나중에 언제든지 변경할 수 있습니다.</p>
         </div>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+            <ProfileFormFields
+              control={form.control}
+              initialImage={user?.image}
+              username={user?.username}
+              onUploadComplete={setProfileImageUrl}
+              isAccountnameDisabled={false}
+            />
+            <FormSubmitButton
+              label="알약마켓 시작하기"
+              pendingLabel="처리 중..."
+              isPending={isPending}
+              isValid={form.formState.isValid}
+            />
+          </form>
+        </Form>
       </div>
     </div>
   );
