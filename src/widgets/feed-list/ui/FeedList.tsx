@@ -9,17 +9,13 @@ import { PostSummary } from '@/widgets/post-list/ui/PostSummary';
 export const FeedList = () => {
   const navigate = useNavigate();
 
+  // 실제 피드 API 연결 (기존 FeedPage 코드 그대로)
   const { data: posts = [], isLoading, isError, refetch } = useFeedPostsQuery(10, 0);
 
   const isEmptyFeed = posts.length === 0;
 
-  if (isLoading) {
-    return (
-      <section className="flex min-h-[70vh] items-center justify-center">
-        <LoadingState />
-      </section>
-    );
-  }
+  // LoadingState가 기본으로 중앙정렬
+  if (isLoading) return <LoadingState />;
 
   if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => refetch()} />;
 
