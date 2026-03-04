@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import { getToken, removeToken, saveToken, useReplaceNavigate } from '@/shared/lib';
 import { authKeys } from '@/shared/model';
@@ -27,7 +28,7 @@ export const useAuth = () => {
   const signUpMutation = useMutation({
     mutationFn: (userInfo: SignUpFormData) => authApi.signUp({ user: userInfo }),
     onSuccess: () => {
-      alert('회원가입이 완료되었습니다! 로그인해 주세요.');
+      toast.success('회원가입이 완료되었습니다! 로그인해 주세요.'); //TODO: dialog로 수정
     },
   });
 
