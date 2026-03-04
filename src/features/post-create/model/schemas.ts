@@ -1,4 +1,4 @@
-// src/features/post-create/model/schemas.ts
+// 게시물 업로드 입력값(내용/이미지 개수/용량/형식/빈값)을 검증하는 Zod 스키마 정의
 import { z } from 'zod';
 
 const MAX_CONTENT = 2200;

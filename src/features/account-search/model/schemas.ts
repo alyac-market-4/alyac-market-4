@@ -1,3 +1,4 @@
+// 계정 검색 키워드를 trim/길이 제한으로 검증하는 Zod 스키마 정의
 import { z } from 'zod';
 
 /**

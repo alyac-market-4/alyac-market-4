@@ -1,3 +1,4 @@
+// 검색어 상태(에러/빈값/로딩/실패/결과)를 분기하고 검색 결과 리스트 및 프로필 이동을 처리하는 패널
 import { useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';

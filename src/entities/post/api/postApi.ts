@@ -1,3 +1,4 @@
+// 게시물 관련 REST API 호출(전체/피드/상세/작성/수정/삭제/좋아요)을 axios로 래핑한 모듈
 import { axiosInstance } from '@/shared/api';
 import type { Post } from '@/shared/model/post';
 

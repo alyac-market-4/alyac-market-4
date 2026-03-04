@@ -1,3 +1,4 @@
+// 피드/리스트에서 게시물 1개 요약 카드(프로필/본문/이미지/좋아요/댓글/메뉴)를 렌더링하는 컴포넌트
 import { Layers } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
