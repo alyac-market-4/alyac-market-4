@@ -8,10 +8,22 @@ interface MyProfileActionButtonsProps {
 export function MyProfileActionButtons({ update, create }: MyProfileActionButtonsProps) {
   return (
     <>
-      <Button onClick={update} variant="outline" size="lg" className="flex-1" type="button">
+      <Button
+        onClick={update}
+        variant="outline"
+        size="lg"
+        className="flex-1 rounded-full"
+        type="button"
+      >
         프로필 수정
       </Button>
-      <Button onClick={create} variant="outline" size="lg" className="flex-1" type="button">
+      <Button
+        onClick={create}
+        variant="outline"
+        size="lg"
+        className="flex-1 rounded-full"
+        type="button"
+      >
         상품 등록
       </Button>
     </>

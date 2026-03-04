@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { FollowStat, ProfileInfo } from '@/entities/profile';
 import type { User } from '@/shared/model';
 import { ProfileAvatar } from '@/shared/ui';
@@ -7,6 +9,8 @@ interface ProfileCardProps {
 }
 
 export const ProfileCard = ({ user }: ProfileCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="flex items-center justify-center gap-12">
@@ -15,7 +19,14 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
           count={user.followerCount}
           link={`/followers/${user.accountname}`}
         />
-        <ProfileAvatar src={user.image} alt={user.username} size="xl" />
+
+        <button
+          onClick={() => navigate('/profile-update', { state: { user } })}
+          className="cursor-pointer"
+        >
+          <ProfileAvatar src={user.image} alt={user.username} size="xl" />
+        </button>
+
         <FollowStat
           label="Followings"
           count={user.followingCount}
