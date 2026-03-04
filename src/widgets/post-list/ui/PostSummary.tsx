@@ -1,3 +1,4 @@
+// 피드/리스트에서 게시물 1개 요약 카드(프로필/본문/이미지/좋아요/댓글/메뉴)를 렌더링하는 컴포넌트
 import { Layers } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -6,6 +7,7 @@ import { CommentButton, usePostMutation } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
 import { LikeButton } from '@/features/like-post';
 import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
+import { splitImageSegments } from '@/shared/lib/imageUrl';
 import type { Post } from '@/shared/model';
 import { KebabMenu, PostImage } from '@/shared/ui';
 
@@ -22,12 +24,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const goDetail = () => navigate(to);
 
   // 이미지 개수 계산
-  const images = (post.image ?? '')
-    .split(',')
-    .map((v) => v.trim())
-    .filter(Boolean);
-
-  const imageCount = images.length;
+  const imageCount = splitImageSegments(post.image).length;
 
   const isMe = post.author.accountname === getTokenUserInfo().accountname;
 
@@ -73,7 +70,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
       onClick={goDetail}
     >
       <div className="mb-3 flex items-center justify-between">
-        {/* ✅ 작성자 클릭 시 프로필로 이동 + 상세 클릭 전파 방지 */}
+        {/* 작성자 클릭 시 프로필로 이동 + 상세 클릭 전파 방지 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
           <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
             <ProfileBadge

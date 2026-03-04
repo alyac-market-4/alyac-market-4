@@ -1,3 +1,4 @@
+// 게시물 작성 폼 UI(내 프로필/본문 입력/이미지 선택·미리보기·삭제/파일 제약 처리)를 담당하는 컴포넌트
 import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
 
 import { X } from 'lucide-react';
@@ -130,7 +131,7 @@ export default function PostCreateForm({
       />
 
       <div className="flex items-start gap-3">
-        {/* ✅ ProfileAvatar: src가 없거나 깨지면 기본 알약으로 자동 fallback */}
+        {/* ProfileAvatar: src가 없거나 깨지면 기본 알약으로 자동 fallback */}
         <ProfileAvatar size="lg" alt={me?.username ?? 'me'} src={me?.image} />
 
         <div className="flex-1 space-y-3">

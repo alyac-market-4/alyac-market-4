@@ -18,23 +18,27 @@ const joinUrl = (base: string, path: string) => {
   return `${normalizedBase}/${normalizedPath}`;
 };
 
+// "a,b,c" 형태(콤마 연결)로 저장된 이미지 문자열을 안전하게 배열로 파싱
+export const splitImageSegments = (value?: string | null): string[] => {
+  return (value ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean);
+};
+
 export const imageUrls = (value?: string | null): string[] => {
   if (!value) return [];
 
   const baseUrl: string = import.meta.env.VITE_IMAGE_BASE_URL;
 
-  return value
-    .split(',')
-    .map((v) => v.trim())
-    .filter(Boolean)
-    .map((v) => {
-      if (isAbsoluteUrl(v)) return v;
+  return splitImageSegments(value).map((v) => {
+    if (isAbsoluteUrl(v)) return v;
 
-      // 서버에서 단순 filename만 내려오는 경우가 있어, 기본 업로드 폴더를 보정합니다.
-      // 예) "1700000000000.jpg" -> "uploadFiles/1700000000000.jpg"
-      const normalized = v.includes('/') ? v : `uploadFiles/${v}`;
-      return joinUrl(baseUrl, normalized);
-    });
+    // 서버에서 단순 filename만 내려오는 경우가 있어, 기본 업로드 폴더를 보정합니다.
+    // 예) "1700000000000.jpg" -> "uploadFiles/1700000000000.jpg"
+    const normalized = v.includes('/') ? v : `uploadFiles/${v}`;
+    return joinUrl(baseUrl, normalized);
+  });
 };
 
 export const imageUrl = (value?: string | null, fallback: string = ''): string => {

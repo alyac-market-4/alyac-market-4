@@ -7,6 +7,7 @@ import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
 import { postCreateSchema } from '@/features/post-create/model/schemas';
 import PostSubmitButton from '@/features/post-create/ui/PostSubmitButton';
 import { PostEditForm } from '@/features/post-edit';
+import { splitImageSegments } from '@/shared/lib/imageUrl';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -18,13 +19,6 @@ type Props = {
   };
 };
 
-function splitImages(value?: string | null) {
-  return (value ?? '')
-    .split(',')
-    .map((v) => v.trim())
-    .filter(Boolean);
-}
-
 function PostUpdateView({ post }: Props) {
   const uploadMutation = useUploadFiles();
   const { updateMutation } = usePostMutation();
@@ -33,8 +27,10 @@ function PostUpdateView({ post }: Props) {
   const [files, setFiles] = useState<File[]>([]);
   const [isTouched, setIsTouched] = useState(false);
 
-  // ✅ 기존 이미지(서버에서 내려온 것) 상태로 관리
-  const [existingImages, setExistingImages] = useState<string[]>(() => splitImages(post.image));
+  // 기존 이미지(서버에서 내려온 것) 상태로 관리
+  const [existingImages, setExistingImages] = useState<string[]>(() =>
+    splitImageSegments(post.image),
+  );
 
   const zodResult = useMemo(() => postCreateSchema.safeParse({ content, files }), [content, files]);
 
@@ -55,13 +51,13 @@ function PostUpdateView({ post }: Props) {
 
     let newImageSegments: string[] = [];
 
-    // ✅ 새로 선택한 파일이 있으면 업로드 후 경로 만들기
+    // 새로 선택한 파일이 있으면 업로드 후 경로 만들기
     if (safeFiles.length > 0) {
       const uploaded = await uploadMutation.mutateAsync(safeFiles);
       newImageSegments = uploaded.map((item) => item.filename);
     }
 
-    // ✅ 기존(남은) + 새로 업로드한 것 합치기
+    // 기존(남은) + 새로 업로드한 것 합치기
     const merged = [...existingImages, ...newImageSegments].join(',');
 
     updateMutation.mutate({
@@ -122,7 +118,7 @@ export const PostUpdatePage = () => {
     );
   }
 
-  // ✅ postId 바뀌면 내부 상태 초기화를 위해 remount
+  // postId 바뀌면 내부 상태 초기화를 위해 remount
   return <PostUpdateView key={postId} post={post} />;
 };
 
