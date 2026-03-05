@@ -11,7 +11,7 @@ import { useReplaceNavigate } from '@/shared/lib';
 import { Form, FormErrorMessage, FormInputField } from '@/shared/ui';
 
 export const SignInForm = () => {
-  const { navigateBackOrTo } = useReplaceNavigate();
+  const { replaceNavigate } = useReplaceNavigate();
   const { signInMutation } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ export const SignInForm = () => {
     signInMutation.mutate(
       { user: data },
       {
-        onSuccess: () => navigateBackOrTo('/feed'),
+        onSuccess: () => replaceNavigate('/feed'),
         onError: (error) => {
           if (axios.isAxiosError(error)) {
             if (error.status === 422) {

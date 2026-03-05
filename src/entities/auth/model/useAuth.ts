@@ -13,9 +13,10 @@ import { authApi } from '../api/auth';
 import type { SignInRequest, SignUpFormData } from './types';
 
 export const useAuth = () => {
-  const { openConfirm } = useConfirmDialogStore();
 
-  const { navigateBackOrTo } = useReplaceNavigate();
+  const { openConfirm } = useConfirmDialogStore();
+  const { replaceNavigate } = useReplaceNavigate();
+
   const queryClient = useQueryClient();
 
   const checkTokenQuery = useQuery({
@@ -47,7 +48,7 @@ export const useAuth = () => {
   const logout = () => {
     removeToken();
     queryClient.clear();
-    navigateBackOrTo('/sign-in');
+    replaceNavigate('/sign-in');
   };
 
   const isAuthenticated = !!getToken();
