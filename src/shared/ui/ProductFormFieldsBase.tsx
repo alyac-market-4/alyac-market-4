@@ -3,17 +3,19 @@ import {
   type FieldValues,
   type Path,
   type UseFormRegister,
+  type UseFormSetValue,
 } from 'react-hook-form';
 
-// create/update schema 모두 동일한 필드를 가지므로 제네릭으로 공용화
 interface ProductFormFieldsBaseProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
+  setValue: UseFormSetValue<T>;
 }
 
 export const ProductFormFieldsBase = <T extends FieldValues>({
   register,
   errors,
+  setValue,
 }: ProductFormFieldsBaseProps<T>) => {
   return (
     <div className="space-y-6">
@@ -38,10 +40,15 @@ export const ProductFormFieldsBase = <T extends FieldValues>({
           type="text"
           inputMode="numeric"
           {...register('price' as Path<T>)}
-          onBlur={(e) => {
-            const value = e.target.value.replaceAll(',', '');
-            if (!value) return;
-            e.target.value = Number(value).toLocaleString();
+          onChange={(e) => {
+            // 숫자 이외 문자 전부 제거 (콤마, 글자 등)
+            const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
+
+            // 실제 form 값은 숫자만 저장
+            setValue('price' as Path<T>, onlyNumbers as never, { shouldValidate: true });
+
+            // 화면 input에는 콤마 붙여서 표시
+            e.target.value = onlyNumbers ? Number(onlyNumbers).toLocaleString() : '';
           }}
           placeholder="숫자만 입력 가능합니다."
           className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
