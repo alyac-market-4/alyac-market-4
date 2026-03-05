@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
 import { usePostDetailQuery, usePostMutation } from '@/entities/post';
-import { useUserProfileQuery } from '@/entities/profile';
+import { useUserProfile } from '@/entities/profile';
 import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
 import {
   BackButton,
@@ -24,7 +24,7 @@ import { PostDetail } from '@/widgets/post-detail';
 export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
 
-  const { data: user } = useUserProfileQuery(getTokenUserInfo().accountname);
+  const { data: user } = useUserProfile(getTokenUserInfo().accountname);
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
 
   const { createMutation } = useCommentMutation();

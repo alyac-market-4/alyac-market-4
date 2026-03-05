@@ -4,7 +4,7 @@ import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
 import { X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { useUserProfileQuery } from '@/entities/profile';
+import { useUserProfile } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
 
@@ -25,7 +25,7 @@ export default function PostCreateForm({
 }: PostCreateFormProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: me } = useUserProfileQuery(getTokenUserInfo().accountname);
+  const { data: me } = useUserProfile(getTokenUserInfo().accountname);
 
   const previews = useMemo(() => {
     return files.map((file) => ({

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import { useFollowersQuery, useFollowingsQuery, useProfileMutation } from '@/entities/profile';
+import { useFollow, useFollowers, useFollowings, useUnfollow } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { BackButton, Button, ErrorView, LoadingState, ProfileAvatar } from '@/shared/ui';
 import { Header } from '@/widgets/header';
@@ -15,14 +15,15 @@ export const FollowPage = () => {
     isLoading: isUsersLoading,
     isError: isUsersError,
     refetch: refetchUsers,
-  } = isFollowersPath ? useFollowersQuery(accountname) : useFollowingsQuery(accountname);
+  } = isFollowersPath ? useFollowers(accountname) : useFollowings(accountname);
   const {
     data: myFollowings = [],
     isLoading: isMyFollowingsLoading,
     isError: isMyFollowingsError,
     refetch: refetchMyFollowings,
-  } = useFollowingsQuery(getTokenUserInfo().accountname);
-  const { followMutation, unfollowMutation } = useProfileMutation();
+  } = useFollowings(getTokenUserInfo().accountname);
+  const { mutate: followMutate, isPending: isFollowPending } = useFollow();
+  const { mutate: unfollowMutate, isPending: isUnfollowPending } = useUnfollow();
 
   const usersWithIsFollow = useMemo(() => {
     return users.map((user) => ({
@@ -32,11 +33,11 @@ export const FollowPage = () => {
   }, [users, myFollowings]);
 
   const handleFollow = (accountname: string) => {
-    followMutation.mutate(accountname);
+    followMutate(accountname);
   };
 
   const handleUnfollow = (accountname: string) => {
-    unfollowMutation.mutate(accountname);
+    unfollowMutate(accountname);
   };
 
   return (
@@ -76,7 +77,7 @@ export const FollowPage = () => {
                 {user.accountname === getTokenUserInfo().accountname ? null : user.isFollow ? (
                   <Button
                     onClick={() => handleUnfollow(user.accountname)}
-                    disabled={unfollowMutation.isPending}
+                    disabled={isUnfollowPending}
                     type="button"
                     variant="outline"
                     className="rounded-full"
@@ -86,7 +87,7 @@ export const FollowPage = () => {
                 ) : (
                   <Button
                     onClick={() => handleFollow(user.accountname)}
-                    disabled={followMutation.isPending}
+                    disabled={isFollowPending}
                     type="button"
                     variant="alyac"
                   >
