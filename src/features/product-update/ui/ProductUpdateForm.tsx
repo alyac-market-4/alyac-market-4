@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useProductDetail, useProductUpdate } from '@/entities/product';
+import { useDetailProduct, useUpdateProduct } from '@/entities/product';
 import { splitImageSegments } from '@/shared/lib';
 import { ProductFormBase } from '@/shared/ui';
 
@@ -31,8 +31,8 @@ export const ProductUpdateForm = ({
   onValidChange,
 }: ProductUpdateFormProps) => {
   const navigate = useNavigate();
-  const { mutate: productUpdate, isPending: isProductUpdatePending } = useProductUpdate();
-  const { data: product, isLoading, isError } = useProductDetail(productId);
+  const { mutate: productUpdate, isPending: isProductUpdatePending } = useUpdateProduct();
+  const { data: product, isLoading, isError } = useDetailProduct(productId);
   const [uploadedImageNames, setUploadedImageNames] = useState<string[] | null>(null);
 
   const {

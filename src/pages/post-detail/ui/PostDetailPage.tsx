@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
-import { usePostDetailQuery, usePostMutation } from '@/entities/post';
+import { useCreateComment, usePostComments } from '@/entities/comment';
+import { useDeletePost, usePostDetail, useReportPost } from '@/entities/post';
 import { useUserProfile } from '@/entities/profile';
 import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
 import {
@@ -25,23 +25,24 @@ export const PostDetailPage = () => {
   const { postId = '' } = useParams<{ postId: string }>();
 
   const { data: user } = useUserProfile(getTokenUserInfo().accountname);
-  const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetailQuery(postId);
+  const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetail(postId);
 
-  const { createMutation } = useCommentMutation();
-  const { deleteMutation, reportMutation } = usePostMutation();
+  const { mutate: createComment } = useCreateComment();
+  const { mutate: deletePost } = useDeletePost();
+  const { mutate: reportPost } = useReportPost();
   const { openConfirm } = useConfirmDialogStore();
 
   const {
     data: comments,
     isLoading: isLoadingComments,
     isError: isErrorComments,
-  } = usePostCommentsQuery(postId);
+  } = usePostComments(postId);
 
   const [comment, setComment] = useState<string>('');
 
   const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createMutation.mutate({ postId, content: comment });
+    createComment({ postId, content: comment });
     setComment('');
   };
 
@@ -62,7 +63,7 @@ export const PostDetailPage = () => {
               description: '삭제된 게시물은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
-                deleteMutation.mutate(postId);
+                deletePost(postId);
                 toast.info('게시글이 삭제되었습니다.');
               },
             });
@@ -78,7 +79,7 @@ export const PostDetailPage = () => {
               description: '신고는 취소할 수 없습니다.',
               actionText: '신고',
               onConfirm: () => {
-                reportMutation.mutate(postId);
+                reportPost(postId);
                 toast.info('신고가 접수되었습니다.');
               },
             });

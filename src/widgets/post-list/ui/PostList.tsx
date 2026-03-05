@@ -1,12 +1,13 @@
-import { useUserPostsQuery } from '@/entities/post';
-import { PostSummarySkeleton } from '@/entities/post';
+import {
+  PostSummarySkeleton,
+  PostThumbnail,
+  PostThumbnailSkeleton,
+  useUserPosts,
+} from '@/entities/post';
 import { type Profile } from '@/entities/profile';
 import type { ViewMode } from '@/features/layout-controller';
+import { PostSummary } from '@/features/post';
 import { ErrorView } from '@/shared/ui';
-
-import { PostSummary } from './PostSummary';
-import { PostThumbnail } from './PostThumbnail';
-import { PostThumbnailSkeleton } from './PostThumbnailSkeleton';
 
 const POST_SUMMARY_SKELETON_COUNT = 3;
 
@@ -16,12 +17,7 @@ interface PostListProps {
 }
 
 export const PostList = ({ viewMode, user }: PostListProps) => {
-  const {
-    data: posts = [],
-    isLoading,
-    isError,
-    refetch,
-  } = useUserPostsQuery(user?.accountname || '');
+  const { data: posts = [], isLoading, isError, refetch } = useUserPosts(user?.accountname || '');
 
   if (isLoading) {
     if (viewMode === 'list') {

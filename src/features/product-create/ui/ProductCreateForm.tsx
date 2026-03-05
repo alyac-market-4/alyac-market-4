@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useProductCreate } from '@/entities/product';
+import { useCreateProduct } from '@/entities/product';
 import { ProductFormBase } from '@/shared/ui';
 
 import { productCreateSchema } from '../model/schemas';
@@ -21,7 +21,7 @@ export const PRODUCT_FORM_ID = 'product-form';
 interface ProductCreateFormProps {
   showSubmitButton?: boolean;
   onValidChange?: (isValid: boolean) => void;
-  productCreate: ReturnType<typeof useProductCreate>['mutate'];
+  productCreate: ReturnType<typeof useCreateProduct>['mutate'];
   isProductCreatePending: boolean;
 }
 

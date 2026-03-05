@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { useUserProfile } from '@/entities/profile';
-import { LayoutController } from '@/features/layout-controller';
-import type { ViewMode } from '@/features/layout-controller';
+import { LayoutController, type ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
 import { getTokenUserInfo, themeIcons, useThemeStore } from '@/shared/lib';
 import { BackButton, ErrorView, KebabMenu, LoadingState } from '@/shared/ui';
@@ -47,11 +46,11 @@ export const ProfilePage = () => {
         ) : (
           <>
             <section className="border-border border-b px-4 py-6">
-              <ProfileCard user={user} />
+              <ProfileCard isMe={isMe} user={user} />
               <ProfileActions isMe={isMe} user={user} />
             </section>
 
-            <ProductList />
+            <ProductList isMe={isMe} />
 
             <section>
               <div className="border-border flex items-center justify-end border-b px-4 py-4">

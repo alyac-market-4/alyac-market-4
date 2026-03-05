@@ -8,7 +8,7 @@ import { ErrorView } from '@/shared/ui';
 
 const PRODUCT_CARD_SKELETON_COUNT = 3;
 
-export const ProductList = () => {
+export const ProductList = ({ isMe }: { isMe: boolean }) => {
   const { accountname = '' } = useParams();
   const targetAccountname = accountname || getTokenUserInfo().accountname;
   const { data: user } = useUserProfile(targetAccountname);
@@ -35,7 +35,12 @@ export const ProductList = () => {
           <ErrorView message={'상품 목록 불러오기 실패'} onRetry={() => refetch()} />
         ) : products.length > 0 ? (
           products.map((product) => (
-            <ProductCard key={product.id} product={product} to={`/product-update/${product.id}`} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              isMe={isMe}
+              to={`/product-update/${product.id}`}
+            />
           ))
         ) : (
           <div className="py-8 text-center">
