@@ -2,15 +2,14 @@ import { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { useProductMutation } from '@/entities/product';
+import { useProductUpdate } from '@/entities/product';
 import { PRODUCT_UPDATE_FORM_ID, ProductUpdateForm } from '@/features/product-update';
-import { BackButton } from '@/shared/ui/BackButton';
-import { Button } from '@/shared/ui/button';
+import { BackButton, Button } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const ProductUpdatePage = () => {
   const { productId } = useParams<{ productId: string }>();
-  const { updateMutation } = useProductMutation();
+  const { mutate: productUpdate, isPending: isProductUpdatePending } = useProductUpdate();
   const [isFormValid, setIsFormValid] = useState(false);
 
   if (!productId) {
@@ -29,14 +28,14 @@ export const ProductUpdatePage = () => {
           <Button
             type="submit"
             form={PRODUCT_UPDATE_FORM_ID}
-            disabled={updateMutation.isPending || !isFormValid}
+            disabled={isProductUpdatePending || !isFormValid}
             className={`h-10 rounded-full px-6 py-1 text-sm font-medium whitespace-nowrap text-white transition-colors ${
               isFormValid
                 ? 'cursor-pointer bg-[#6FCA3C]/50 hover:bg-[#5CB32A]'
                 : 'pointer-events-none cursor-not-allowed bg-gray-300'
             }`}
           >
-            {updateMutation.isPending ? '저장 중...' : '저장'}
+            {isProductUpdatePending ? '저장 중...' : '저장'}
           </Button>
         }
       />

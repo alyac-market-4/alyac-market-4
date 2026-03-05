@@ -1,4 +1,5 @@
 export * from './api/auth';
+export * from './model/signUpStore';
 export * from './model/types';
 export * from './model/useAuth';
 export * from './ui/RequireAuth';

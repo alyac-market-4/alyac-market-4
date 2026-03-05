@@ -1,8 +1,11 @@
 export * from './api/getProfile';
-export * from './api/useProfileQuery';
-
+export * from './hooks/useFollow';
+export * from './hooks/useFollowers';
+export * from './hooks/useFollowings';
+export * from './hooks/useUnfollow';
+export * from './hooks/useUserProfile';
+export * from './model/schemas';
 export * from './model/types';
-
 export * from './ui/FollowStat';
 export * from './ui/MyProfileActionButtons';
 export * from './ui/ProfileActionButtons';

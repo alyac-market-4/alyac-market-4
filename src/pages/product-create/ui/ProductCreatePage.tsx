@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-import { useProductMutation } from '@/entities/product';
+import { useProductCreate } from '@/entities/product';
 import { PRODUCT_FORM_ID, ProductCreateForm } from '@/features/product-create';
-import { BackButton } from '@/shared/ui/BackButton';
-import { Button } from '@/shared/ui/button';
+import { BackButton, Button } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const ProductCreatePage = () => {
-  const { createMutation } = useProductMutation();
+  const { mutate: productCreate, isPending: isProductCreatePending } = useProductCreate();
   const [isFormValid, setIsFormValid] = useState(false);
 
   return (
@@ -18,14 +17,14 @@ export const ProductCreatePage = () => {
           <Button
             type="submit"
             form={PRODUCT_FORM_ID}
-            disabled={createMutation.isPending || !isFormValid}
+            disabled={isProductCreatePending || !isFormValid}
             className={`h-10 rounded-full px-6 py-1 text-sm font-medium whitespace-nowrap text-white transition-colors ${
               isFormValid
                 ? 'cursor-pointer bg-[#6FCA3C]/50 hover:bg-[#5CB32A]'
                 : 'pointer-events-none cursor-not-allowed bg-gray-300'
             }`}
           >
-            {createMutation.isPending ? '저장 중...' : '저장'}
+            {isProductCreatePending ? '저장 중...' : '저장'}
           </Button>
         }
       />

@@ -4,7 +4,8 @@ import {
   MyProfileActionButtons,
   type Profile,
   ProfileActionButtons,
-  useProfileMutation,
+  useFollow,
+  useUnfollow,
 } from '@/entities/profile';
 
 interface ProfileActionsProps {
@@ -14,15 +15,16 @@ interface ProfileActionsProps {
 
 export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   const navigate = useNavigate();
-  const { followMutation, unfollowMutation } = useProfileMutation();
+  const { mutate: follow } = useFollow();
+  const { mutate: unfollow } = useUnfollow();
   const { accountname } = useParams();
 
   const handleFollow = (isFollow: boolean) => {
     if (!accountname) return;
     if (isFollow) {
-      unfollowMutation.mutate(accountname);
+      unfollow(accountname);
     } else {
-      followMutation.mutate(accountname);
+      follow(accountname);
     }
   };
 

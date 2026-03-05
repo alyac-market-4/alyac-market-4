@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useProductDetailQuery, useProductMutation } from '@/entities/product';
-import { productUpdateSchema } from '@/features/product-update/model/schemas';
-import { splitImageSegments } from '@/shared/lib/imageUrl';
-import { ProductFormBase } from '@/shared/ui/ProductFormBase';
+import { useProductDetail, useProductUpdate } from '@/entities/product';
+import { splitImageSegments } from '@/shared/lib';
+import { ProductFormBase } from '@/shared/ui';
 
+import { productUpdateSchema } from '../model/schemas';
 import { ProductUpdateFormFields } from './ProductUpdateFormFields';
 import { ProductUpdateImageUpload } from './ProductUpdateImageUpload';
 
@@ -31,8 +31,8 @@ export const ProductUpdateForm = ({
   onValidChange,
 }: ProductUpdateFormProps) => {
   const navigate = useNavigate();
-  const { updateMutation } = useProductMutation();
-  const { data: product, isLoading, isError } = useProductDetailQuery(productId);
+  const { mutate: productUpdate, isPending: isProductUpdatePending } = useProductUpdate();
+  const { data: product, isLoading, isError } = useProductDetail(productId);
   const [uploadedImageNames, setUploadedImageNames] = useState<string[] | null>(null);
 
   const {
@@ -87,7 +87,7 @@ export const ProductUpdateForm = ({
       return;
     }
 
-    updateMutation.mutate(
+    productUpdate(
       {
         productId,
         product: {
@@ -132,7 +132,7 @@ export const ProductUpdateForm = ({
       formId={PRODUCT_UPDATE_FORM_ID}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
-      isPending={updateMutation.isPending}
+      isPending={isProductUpdatePending}
       showSubmitButton={showSubmitButton}
       isFormValid={isFormValid}
       imageUploadSlot={

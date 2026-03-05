@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { X } from 'lucide-react';
 
-import { useUserProfileQuery } from '@/entities/profile';
+import { useUserProfile } from '@/entities/profile';
 import PostContentInput from '@/features/post-create/ui/PostContentInput';
 import { getTokenUserInfo, imageUrls } from '@/shared/lib';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
@@ -29,7 +29,7 @@ export const PostEditForm = ({
   onRemoveExistingImage,
 }: PostEditFormProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { data: me } = useUserProfileQuery(getTokenUserInfo().accountname);
+  const { data: me } = useUserProfile(getTokenUserInfo().accountname);
 
   // ✅ 새로 선택한 파일 preview
   const previews = useMemo(() => {
