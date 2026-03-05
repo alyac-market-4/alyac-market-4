@@ -18,7 +18,7 @@ export const ProductCard = ({ isMe, product, to }: ProductCardProps) => {
   const { mutate: productDeleteMutate } = useProductDelete();
 
   return (
-    <div className="group relative flex w-32 shrink-0 cursor-pointer flex-col overflow-hidden rounded-lg">
+    <div className="group relative flex w-32 shrink-0 flex-col overflow-hidden rounded-lg">
       <img
         alt={product.itemName}
         className="h-32 w-full object-cover"
@@ -29,7 +29,7 @@ export const ProductCard = ({ isMe, product, to }: ProductCardProps) => {
         <p className="text-sm font-bold text-green-600">{formatCurrency(product.price)}</p>
       </div>
 
-      <Link to={to} className="absolute inset-0" />
+      {isMe && <Link to={to} className="absolute inset-0" />}
 
       {isMe && (
         <IconButton
