@@ -10,7 +10,7 @@ export const RequireAuth = () => {
   }
 
   if (!data) {
-    return <Navigate to="/sign-in" />;
+    return <Navigate to="/sign-in" state={{ message: '로그인이 필요한 서비스입니다.' }} />;
   }
 
   return <Outlet />;
