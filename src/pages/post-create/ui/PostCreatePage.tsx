@@ -3,11 +3,9 @@ import { useMemo, useState } from 'react';
 
 import axios from 'axios';
 
-import { usePostMutation } from '@/entities/post';
-import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
-import { postCreateSchema } from '@/features/post-create/model/schemas';
-import PostCreateForm from '@/features/post-create/ui/PostCreateForm';
-import PostSubmitButton from '@/features/post-create/ui/PostSubmitButton';
+import { useCreatePost } from '@/entities/post';
+import { useUploadFiles } from '@/entities/upload';
+import { PostCreateForm, PostSubmitButton, postCreateSchema } from '@/features/post-create';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -19,11 +17,11 @@ export const PostCreatePage = () => {
   const [isTouched, setIsTouched] = useState(false);
 
   const uploadMutation = useUploadFiles();
-  const { createMutation } = usePostMutation();
+  const { mutateAsync: createPostAsync, isPending: isCreatePostPending } = useCreatePost();
 
   // 업로드 요청 or 게시물 생성 요청 중 하나라도 진행중이면 제출중 처리
   // (중복 클릭 방지 / 버튼 비활성화)
-  const isSubmitting = uploadMutation.isPending || createMutation.isPending;
+  const isSubmitting = uploadMutation.isPending || isCreatePostPending;
 
   // Zod로 "현재 입력 상태"가 유효한지 검사
   // - content / files 규칙(예: 글자수, 이미지 개수, 용량 등)을 스키마에서 판단
@@ -69,7 +67,7 @@ export const PostCreatePage = () => {
         image = uploaded.map((item) => item.filename).join(',');
       }
 
-      await createMutation.mutateAsync({
+      await createPostAsync({
         content: safeContent,
         image,
       });
@@ -121,5 +119,3 @@ export const PostCreatePage = () => {
     </>
   );
 };
-
-export default PostCreatePage;

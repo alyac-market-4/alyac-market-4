@@ -1,15 +1,14 @@
-// 피드/리스트에서 게시물 1개 요약 카드(프로필/본문/이미지/좋아요/댓글/메뉴)를 렌더링하는 컴포넌트
 import { Layers } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { CommentButton, usePostMutation } from '@/entities/post';
+import { CommentButton, useDeletePost, useReportPost } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
-import { LikeButton } from '@/features/like-post';
-import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
-import { splitImageSegments } from '@/shared/lib/imageUrl';
+import { getTokenUserInfo, splitImageSegments, useConfirmDialogStore } from '@/shared/lib';
 import type { Post } from '@/shared/model';
 import { KebabMenu, PostImage } from '@/shared/ui';
+
+import { LikeButton } from './LikeButton';
 
 interface PostSummaryProps {
   post: Post;
@@ -18,7 +17,8 @@ interface PostSummaryProps {
 
 export const PostSummary = ({ post, to }: PostSummaryProps) => {
   const navigate = useNavigate();
-  const { deleteMutation, reportMutation } = usePostMutation();
+  const { mutate: deletePost } = useDeletePost();
+  const { mutate: reportPost } = useReportPost();
   const { openConfirm } = useConfirmDialogStore();
 
   const goDetail = () => navigate(to);
@@ -39,7 +39,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
               description: '삭제된 게시물은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
-                deleteMutation.mutate(post.id);
+                deletePost(post.id);
                 toast.info('게시글이 삭제되었습니다.');
               },
             });
@@ -55,7 +55,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
               description: '신고는 취소할 수 없습니다.',
               actionText: '신고',
               onConfirm: () => {
-                reportMutation.mutate(post.id);
+                reportPost(post.id);
                 toast.info('신고가 접수되었습니다.');
               },
             });

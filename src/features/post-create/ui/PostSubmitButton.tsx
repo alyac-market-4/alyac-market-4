@@ -19,5 +19,3 @@ export function PostSubmitButton({ disabled, onClick }: Props) {
     </Button>
   );
 }
-
-export default PostSubmitButton;

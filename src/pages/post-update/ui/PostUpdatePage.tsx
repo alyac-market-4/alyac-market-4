@@ -2,12 +2,11 @@ import { useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { usePostDetailQuery, usePostMutation } from '@/entities/post';
-import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
-import { postCreateSchema } from '@/features/post-create/model/schemas';
-import PostSubmitButton from '@/features/post-create/ui/PostSubmitButton';
+import { usePostDetail, useUpdatePost } from '@/entities/post';
+import { useUploadFiles } from '@/entities/upload';
+import { PostSubmitButton, postCreateSchema } from '@/features/post-create';
 import { PostEditForm } from '@/features/post-edit';
-import { splitImageSegments } from '@/shared/lib/imageUrl';
+import { splitImageSegments } from '@/shared/lib';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -21,7 +20,7 @@ type Props = {
 
 function PostUpdateView({ post }: Props) {
   const uploadMutation = useUploadFiles();
-  const { updateMutation } = usePostMutation();
+  const { mutate: updatePost, isPending: isUpdatePostPending } = useUpdatePost();
 
   const [content, setContent] = useState(() => post.content ?? '');
   const [files, setFiles] = useState<File[]>([]);
@@ -35,7 +34,7 @@ function PostUpdateView({ post }: Props) {
   const zodResult = useMemo(() => postCreateSchema.safeParse({ content, files }), [content, files]);
 
   const canSubmit = zodResult.success;
-  const isSubmitting = uploadMutation.isPending || updateMutation.isPending;
+  const isSubmitting = uploadMutation.isPending || isUpdatePostPending;
 
   const onRemoveExistingImage = (index: number) => {
     setIsTouched(true);
@@ -60,7 +59,7 @@ function PostUpdateView({ post }: Props) {
     // 기존(남은) + 새로 업로드한 것 합치기
     const merged = [...existingImages, ...newImageSegments].join(',');
 
-    updateMutation.mutate({
+    updatePost({
       postId: post.id,
       post: {
         content: safeContent,
@@ -98,7 +97,7 @@ function PostUpdateView({ post }: Props) {
 
 export const PostUpdatePage = () => {
   const { postId = '' } = useParams();
-  const { data: post, isLoading } = usePostDetailQuery(postId);
+  const { data: post, isLoading } = usePostDetail(postId);
 
   if (isLoading) {
     return (

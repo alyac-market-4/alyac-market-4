@@ -1,16 +1,15 @@
-// 피드 API(/api/post/feed)로 게시물 목록을 조회하고 로딩/에러/빈상태/리스트 UI를 처리하는 컴포넌트
 import { useNavigate } from 'react-router-dom';
 
-import { useFeedPostsQuery } from '@/entities/post';
+import { useFeedPosts } from '@/entities/post';
+import { PostSummary } from '@/features/post';
 import { fullLogoAlyacGray } from '@/shared/assets';
 import { Button, ErrorView, LoadingState } from '@/shared/ui';
-import { PostSummary } from '@/widgets/post-list/ui/PostSummary';
 
 export const FeedList = () => {
   const navigate = useNavigate();
 
   // 실제 피드 API 연결 (기존 FeedPage 코드 그대로)
-  const { data: posts = [], isLoading, isError, refetch } = useFeedPostsQuery(10, 0);
+  const { data: posts = [], isLoading, isError, refetch } = useFeedPosts(10, 0);
 
   const isEmptyFeed = posts.length === 0;
 
