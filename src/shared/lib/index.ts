@@ -4,3 +4,4 @@ export * from './imageUrl';
 export * from './token';
 export * from './utils';
 export * from './hooks/useDebouncedValue';
+export * from './useDebounce';
