@@ -6,14 +6,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useAuth } from '@/entities/auth';
-import { useUserMutation } from '@/entities/user';
-import { useSignUpStore } from '@/features/auth';
-import { type ProfileFormData, profileSchema } from '@/features/profile';
+import { useSignUpStore } from '@/entities/auth';
+import { type ProfileFormData, profileSchema } from '@/entities/profile';
+import { useValidateAccountname } from '@/entities/user';
 
 export const useProfileSetting = (user: ReturnType<typeof useLocation>['state']['user']) => {
   const navigate = useNavigate();
   const { signUpMutation } = useAuth();
-  const { validateAccountnameMutation } = useUserMutation();
+  const { mutateAsync: validateAccountnameAsync } = useValidateAccountname();
   const { reset } = useSignUpStore();
 
   const [profileImageUrl, setProfileImageUrl] = useState<string>(user?.image ?? '');
@@ -45,7 +45,7 @@ export const useProfileSetting = (user: ReturnType<typeof useLocation>['state'][
     }
 
     try {
-      const response = await validateAccountnameMutation.mutateAsync(data.accountname);
+      const response = await validateAccountnameAsync(data.accountname);
       if (!response.ok) {
         form.setError('accountname', { type: 'server', message: response.message });
         return;

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useSignUpStore } from '@/features/auth';
+import { useSignUpStore } from '../model/signUpStore';
 
 export const RequireSignUpFormData = () => {
   const { isValidated } = useSignUpStore();
