@@ -1,3 +1,6 @@
 export * from './api/commentApi';
-export * from './api/useCommentQuery';
+export * from './hooks/useCreateComment';
+export * from './hooks/useDeleteComment';
+export * from './hooks/usePostComments';
+export * from './hooks/useReportComment';
 export * from './model/types';

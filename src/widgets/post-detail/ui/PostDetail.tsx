@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { CommentButton } from '@/entities/post';
 import { ProfileBadge } from '@/entities/profile';
-import { LikeButton } from '@/features/like-post';
-import { imageUrl, splitImageSegments } from '@/shared/lib/imageUrl';
+import { LikeButton } from '@/features/post';
+import { imageUrl, splitImageSegments } from '@/shared/lib';
 import type { Post } from '@/shared/model';
 
 export const PostDetail = ({ post }: { post: Post }) => {

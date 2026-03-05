@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useCommentMutation, usePostCommentsQuery } from '@/entities/comment';
+import { useCreateComment, usePostComments } from '@/entities/comment';
 import { useDeletePost, usePostDetail, useReportPost } from '@/entities/post';
 import { useUserProfile } from '@/entities/profile';
 import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
@@ -27,7 +27,7 @@ export const PostDetailPage = () => {
   const { data: user } = useUserProfile(getTokenUserInfo().accountname);
   const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetail(postId);
 
-  const { createMutation } = useCommentMutation();
+  const { mutate: createComment } = useCreateComment();
   const { mutate: deletePost } = useDeletePost();
   const { mutate: reportPost } = useReportPost();
   const { openConfirm } = useConfirmDialogStore();
@@ -36,13 +36,13 @@ export const PostDetailPage = () => {
     data: comments,
     isLoading: isLoadingComments,
     isError: isErrorComments,
-  } = usePostCommentsQuery(postId);
+  } = usePostComments(postId);
 
   const [comment, setComment] = useState<string>('');
 
   const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createMutation.mutate({ postId, content: comment });
+    createComment({ postId, content: comment });
     setComment('');
   };
 
