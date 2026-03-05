@@ -2,7 +2,7 @@ import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useProductDelete } from '@/entities/product';
+import { useDeleteProduct } from '@/entities/product';
 import { formatCurrency, imageUrl, useConfirmDialogStore } from '@/shared/lib';
 import type { ProductDetail } from '@/shared/model';
 import { IconButton } from '@/shared/ui';
@@ -15,7 +15,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ isMe, product, to }: ProductCardProps) => {
   const { openConfirm } = useConfirmDialogStore();
-  const { mutate: productDeleteMutate } = useProductDelete();
+  const { mutate: productDeleteMutate } = useDeleteProduct();
 
   return (
     <div className="group relative flex w-32 shrink-0 flex-col overflow-hidden rounded-lg">

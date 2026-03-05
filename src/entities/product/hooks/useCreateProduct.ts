@@ -5,7 +5,7 @@ import { productKeys } from '@/shared/model';
 
 import { productApi } from '../api/productApi';
 
-export const useProductCreate = () => {
+export const useCreateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation<ProductDetail, Error, Product>({
