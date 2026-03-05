@@ -4,15 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { useUserMutation } from '@/entities/user';
-import { FormSubmitButton, useSignUpStore } from '@/features/auth';
-import { type SignUpFormData, signUpSchema } from '@/features/auth/model/schemas';
+import { useSignUpStore } from '@/entities/auth';
+import { useValidateEmail } from '@/entities/user';
+import { FormSubmitButton } from '@/features/auth';
+import { type SignUpFormData, signUpSchema } from '@/features/auth';
 import { Form, FormErrorMessage, FormInputField } from '@/shared/ui';
 
 export const SignUpForm = () => {
   const { setValidated } = useSignUpStore();
   const navigate = useNavigate();
-  const { validateEmailMutation } = useUserMutation();
+  const { mutate: validateEmail, isPending: isValidateEmailPending } = useValidateEmail();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const form = useForm<SignUpFormData>({
@@ -23,7 +24,7 @@ export const SignUpForm = () => {
 
   const onSubmit = (data: SignUpFormData) => {
     setServerError(null);
-    validateEmailMutation.mutate(data.email, {
+    validateEmail(data.email, {
       onSuccess: (response) => {
         if (!response.ok) {
           setServerError(response.message);
@@ -58,7 +59,7 @@ export const SignUpForm = () => {
           <FormSubmitButton
             label="다음"
             pendingLabel="처리 중..."
-            isPending={validateEmailMutation.isPending}
+            isPending={isValidateEmailPending}
             isValid={form.formState.isValid}
           />
         </form>

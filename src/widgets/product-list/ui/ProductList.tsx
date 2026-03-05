@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 
-import { ProductCard, useUserProductsQuery } from '@/entities/product';
-import { ProductCardSkeleton } from '@/entities/product';
-import { useUserProfileQuery } from '@/entities/profile';
+import { ProductCardSkeleton, useUserProducts } from '@/entities/product';
+import { useUserProfile } from '@/entities/profile';
+import { ProductCard } from '@/features/product';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
@@ -11,13 +11,13 @@ const PRODUCT_CARD_SKELETON_COUNT = 3;
 export const ProductList = () => {
   const { accountname = '' } = useParams();
   const targetAccountname = accountname || getTokenUserInfo().accountname;
-  const { data: user } = useUserProfileQuery(targetAccountname);
+  const { data: user } = useUserProfile(targetAccountname);
   const {
     data: products = [],
     isLoading,
     isError,
     refetch,
-  } = useUserProductsQuery(user?.accountname || '');
+  } = useUserProducts(user?.accountname || '');
 
   return (
     <div className="border-border border-b py-4">

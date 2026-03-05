@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useProductMutation } from '@/entities/product';
-import { productCreateSchema } from '@/features/product-create/model/schemas';
-import { ProductFormBase } from '@/shared/ui/ProductFormBase';
+import { useProductCreate } from '@/entities/product';
+import { ProductFormBase } from '@/shared/ui';
 
+import { productCreateSchema } from '../model/schemas';
 import { ProductFormFields } from './ProductFormFields';
 import { ProductImageUpload } from './ProductImageUpload';
 
@@ -28,7 +28,7 @@ export const ProductCreateForm = ({
   onValidChange,
 }: ProductCreateFormProps) => {
   const navigate = useNavigate();
-  const { createMutation } = useProductMutation();
+  const { mutate: productCreate, isPending: isProductCreatePending } = useProductCreate();
   const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
 
   const {
@@ -66,7 +66,7 @@ export const ProductCreateForm = ({
       return;
     }
 
-    createMutation.mutate(
+    productCreate(
       {
         itemName: data.productName,
         price: data.price,
@@ -90,7 +90,7 @@ export const ProductCreateForm = ({
       formId={PRODUCT_FORM_ID}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
-      isPending={createMutation.isPending}
+      isPending={isProductCreatePending}
       showSubmitButton={showSubmitButton}
       isFormValid={isFormValid}
       imageUploadSlot={<ProductImageUpload onUploadComplete={setUploadedImageNames} />}

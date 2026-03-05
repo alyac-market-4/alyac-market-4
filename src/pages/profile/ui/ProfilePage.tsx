@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
-import { useUserProfileQuery } from '@/entities/profile';
+import { useUserProfile } from '@/entities/profile';
 import { LayoutController } from '@/features/layout-controller';
 import type { ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
@@ -19,7 +19,7 @@ export const ProfilePage = () => {
   const myAccountname = getTokenUserInfo().accountname;
   const isMe = !accountname || accountname === myAccountname;
   const targetAccountname = isMe ? myAccountname : accountname;
-  const { data: user, isLoading, isError, refetch } = useUserProfileQuery(targetAccountname);
+  const { data: user, isLoading, isError, refetch } = useUserProfile(targetAccountname);
   const { logout } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useThemeStore();

@@ -1,7 +1,7 @@
 // 검색어 상태(에러/빈값/로딩/실패/결과)를 분기하고 검색 결과 리스트 및 프로필 이동을 처리하는 패널
 import { useNavigate } from 'react-router-dom';
 
-import { useSearchUserQuery } from '@/entities/user/api/useUserQuery';
+import { useSearchUser } from '@/entities/user';
 import { useDebounce } from '@/shared/lib/useDebounce';
 import { ProfileAvatar } from '@/shared/ui';
 
@@ -29,7 +29,7 @@ export const AccountSearchPanel = ({ keyword, keywordError }: Props) => {
   const debouncedKeyword = useDebounce(trimmed, 400);
 
   // 디바운스된 값으로 검색
-  const { data: users = [], isLoading, isError, refetch } = useSearchUserQuery(debouncedKeyword);
+  const { data: users = [], isLoading, isError, refetch } = useSearchUser(debouncedKeyword);
 
   const renderBody = () => {
     // 입력 검증 에러는 최우선 표시

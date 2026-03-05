@@ -1,7 +1,7 @@
 import { skipToken } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
-import { type Profile, useUserProfileQuery } from '@/entities/profile';
+import { type Profile, useUserProfile } from '@/entities/profile';
 import { ProfileFormFields, useProfileUpdate } from '@/features/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { BackButton, Button, Form, Spinner } from '@/shared/ui';
@@ -10,7 +10,7 @@ import { Header } from '@/widgets/header';
 export const ProfileUpdatePage = () => {
   const location = useLocation();
   const locationUser: Profile = location.state?.user;
-  const { data: profileData, isLoading } = useUserProfileQuery(
+  const { data: profileData, isLoading } = useUserProfile(
     locationUser ? skipToken : getTokenUserInfo().accountname,
   );
 

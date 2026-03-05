@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useUserMutation } from '@/entities/user';
-import { type ProfileFormData, profileSchema } from '@/features/profile';
+import { type ProfileFormData, profileSchema } from '@/entities/profile';
+import { useUpdateProfile } from '@/entities/user';
 
 export const useProfileUpdate = (user: ProfileFormData & { image?: string }) => {
   const navigate = useNavigate();
-  const { updateProfileMutation } = useUserMutation();
+  const { mutateAsync: updateProfileAsync } = useUpdateProfile();
 
   const [profileImageUrl, setProfileImageUrl] = useState<string>(user?.image ?? '');
 
@@ -26,7 +26,7 @@ export const useProfileUpdate = (user: ProfileFormData & { image?: string }) => 
 
   const onSubmit = async (data: ProfileFormData) => {
     try {
-      await updateProfileMutation.mutateAsync({
+      await updateProfileAsync({
         user: {
           username: data.username,
           accountname: data.accountname,
