@@ -46,10 +46,10 @@ export const AccountSearchPanel = ({ keyword, keywordError }: Props) => {
       return <MutedCenterMessage>검색 중...</MutedCenterMessage>;
     }
 
-    // 네트워크/서버 에러
+    // 네트워크/서버 에러 (가운데 정렬)
     if (isError) {
       return (
-        <div className="flex h-[calc(100vh-160px)] items-center justify-center text-center text-sm">
+        <div className={CENTER_AREA_CLASS}>
           <div>
             <p className="opacity-60">검색 실패</p>
             <button className="mt-2 underline" type="button" onClick={() => refetch()}>
