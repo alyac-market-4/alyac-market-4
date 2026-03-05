@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
-import { useAuth } from '@/entities/auth';
+import { useSignIn } from '@/entities/auth';
 import { FormSubmitButton } from '@/features/auth';
 import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
 import { useReplaceNavigate } from '@/shared/lib';
@@ -12,7 +12,7 @@ import { Form, FormErrorMessage, FormInputField } from '@/shared/ui';
 
 export const SignInForm = () => {
   const { replaceNavigate } = useReplaceNavigate();
-  const { signInMutation } = useAuth();
+  const { mutate: signIn, isPending: isSignInPending } = useSignIn();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const form = useForm<SignInFormData>({
@@ -23,7 +23,7 @@ export const SignInForm = () => {
 
   const onSubmit = (data: SignInFormData) => {
     setServerError(null);
-    signInMutation.mutate(
+    signIn(
       { user: data },
       {
         onSuccess: () => replaceNavigate('/feed'),
@@ -62,7 +62,7 @@ export const SignInForm = () => {
           <FormSubmitButton
             label="로그인"
             pendingLabel="로그인 중..."
-            isPending={signInMutation.isPending}
+            isPending={isSignInPending}
             isValid={form.formState.isValid}
           />
         </form>

@@ -5,14 +5,13 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useAuth } from '@/entities/auth';
-import { useSignUpStore } from '@/entities/auth';
+import { useSignUp, useSignUpStore } from '@/entities/auth';
 import { type ProfileFormData, profileSchema } from '@/entities/profile';
 import { useValidateAccountname } from '@/entities/user';
 
 export const useProfileSetting = (user: ReturnType<typeof useLocation>['state']['user']) => {
   const navigate = useNavigate();
-  const { signUpMutation } = useAuth();
+  const { mutateAsync: signUpAsync, isPending: isSignUpPending } = useSignUp();
   const { mutateAsync: validateAccountnameAsync } = useValidateAccountname();
   const { reset } = useSignUpStore();
 
@@ -51,7 +50,7 @@ export const useProfileSetting = (user: ReturnType<typeof useLocation>['state'][
         return;
       }
 
-      await signUpMutation.mutateAsync({ ...user, ...data, image: profileImageUrl });
+      await signUpAsync({ ...user, ...data, image: profileImageUrl });
       navigate('/sign-in');
     } catch {
       toast.error('서버 오류가 발생했습니다.');
@@ -63,6 +62,6 @@ export const useProfileSetting = (user: ReturnType<typeof useLocation>['state'][
     profileImageUrl,
     setProfileImageUrl,
     onSubmit,
-    isPending: signUpMutation.isPending,
+    isPending: isSignUpPending,
   };
 };
