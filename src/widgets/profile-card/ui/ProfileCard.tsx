@@ -5,10 +5,11 @@ import type { User } from '@/shared/model';
 import { ProfileAvatar } from '@/shared/ui';
 
 interface ProfileCardProps {
+  isMe: boolean;
   user: User;
 }
 
-export const ProfileCard = ({ user }: ProfileCardProps) => {
+export const ProfileCard = ({ isMe, user }: ProfileCardProps) => {
   return (
     <>
       <div className="flex items-center justify-center gap-12">
@@ -18,9 +19,13 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
           link={`/followers/${user.accountname}`}
         />
 
-        <Link to={`/profile-update`} state={{ user }} className="rounded-full">
+        {isMe ? (
+          <Link to={`/profile-update`} state={{ user }} className="rounded-full">
+            <ProfileAvatar src={user.image} alt={user.username} size="xl" />
+          </Link>
+        ) : (
           <ProfileAvatar src={user.image} alt={user.username} size="xl" />
-        </Link>
+        )}
 
         <FollowStat
           label="Followings"

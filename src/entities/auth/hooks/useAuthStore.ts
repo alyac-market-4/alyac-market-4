@@ -12,8 +12,8 @@ export const useAuth = () => {
 
   const logout = () => {
     removeToken();
-    logoutAction();
     queryClient.clear();
+    logoutAction();
     replaceNavigate('/sign-in');
   };
 
