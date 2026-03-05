@@ -17,7 +17,7 @@ export type PostCreateFormProps = {
   onChangeFiles: (next: File[]) => void;
 };
 
-export default function PostCreateForm({
+export function PostCreateForm({
   content,
   onChangeContent,
   files,
