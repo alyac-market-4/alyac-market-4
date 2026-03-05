@@ -48,6 +48,10 @@
   --main-alyac-color-hover: light-dark(oklch(68.9% 0.169 131.8), oklch(68.9% 0.169 131.8));
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Base styles */
 :root {
   color-scheme: light;

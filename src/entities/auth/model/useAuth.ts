@@ -1,14 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
 
-import { getToken, removeToken, saveToken, useReplaceNavigate } from '@/shared/lib';
+import {
+  getToken,
+  removeToken,
+  saveToken,
+  useConfirmDialogStore,
+  useReplaceNavigate,
+} from '@/shared/lib';
 import { authKeys } from '@/shared/model';
 
 import { authApi } from '../api/auth';
 import type { SignInRequest, SignUpFormData } from './types';
 
 export const useAuth = () => {
+
+  const { openConfirm } = useConfirmDialogStore();
   const { replaceNavigate } = useReplaceNavigate();
+
   const queryClient = useQueryClient();
 
   const checkTokenQuery = useQuery({
@@ -28,7 +36,12 @@ export const useAuth = () => {
   const signUpMutation = useMutation({
     mutationFn: (userInfo: SignUpFormData) => authApi.signUp({ user: userInfo }),
     onSuccess: () => {
-      toast.success('회원가입이 완료되었습니다! 로그인해 주세요.'); //TODO: dialog로 수정
+      openConfirm({
+        title: '회원가입이 완료되었습니다!',
+        description: '로그인 해 주세요.',
+        isAlert: true,
+        cancelText: '확인',
+      });
     },
   });
 
