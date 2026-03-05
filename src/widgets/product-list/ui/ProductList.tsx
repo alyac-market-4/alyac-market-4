@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 
-import { ProductCard, useUserProductsQuery } from '@/entities/product';
-import { ProductCardSkeleton } from '@/entities/product';
+import { ProductCardSkeleton, useUserProducts } from '@/entities/product';
 import { useUserProfile } from '@/entities/profile';
+import { ProductCard } from '@/features/product';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
@@ -17,7 +17,7 @@ export const ProductList = () => {
     isLoading,
     isError,
     refetch,
-  } = useUserProductsQuery(user?.accountname || '');
+  } = useUserProducts(user?.accountname || '');
 
   return (
     <div className="border-border border-b py-4">

@@ -2,7 +2,7 @@ import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useProductMutation } from '@/entities/product';
+import { useProductDelete } from '@/entities/product';
 import { formatCurrency, imageUrl, useConfirmDialogStore } from '@/shared/lib';
 import type { ProductDetail } from '@/shared/model';
 import { IconButton } from '@/shared/ui';
@@ -14,7 +14,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, to }: ProductCardProps) => {
   const { openConfirm } = useConfirmDialogStore();
-  const { deleteMutation } = useProductMutation();
+  const { mutate: productDeleteMutate } = useProductDelete();
 
   return (
     <div className="group relative flex w-32 shrink-0 cursor-pointer flex-col overflow-hidden rounded-lg">
@@ -38,7 +38,7 @@ export const ProductCard = ({ product, to }: ProductCardProps) => {
             title: '제품 삭제',
             description: '해당 제품을 삭제하시겠습니까?',
             onConfirm: () => {
-              deleteMutation.mutate(product.id);
+              productDeleteMutate(product.id);
               toast.info('제품이 삭제되었습니다.');
             },
             actionText: '삭제',
