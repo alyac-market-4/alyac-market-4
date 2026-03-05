@@ -8,11 +8,12 @@ import type { ProductDetail } from '@/shared/model';
 import { IconButton } from '@/shared/ui';
 
 interface ProductCardProps {
+  isMe: boolean;
   product: ProductDetail;
   to: string;
 }
 
-export const ProductCard = ({ product, to }: ProductCardProps) => {
+export const ProductCard = ({ isMe, product, to }: ProductCardProps) => {
   const { openConfirm } = useConfirmDialogStore();
   const { mutate: productDeleteMutate } = useProductDelete();
 
@@ -30,23 +31,25 @@ export const ProductCard = ({ product, to }: ProductCardProps) => {
 
       <Link to={to} className="absolute inset-0" />
 
-      <IconButton
-        aria-label="제품 삭제"
-        className="absolute top-1 right-1 cursor-pointer opacity-0 transition-colors group-hover:opacity-100"
-        onClick={() =>
-          openConfirm({
-            title: '제품 삭제',
-            description: '해당 제품을 삭제하시겠습니까?',
-            onConfirm: () => {
-              productDeleteMutate(product.id);
-              toast.info('제품이 삭제되었습니다.');
-            },
-            actionText: '삭제',
-          })
-        }
-      >
-        <X />
-      </IconButton>
+      {isMe && (
+        <IconButton
+          aria-label="제품 삭제"
+          className="absolute top-1 right-1 cursor-pointer opacity-0 transition-colors group-hover:opacity-100"
+          onClick={() =>
+            openConfirm({
+              title: '제품 삭제',
+              description: '해당 제품을 삭제하시겠습니까?',
+              onConfirm: () => {
+                productDeleteMutate(product.id);
+                toast.info('제품이 삭제되었습니다.');
+              },
+              actionText: '삭제',
+            })
+          }
+        >
+          <X />
+        </IconButton>
+      )}
     </div>
   );
 };

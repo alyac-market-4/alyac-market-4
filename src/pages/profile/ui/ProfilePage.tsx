@@ -51,7 +51,7 @@ export const ProfilePage = () => {
               <ProfileActions isMe={isMe} user={user} />
             </section>
 
-            <ProductList />
+            <ProductList isMe={isMe} />
 
             <section>
               <div className="border-border flex items-center justify-end border-b px-4 py-4">
