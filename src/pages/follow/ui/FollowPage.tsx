@@ -22,8 +22,8 @@ export const FollowPage = () => {
     isError: isMyFollowingsError,
     refetch: refetchMyFollowings,
   } = useFollowings(getTokenUserInfo().accountname);
-  const { mutate: followMutate, isPending: isFollowPending } = useFollow();
-  const { mutate: unfollowMutate, isPending: isUnfollowPending } = useUnfollow();
+  const { mutate: follow, isPending: isFollowPending } = useFollow();
+  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
 
   const usersWithIsFollow = useMemo(() => {
     return users.map((user) => ({
@@ -33,11 +33,11 @@ export const FollowPage = () => {
   }, [users, myFollowings]);
 
   const handleFollow = (accountname: string) => {
-    followMutate(accountname);
+    follow(accountname);
   };
 
   const handleUnfollow = (accountname: string) => {
-    unfollowMutate(accountname);
+    unfollow(accountname);
   };
 
   return (

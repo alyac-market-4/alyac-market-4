@@ -15,16 +15,16 @@ interface ProfileActionsProps {
 
 export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   const navigate = useNavigate();
-  const { mutate: followMutate } = useFollow();
-  const { mutate: unfollowMutate } = useUnfollow();
+  const { mutate: follow } = useFollow();
+  const { mutate: unfollow } = useUnfollow();
   const { accountname } = useParams();
 
   const handleFollow = (isFollow: boolean) => {
     if (!accountname) return;
     if (isFollow) {
-      unfollowMutate(accountname);
+      unfollow(accountname);
     } else {
-      followMutate(accountname);
+      follow(accountname);
     }
   };
 
