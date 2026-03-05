@@ -1,5 +1,4 @@
 export * from './api/userApi';
-export * from './api/useUserQuery';
 export * from './hooks/useMyInfoQuery';
 export * from './hooks/useSearchUserQuery';
 export * from './hooks/useValidateEmail';

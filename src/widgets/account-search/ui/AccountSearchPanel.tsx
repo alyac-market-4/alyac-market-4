@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useSearchUserQuery } from '@/entities/user/api/useUserQuery';
+import { useSearchUserQuery } from '@/entities/user';
 import { ProfileAvatar } from '@/shared/ui';
 
 type Props = {

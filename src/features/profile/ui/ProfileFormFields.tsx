@@ -1,6 +1,6 @@
 import { type Control } from 'react-hook-form';
 
-import { type ProfileFormData } from '@/features/profile';
+import { type ProfileFormData } from '@/entities/profile';
 import { ProfileImageUpload } from '@/features/profile';
 import { FormInputField } from '@/shared/ui';
 
