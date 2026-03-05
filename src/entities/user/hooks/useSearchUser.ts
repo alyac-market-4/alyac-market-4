@@ -4,7 +4,7 @@ import { userKeys } from '@/shared/model';
 
 import { userApi } from '../api/userApi';
 
-export const useSearchUserQuery = (keyword: string) => {
+export const useSearchUser = (keyword: string) => {
   return useQuery({
     queryKey: userKeys.search(keyword),
     queryFn: () => userApi.searchUser(keyword),

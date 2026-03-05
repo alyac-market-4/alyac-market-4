@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useSearchUserQuery } from '@/entities/user';
+import { useSearchUser } from '@/entities/user';
 import { ProfileAvatar } from '@/shared/ui';
 
 type Props = {
@@ -15,7 +15,7 @@ export const AccountSearchPanel = ({ keyword, keywordError }: Props) => {
   const navigate = useNavigate();
 
   const trimmed = useMemo(() => keyword.trim(), [keyword]);
-  const { data: users = [], isLoading, isError, refetch } = useSearchUserQuery(trimmed);
+  const { data: users = [], isLoading, isError, refetch } = useSearchUser(trimmed);
 
   return (
     <main className="px-4 py-4">
