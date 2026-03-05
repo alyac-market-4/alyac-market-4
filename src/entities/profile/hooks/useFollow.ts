@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { profileKeys } from '@/shared/model';
 
-import { profileApi } from '../api/getProfile';
+import { profileApi } from '../api/profileApi';
 
 export const useFollow = () => {
   const queryClient = useQueryClient();

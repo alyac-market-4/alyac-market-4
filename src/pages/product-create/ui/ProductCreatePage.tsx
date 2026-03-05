@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { useProductCreate } from '@/entities/product';
+import { useCreateProduct } from '@/entities/product';
 import { PRODUCT_FORM_ID, ProductCreateForm } from '@/features/product-create';
 import { BackButton, Button } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const ProductCreatePage = () => {
-  const { mutate: productCreate, isPending: isProductCreatePending } = useProductCreate();
+  const { mutate: productCreate, isPending: isProductCreatePending } = useCreateProduct();
   const [isFormValid, setIsFormValid] = useState(false);
 
   return (

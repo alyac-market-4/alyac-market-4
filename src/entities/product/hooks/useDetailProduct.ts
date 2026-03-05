@@ -4,7 +4,7 @@ import { productKeys } from '@/shared/model';
 
 import { productApi } from '../api/productApi';
 
-export const useProductDetail = (productId: string) => {
+export const useDetailProduct = (productId: string) => {
   return useQuery({
     queryKey: productKeys.detail(productId),
     queryFn: () => productApi.getProductDetail(productId),

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useProductCreate } from '@/entities/product';
+import { useCreateProduct } from '@/entities/product';
 import { ProductFormBase } from '@/shared/ui';
 
 import { productCreateSchema } from '../model/schemas';
@@ -28,7 +28,7 @@ export const ProductCreateForm = ({
   onValidChange,
 }: ProductCreateFormProps) => {
   const navigate = useNavigate();
-  const { mutate: productCreate, isPending: isProductCreatePending } = useProductCreate();
+  const { mutate: productCreate, isPending: isProductCreatePending } = useCreateProduct();
   const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
 
   const {

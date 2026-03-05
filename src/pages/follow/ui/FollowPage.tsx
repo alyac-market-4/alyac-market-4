@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import { useFollow, useFollowers, useFollowings, useUnfollow } from '@/entities/profile';
+import { useFollow, useFollowings, useFriends, useUnfollow } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { BackButton, Button, ErrorView, LoadingState, ProfileAvatar } from '@/shared/ui';
 import { Header } from '@/widgets/header';
@@ -15,7 +15,7 @@ export const FollowPage = () => {
     isLoading: isUsersLoading,
     isError: isUsersError,
     refetch: refetchUsers,
-  } = isFollowersPath ? useFollowers(accountname) : useFollowings(accountname);
+  } = useFriends(accountname, isFollowersPath ? 'followers' : 'followings');
   const {
     data: myFollowings = [],
     isLoading: isMyFollowingsLoading,

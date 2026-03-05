@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { useProductUpdate } from '@/entities/product';
+import { useUpdateProduct } from '@/entities/product';
 import { PRODUCT_UPDATE_FORM_ID, ProductUpdateForm } from '@/features/product-update';
 import { BackButton, Button } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 export const ProductUpdatePage = () => {
   const { productId } = useParams<{ productId: string }>();
-  const { mutate: productUpdate, isPending: isProductUpdatePending } = useProductUpdate();
+  const { mutate: productUpdate, isPending: isProductUpdatePending } = useUpdateProduct();
   const [isFormValid, setIsFormValid] = useState(false);
 
   if (!productId) {
