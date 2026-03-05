@@ -2,6 +2,7 @@
 import { useMemo, useState } from 'react';
 
 import axios from 'axios';
+import { toast } from 'sonner';
 
 import { useCreatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
@@ -87,7 +88,8 @@ export const PostCreatePage = () => {
         console.error('UPLOAD/CREATE ERROR:', err);
       }
 
-      alert('업로드/등록 중 오류가 발생했습니다.');
+      // 사용자 알림은 alert 대신 토스트로
+      toast.error('업로드/등록 중 오류가 발생했습니다.');
     }
   };
 
