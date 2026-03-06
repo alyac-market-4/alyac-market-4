@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useAuth } from '@/entities/auth';
 import { useUserProfile } from '@/entities/profile';
-import { LayoutController, type ViewMode } from '@/features/layout-controller';
+import { type ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
 import { getTokenUserInfo, themeIcons, useThemeStore } from '@/shared/lib';
 import { BackButton, ErrorView, KebabMenu } from '@/shared/ui';
@@ -25,7 +25,7 @@ export const ProfilePage = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useThemeStore();
 
-  if (isLoading) return <ProfilePageSkeleton />;
+  if (isLoading) return <ProfilePageSkeleton viewMode={viewMode} setViewMode={setViewMode} />;
   if (isError) return <ErrorView message="프로필 불러오기 실패" onRetry={() => refetch()} />;
   if (!user) return null;
 
@@ -50,15 +50,10 @@ export const ProfilePage = () => {
           <ProfileActions isMe={isMe} user={user} />
         </section>
 
-        <ProductList isMe={isMe} />
+        <ProductList isMe={isMe} user={user} />
 
-        <section>
-          <div className="border-border flex items-center justify-end border-b px-4 py-4">
-            <LayoutController viewMode={viewMode} setViewMode={setViewMode} />
-          </div>
-          <div className="px-4">
-            <PostList viewMode={viewMode} user={user} />
-          </div>
+        <section className="px-4">
+          <PostList viewMode={viewMode} setViewMode={setViewMode} user={user} />
         </section>
       </main>
     </>
