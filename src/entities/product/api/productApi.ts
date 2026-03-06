@@ -20,7 +20,7 @@ export const productApi = {
 
   getUserProducts: async (
     accountname: string,
-    limit: number = 10,
+    limit: number = 5,
     skip: number = 0,
   ): Promise<ProductDetail[]> => {
     const { data } = await axiosInstance.get<GetUserProductsResponse>(

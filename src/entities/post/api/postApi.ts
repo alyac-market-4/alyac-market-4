@@ -16,7 +16,7 @@ import type {
 
 // TODO: 백엔드 개선 시 FlexiblePostsResponse 제거
 export const postApi = {
-  getAllPosts: async (limit: number = 10, skip: number = 0): Promise<Post[]> => {
+  getAllPosts: async (limit: number = 5, skip: number = 0): Promise<Post[]> => {
     const { data } = await axiosInstance.get<FlexiblePostsResponse>(API_ENDPOINTS.POST.GET_ALL, {
       params: { limit, skip },
     });
@@ -26,7 +26,7 @@ export const postApi = {
     return data.post;
   },
 
-  getFeedPosts: async (limit: number = 10, skip: number = 0): Promise<Post[]> => {
+  getFeedPosts: async (limit: number = 5, skip: number = 0): Promise<Post[]> => {
     const { data } = await axiosInstance.get<FlexiblePostsResponse>(API_ENDPOINTS.POST.GET_FEED, {
       params: { limit, skip },
     });
@@ -43,7 +43,7 @@ export const postApi = {
 
   getUserPosts: async (
     accountname: string,
-    limit: number = 10,
+    limit: number = 5,
     skip: number = 0,
   ): Promise<Post[]> => {
     const { data } = await axiosInstance.get<FlexiblePostsResponse>(
