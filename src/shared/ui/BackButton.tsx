@@ -8,7 +8,14 @@ export const BackButton = ({ onClick }: { onClick?: () => void }) => {
 
   const handleBack = () => {
     if (onClick) return onClick();
-    navigate(-1);
+
+    const isInternalNavigation = document.referrer.includes(window.location.host);
+
+    if (!isInternalNavigation || window.history.length <= 1) {
+      navigate('/feed');
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
