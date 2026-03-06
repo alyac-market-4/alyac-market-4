@@ -4,7 +4,7 @@ type Props = {
   onChangeValue: (next: string) => void;
 };
 
-export default function PostContentInput({ value, onChangeValue }: Props) {
+export function PostContentInput({ value, onChangeValue }: Props) {
   return (
     <textarea
       value={value}
