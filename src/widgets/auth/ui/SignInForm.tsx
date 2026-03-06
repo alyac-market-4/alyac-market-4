@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { useSignIn } from '@/entities/auth';
 import { FormSubmitButton } from '@/features/auth';
-import { type SignInFormData, signInSchema } from '@/features/auth/model/schemas';
+import { type SignInFormData, signInSchema } from '@/features/auth';
 import { useReplaceNavigate } from '@/shared/lib';
 import { Form, FormErrorMessage, FormInputField } from '@/shared/ui';
 

@@ -1,8 +1,7 @@
 import { useLocation } from 'react-router-dom';
 
 import { FormSubmitButton } from '@/features/auth';
-import { useProfileSetting } from '@/features/profile/hooks/useProfileSetting';
-import { ProfileFormFields } from '@/features/profile/ui/ProfileFormFields';
+import { ProfileFormFields, useProfileSetting } from '@/features/profile';
 import { Form } from '@/shared/ui';
 
 export const ProfileSettingPage = () => {
