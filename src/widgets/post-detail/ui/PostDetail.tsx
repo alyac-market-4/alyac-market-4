@@ -95,12 +95,12 @@ export const PostDetail = ({ post }: { post: Post }) => {
                   type="button"
                   onClick={() => open(idx)}
                   aria-label={`이미지 ${idx + 1} 크게 보기`}
-                  className="min-w-[20%] shrink-0 overflow-hidden rounded-xl border bg-white p-1 dark:bg-zinc-800"
+                  className="min-w-[20%] shrink-0 cursor-pointer overflow-hidden rounded-xl border bg-white p-1 dark:bg-zinc-800"
                 >
                   <img
                     src={imageUrl(img)}
                     alt={`Post image ${idx + 1}`}
-                    className="h-50 w-full object-cover"
+                    className="h-50 w-full cursor-pointer object-cover"
                     loading="lazy"
                   />
                 </button>
@@ -173,7 +173,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
                 <img
                   src={imageUrl(images[activeIndex])}
                   alt={`Post image ${activeIndex + 1}`}
-                  className="max-h-[80vh] w-full object-contain"
+                  className="max-h-[80vh] w-full cursor-pointer object-contain"
                 />
               </div>
 
