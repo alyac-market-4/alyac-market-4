@@ -1,10 +1,10 @@
 import { type FieldErrors, type UseFormRegister, type UseFormSetValue } from 'react-hook-form';
 import { z } from 'zod';
 
-import { productCreateSchema } from '@/features/product-create/model/schemas';
+import { productSchema } from '@/features/product/model/schemas';
 import { ProductFormFieldsBase } from '@/shared/ui/ProductFormFieldsBase';
 
-type ProductFormInput = z.input<typeof productCreateSchema>;
+type ProductFormInput = z.input<typeof productSchema>;
 
 interface ProductFormFieldsProps {
   register: UseFormRegister<ProductFormInput>;

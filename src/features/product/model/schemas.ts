@@ -1,13 +1,6 @@
 import { z } from 'zod';
 
-/**
- * 상품 생성 폼 스키마
- *
- * productName - 필수, 2~15자, 앞뒤 공백 제거
- * price - 필수, 숫자만 허용, number 타입으로 변환
- * saleLink - 선택, URL 형식, 빈 문자열 허용
- */
-export const productCreateSchema = z.object({
+export const productSchema = z.object({
   productName: z
     .string()
     .trim() // 앞뒤 공백 제거
@@ -30,4 +23,4 @@ export const productCreateSchema = z.object({
   saleLink: z.string().trim().url('올바른 URL 형식을 입력해주세요.').optional().or(z.literal('')),
 });
 
-export type ProductCreateFormData = z.infer<typeof productCreateSchema>;
+export type ProductFormData = z.infer<typeof productSchema>;
