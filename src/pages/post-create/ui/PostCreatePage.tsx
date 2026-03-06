@@ -2,25 +2,15 @@
 // - pages에서는 "게시물 작성 화면" 자체를 담당
 // - 실제 입력 폼 UI는 features/post의 PostForm을 가져와서 재사용
 // - 게시글 생성 API는 entities/post, 이미지 업로드 API는 entities/upload 훅을 사용
-// - 이 파일은 공통 기능들을 조합해서 "업로드 페이지"를 만드는 역할
+// - 입력값 검증 규칙은 postCreateSchema에 맡기고, 이 페이지는 검증 결과를 표시하는 역할만 담당
 import { useMemo, useState } from 'react';
 
 import axios from 'axios';
 import { toast } from 'sonner';
 
-// entities/post
-// - 최종 게시글 생성 요청(useCreatePost)
 import { useCreatePost } from '@/entities/post';
-// entities/upload
-// - 사용자가 선택한 이미지 파일 업로드 요청(useUploadFiles)
 import { useUploadFiles } from '@/entities/upload';
-// features/post
-// - 작성/수정 공통 폼 UI(PostForm)
-// - 작성/수정 공통 제출 버튼(PostSubmitButton)
-// - 작성 페이지 검증 규칙(postCreateSchema)
 import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
-// shared/ui, widgets
-// - 페이지 공통 뒤로가기 버튼 / 헤더
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -43,7 +33,7 @@ export const PostCreatePage = () => {
   const isSubmitting = uploadMutation.isPending || isCreatePostPending;
 
   // 작성 페이지 입력값 검증
-  // - postCreateSchema를 사용해 현재 content / files 상태가 유효한지 검사
+  // - 검증 규칙 자체는 postCreateSchema가 전부 담당
   const zodResult = useMemo(() => {
     return postCreateSchema.safeParse({ content, files });
   }, [content, files]);
@@ -53,18 +43,12 @@ export const PostCreatePage = () => {
 
   // 작성 페이지 안내문 계산
   // - 처음엔 숨김
-  // - 내용/이미지가 모두 없으면 "게시글 내용을 입력해주세요."
-  // - 그 외에는 스키마 에러(개수 초과, 용량 초과 등) 표시
+  // - 입력/선택 이후에는 스키마 에러 메시지만 표시
   const helperText = useMemo(() => {
     if (!isTouched) return '';
-
-    const isEmpty = content.trim().length === 0 && files.length === 0;
-    if (isEmpty) return '게시글 내용을 입력해주세요.';
-
     if (!zodResult.success) return zodResult.error.issues[0]?.message ?? '';
-
     return '';
-  }, [isTouched, content, files, zodResult]);
+  }, [isTouched, zodResult]);
 
   // 업로드 버튼 클릭 시 최종 처리
   // 1) 새 이미지가 있으면 먼저 업로드

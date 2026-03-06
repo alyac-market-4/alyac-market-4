@@ -1,29 +1,17 @@
 // 게시물 수정 페이지
-// - pages에서는 "수정 화면" 자체를 담당
+// - pages에서는 "게시물 수정 화면" 자체를 담당
 // - 실제 입력 폼 UI는 features/post의 PostForm을 가져와서 재사용
-// - 게시글 조회/수정 API는 entities/post의 훅을 사용
-// - 이 파일은 여러 레이어의 공통 기능을 조합해서 "수정 페이지"를 만드는 역할
+// - 게시글 수정 API는 entities/post, 이미지 업로드 API는 entities/upload 훅을 사용
+// - content/files 검증은 postCreateSchema에 맡기고,
+//   수정 페이지는 "기존 이미지가 남아 있는 경우"만 추가로 허용
 import { useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-// entities/post
-// - 수정할 게시글 상세 조회(usePostDetail)
-// - 게시글 수정 요청(useUpdatePost)
 import { usePostDetail, useUpdatePost } from '@/entities/post';
-// entities/upload
-// - 새로 추가한 이미지 업로드 요청
 import { useUploadFiles } from '@/entities/upload';
-// features/post
-// - 작성/수정 공통 폼 UI(PostForm)
-// - 작성/수정 공통 제출 버튼(PostSubmitButton)
-// - 작성 페이지와 수정 페이지가 같은 폼/버튼을 재사용하도록 분리해둔 부분
 import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
-// shared
-// - 기존 이미지 문자열을 배열로 분리하는 공통 유틸
 import { splitImageSegments } from '@/shared/lib';
-// shared/ui, widgets
-// - 페이지 공통 뒤로가기 버튼 / 헤더
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -36,14 +24,17 @@ type Props = {
 };
 
 function PostUpdateView({ post }: Props) {
-  // 페이지 내부 상태
-  // - content: 수정할 게시글 내용
-  // - files: 새로 추가한 이미지 파일
-  // - existingImages: 기존에 서버에 저장되어 있던 이미지
-  // - isTouched: 사용자가 수정/선택을 시작했는지 여부
+  // API 훅
+  // - uploadMutation: 새 이미지 업로드 요청
+  // - updatePost: 게시글 수정 요청
   const uploadMutation = useUploadFiles();
   const { mutate: updatePost, isPending: isUpdatePostPending } = useUpdatePost();
 
+  // 페이지 내부 상태
+  // - content: 수정 중인 게시글 내용
+  // - files: 새로 추가한 이미지 파일 목록
+  // - existingImages: 서버에 이미 저장된 기존 이미지 목록
+  // - isTouched: 사용자가 한 번이라도 수정/선택했는지 여부
   const [content, setContent] = useState(() => post.content ?? '');
   const [files, setFiles] = useState<File[]>([]);
   const [isTouched, setIsTouched] = useState(false);
@@ -51,37 +42,33 @@ function PostUpdateView({ post }: Props) {
     splitImageSegments(post.image),
   );
 
-  // 제출 가능 여부 / 안내문 / 요청 중 상태 계산
-  // - 작성 페이지와 비슷한 검증 흐름을 수정 페이지에도 맞춰서 적용
-  // - 수정 페이지는 "기존 이미지가 남아 있는 경우"도 제출 가능해야 한다는 점만 다름
+  // 업로드 중이거나 수정 요청 중이면 제출 중 상태로 처리
   const isSubmitting = uploadMutation.isPending || isUpdatePostPending;
 
-  const trimmedContent = useMemo(() => content.trim(), [content]);
-
+  // content/files 입력값 검증은 공통 스키마 사용
   const zodResult = useMemo(() => {
     return postCreateSchema.safeParse({ content, files });
   }, [content, files]);
 
+  // 수정 페이지에서는
+  // - 공통 스키마를 통과했거나
+  // - 기존 이미지가 하나라도 남아 있으면
+  // 제출 가능하게 처리
   const canSubmit = zodResult.success || existingImages.length > 0;
 
+  // 수정 페이지 안내문 계산
+  // - 처음엔 숨김
+  // - 기존 이미지가 남아 있으면 스키마 실패여도 안내문을 띄우지 않음
+  //   (수정 페이지에서는 기존 이미지 자체가 유효한 입력으로 취급되기 때문)
+  // - 그 외에는 스키마 에러 메시지만 표시
   const helperText = useMemo(() => {
     if (!isTouched) return '';
-
-    const isEmpty =
-      trimmedContent.length === 0 && files.length === 0 && existingImages.length === 0;
-
-    if (isEmpty) return '게시글 내용을 입력해주세요.';
-
-    if (!zodResult.success && existingImages.length === 0) {
-      return zodResult.error.issues[0]?.message ?? '';
-    }
-
+    if (existingImages.length > 0) return '';
+    if (!zodResult.success) return zodResult.error.issues[0]?.message ?? '';
     return '';
-  }, [isTouched, trimmedContent, files.length, existingImages.length, zodResult]);
+  }, [isTouched, existingImages.length, zodResult]);
 
   // 기존 이미지 삭제 처리
-  // - 실제 삭제 UI는 PostForm 안에 있고
-  // - 삭제되었을 때 어떤 state를 바꿀지는 이 페이지가 담당
   const onRemoveExistingImage = (index: number) => {
     setIsTouched(true);
     setExistingImages((prev) => prev.filter((_, i) => i !== index));
@@ -93,9 +80,12 @@ function PostUpdateView({ post }: Props) {
   // 3) 게시글 수정 API 호출
   const onClickUpdate = async () => {
     if (!isTouched) setIsTouched(true);
+
     if (!canSubmit || isSubmitting) return;
 
-    const safeContent = trimmedContent;
+    // 수정 페이지에서는 기존 이미지가 남아 있는 경우도 허용하므로
+    // parse() 대신 필요한 값만 직접 정리해서 사용
+    const safeContent = content.trim();
     const safeFiles = files;
 
     let newImageSegments: string[] = [];
@@ -125,9 +115,7 @@ function PostUpdateView({ post }: Props) {
       />
 
       {/* 공통 폼 UI 재사용
-          - PostForm은 작성 페이지와 수정 페이지가 같이 쓰는 입력 폼
-          - 수정 페이지에서는 existingImages / onRemoveExistingImage를 추가로 넘겨서
-            "기존 이미지 표시/삭제" 기능까지 함께 사용 */}
+          - 수정 페이지에서는 기존 이미지 표시/삭제 기능까지 함께 사용 */}
       <main className="px-4 py-6">
         <PostForm
           content={content}
@@ -144,7 +132,7 @@ function PostUpdateView({ post }: Props) {
           onRemoveExistingImage={onRemoveExistingImage}
         />
 
-        {/* 작성 페이지와 동일한 방식의 검증 안내문 표시 */}
+        {/* 수정 페이지 검증 안내문 표시 */}
         {helperText && <p className="mt-2 text-sm text-red-500">{helperText}</p>}
       </main>
     </>
@@ -152,12 +140,12 @@ function PostUpdateView({ post }: Props) {
 }
 
 export const PostUpdatePage = () => {
-  // 라우터에서 postId를 받아서
-  // entities/post의 상세 조회 훅으로 수정할 게시글 데이터를 가져옴
+  // URL에서 수정할 게시글 id 추출
   const { postId = '' } = useParams();
+
+  // 게시글 상세 조회
   const { data: post, isLoading } = usePostDetail(postId);
 
-  // 로딩/에러/정상 상태를 분기해서 페이지 렌더링
   if (isLoading) {
     return (
       <>
@@ -176,7 +164,6 @@ export const PostUpdatePage = () => {
     );
   }
 
-  // 실제 수정 UI는 PostUpdateView에서 담당
   return <PostUpdateView key={postId} post={post} />;
 };
 
