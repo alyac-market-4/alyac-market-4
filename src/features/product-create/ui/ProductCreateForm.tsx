@@ -21,14 +21,17 @@ export const PRODUCT_FORM_ID = 'product-form';
 interface ProductCreateFormProps {
   showSubmitButton?: boolean;
   onValidChange?: (isValid: boolean) => void;
+  productCreate: ReturnType<typeof useCreateProduct>['mutate'];
+  isProductCreatePending: boolean;
 }
 
 export const ProductCreateForm = ({
   showSubmitButton = false,
   onValidChange,
+  productCreate,
+  isProductCreatePending,
 }: ProductCreateFormProps) => {
   const navigate = useNavigate();
-  const { mutate: productCreate, isPending: isProductCreatePending } = useCreateProduct();
   const [uploadedImageNames, setUploadedImageNames] = useState<string[]>([]);
 
   const {
@@ -67,6 +70,7 @@ export const ProductCreateForm = ({
     }
 
     productCreate(
+      // props로 받은 mutate 사용
       {
         itemName: data.productName,
         price: data.price,
@@ -90,7 +94,7 @@ export const ProductCreateForm = ({
       formId={PRODUCT_FORM_ID}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
-      isPending={isProductCreatePending}
+      isPending={isProductCreatePending} // props로 받은 값 전달
       showSubmitButton={showSubmitButton}
       isFormValid={isFormValid}
       imageUploadSlot={<ProductImageUpload onUploadComplete={setUploadedImageNames} />}

@@ -32,15 +32,7 @@ export const ProductFormBase = <T extends FieldValues>({
       {formFieldsSlot}
 
       {showSubmitButton && (
-        <Button
-          type="submit"
-          disabled={isPending || !isFormValid}
-          className={`h-10 w-full rounded-full text-sm font-medium text-white transition-colors ${
-            isFormValid
-              ? 'cursor-pointer bg-[#6FCA3C]/50 hover:bg-[#5CB32A]'
-              : 'pointer-events-none cursor-not-allowed bg-gray-300'
-          }`}
-        >
+        <Button variant="alyac" type="submit" disabled={isPending || !isFormValid}>
           {isPending ? '저장 중...' : '저장'}
         </Button>
       )}
