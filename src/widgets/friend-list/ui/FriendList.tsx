@@ -7,7 +7,8 @@ import { FriendCard } from '@/entities/user';
 import { FriendButton } from '@/features/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
-import { FriendListSkeleton } from '@/widgets/friend-list';
+
+import { FriendListSkeleton } from './FriendListSkeleton';
 
 export function FriendList() {
   const { accountname = '' } = useParams();
