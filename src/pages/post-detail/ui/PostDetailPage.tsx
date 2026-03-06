@@ -5,7 +5,7 @@
 // - 여러 entities 훅과 widgets 컴포넌트를 조합해서 상세 화면을 구성
 import { useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 // entities/comment
@@ -61,6 +61,7 @@ export const PostDetailPage = () => {
 
   // 공통 확인 다이얼로그 사용
   const { openConfirm } = useConfirmDialogStore();
+  const navigate = useNavigate();
 
   // 댓글 목록 조회
   const {
@@ -96,6 +97,7 @@ export const PostDetailPage = () => {
   // - 다른 사용자 글이면 신고
   const kebabMenuItems = isMe
     ? [
+        { label: '수정', onClick: () => navigate(`/post-update/${post.id}`) },
         {
           label: '삭제',
           onClick: () => {

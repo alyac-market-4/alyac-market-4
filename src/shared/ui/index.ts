@@ -20,5 +20,4 @@ export * from './ProfileAvatar';
 export * from './skeleton';
 export * from './sonner';
 export * from './spinner';
-export * from './SuspenseWrapper';
 export * from './toggle-group';
