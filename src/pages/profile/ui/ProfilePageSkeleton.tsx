@@ -1,10 +1,12 @@
 import { PostSummarySkeleton } from '@/entities/post';
 import { ProductCardSkeleton } from '@/entities/product';
 import { Skeleton } from '@/shared/ui';
+import { Header } from '@/widgets/header';
 
 export function ProfilePageSkeleton() {
   return (
     <>
+      <Header />
       <section className="border-border border-b px-4 py-6">
         <div className="flex items-center justify-center gap-12">
           <Skeleton className="h-14 w-20" />
