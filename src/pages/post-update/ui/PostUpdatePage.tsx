@@ -5,8 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { usePostDetail, useUpdatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
-import { PostSubmitButton, postCreateSchema } from '@/features/post-create';
-import { PostEditForm } from '@/features/post-edit';
+import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
 import { splitImageSegments } from '@/shared/lib';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
@@ -43,8 +42,9 @@ function PostUpdateView({ post }: Props) {
   // Zod 스키마로 게시글 입력값 검증
   const zodResult = useMemo(() => postCreateSchema.safeParse({ content, files }), [content, files]);
 
-  // 제출 가능 여부
-  const canSubmit = zodResult.success;
+  // 수정 페이지에서는 기존 이미지만 남아 있어도 제출 가능해야 하므로
+  // "기존 이미지가 하나라도 있으면" 유효한 상태로 본다.
+  const canSubmit = zodResult.success || existingImages.length > 0;
 
   // 업로드 또는 수정 요청 중인지 확인
   const isSubmitting = uploadMutation.isPending || isUpdatePostPending;
@@ -94,7 +94,7 @@ function PostUpdateView({ post }: Props) {
 
       {/* 게시글 수정 폼 */}
       <main className="px-4 py-6">
-        <PostEditForm
+        <PostForm
           content={content}
           onChangeContent={(next) => {
             if (!isTouched) setIsTouched(true);

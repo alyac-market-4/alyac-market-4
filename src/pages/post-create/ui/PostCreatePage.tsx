@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { useCreatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
-import { PostCreateForm, PostSubmitButton, postCreateSchema } from '@/features/post-create';
+import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
@@ -101,7 +101,7 @@ export const PostCreatePage = () => {
       />
 
       <main className="px-4 py-6">
-        <PostCreateForm
+        <PostForm
           content={content}
           onChangeContent={(next) => {
             // 한 번이라도 입력하면 touched
