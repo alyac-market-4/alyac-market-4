@@ -1,44 +1,47 @@
-import { useEffect, useRef, useState } from 'react';
+// 계정 검색 화면에서 입력값을 디바운스+Zod 검증 후 검색 패널에 전달하는 페이지
+import { useMemo, useState } from 'react';
 
-import { BackButton } from '@/shared/ui/BackButton';
+import { accountSearchKeywordSchema } from '@/features/account-search/model/schemas';
+import SearchInput from '@/features/account-search/ui/SearchInput';
+import { useDebouncedValue } from '@/shared/lib';
+import { BackButton } from '@/shared/ui';
+import { AccountSearchPanel } from '@/widgets/account-search';
 import { Header } from '@/widgets/header';
 
 export const AccountSearchPage = () => {
   const [keyword, setKeyword] = useState('');
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  // 입력 자체를 디바운스한 뒤, Zod로 trim + 검증
+  const debouncedRaw = useDebouncedValue(keyword, 300);
+
+  const { normalizedKeyword, keywordError } = useMemo(() => {
+    // 빈 값은 “검색 전 상태”로 취급 (에러 표시 X)
+    if (!debouncedRaw.trim()) {
+      return { normalizedKeyword: '', keywordError: null as string | null };
+    }
+
+    const parsed = accountSearchKeywordSchema.safeParse(debouncedRaw);
+
+    if (parsed.success) {
+      return { normalizedKeyword: parsed.data, keywordError: null as string | null };
+    }
+
+    return {
+      normalizedKeyword: '',
+      keywordError: parsed.error.issues[0]?.message ?? '검색어가 올바르지 않습니다.',
+    };
+  }, [debouncedRaw]);
 
   return (
     <>
       <Header
-        left={
-          // ✅ 헤더 폭을 "거의 전체"처럼 쓰게 만들기
-          <div className="flex w-[calc(100vw-2rem)] items-center gap-3">
-            <BackButton />
-
-            {/* ✅ 가운데를 꽉 채우는 검색창 */}
-            <input
-              ref={inputRef}
-              className="border-border bg-muted flex-1 rounded-full border px-4 py-2 text-sm outline-none"
-              placeholder="계정 검색"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-
-            {/* ✅ 오른쪽도 BackButton과 같은 폭 더미로 대칭 맞추기 */}
-            <div className="w-10" />
-          </div>
+        left={<BackButton />}
+        center={
+          <SearchInput keyword={keyword} onChangeKeyword={setKeyword} withBackButton={false} />
         }
-        // ✅ Header가 justify-between이라 오른쪽에 공간을 남겨줘야 함
-        right={<div className="w-10" />}
       />
 
-      <main className="px-4 py-8">
-        <div className="text-center text-sm opacity-60">계정을 검색해보세요.</div>
-      </main>
+      <AccountSearchPanel keyword={normalizedKeyword} keywordError={keywordError} />
     </>
   );
 };

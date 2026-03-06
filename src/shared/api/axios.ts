@@ -2,8 +2,10 @@ import axios from 'axios';
 
 import { getRefreshToken, getToken, removeToken, saveToken } from '@/shared/lib';
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+const API_PREFIX = '/api';
+
+export const axiosInstance = axios.create({
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}${API_PREFIX}`,
   timeout: 10000,
 });
 
@@ -64,7 +66,7 @@ axiosInstance.interceptors.response.use(
         // Refresh token으로 새 토큰 요청
         const response = await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/api/user/refresh`,
-          {},
+          { refreshToken },
           {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
@@ -72,7 +74,7 @@ axiosInstance.interceptors.response.use(
           },
         );
 
-        const { token: newToken, refreshToken: newRefreshToken } = response.data;
+        const { accessToken: newToken, refreshToken: newRefreshToken } = response.data;
         saveToken(newToken, newRefreshToken);
 
         // 대기 중인 요청들에 새 토큰 전달
@@ -94,5 +96,3 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export default axiosInstance;

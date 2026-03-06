@@ -1,12 +1,16 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { getToken } from '@/shared/lib';
+import { useCheckToken } from '@/entities/auth';
 
 export const RequireAuth = () => {
-  const token = getToken();
+  const { data, isLoading } = useCheckToken();
 
-  if (!token) {
-    return <Navigate to="/sign-in" replace />;
+  if (isLoading) {
+    return null;
+  }
+
+  if (!data) {
+    return <Navigate to="/sign-in" state={{ message: '로그인이 필요한 서비스입니다.' }} />;
   }
 
   return <Outlet />;

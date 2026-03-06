@@ -1,63 +1,80 @@
-import { lazy } from 'react';
-
 import { createBrowserRouter } from 'react-router-dom';
 
-import { MainLayout } from '@/app/layouts/MainLayout';
 import { RequireAuth } from '@/entities/auth';
 import { RequireGuest } from '@/entities/auth';
+import { RequireSignUpFormData } from '@/entities/auth';
 
-const HomePage = lazy(() => import('@/pages/home').then((m) => ({ default: m.HomePage })));
-const FeedPage = lazy(() => import('@/pages/feed').then((m) => ({ default: m.FeedPage })));
-const AccountSearchPage = lazy(() =>
-  import('@/pages/account-search').then((m) => ({ default: m.AccountSearchPage })),
-);
-const ChatPage = lazy(() => import('@/pages/chat').then((m) => ({ default: m.ChatPage })));
-const ProfilePage = lazy(() => import('@/pages/profile').then((m) => ({ default: m.ProfilePage })));
-const SignInPage = lazy(() => import('@/pages/sign-in').then((m) => ({ default: m.SignInPage })));
-const SignUpPage = lazy(() => import('@/pages/sign-up').then((m) => ({ default: m.SignUpPage })));
-const PostCreatePage = lazy(() =>
-  import('@/pages/post-create').then((m) => ({ default: m.PostCreatePage })),
-);
-const NotFoundPage = lazy(() =>
-  import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage })),
-);
+import { MainLayout } from './layouts/MainLayout';
+import { ScrollManager } from './layouts/ScrollManager';
+import {
+  AccountSearchPage,
+  ChatDetailPage,
+  ChatPage,
+  FeedPage,
+  FollowPage,
+  HomePage,
+  NotFoundPage,
+  PostCreatePage,
+  PostDetailPage,
+  PostUpdatePage,
+  ProductCreatePage,
+  ProductUpdatePage,
+  ProfilePage,
+  ProfileSettingPage,
+  ProfileUpdatePage,
+  SignInPage,
+  SignUpPage,
+} from './lazyPages';
 
 export const router = createBrowserRouter([
   {
-    // MainLayout
-    path: '/',
-    element: <MainLayout />,
+    element: <ScrollManager />,
     children: [
       {
+        path: '/',
         element: <RequireAuth />,
         children: [
-          { path: 'feed', element: <FeedPage /> },
-          { path: 'feed/search', element: <AccountSearchPage /> },
-          { path: 'chat', element: <ChatPage /> },
-          { path: 'profile', element: <ProfilePage /> },
+          {
+            children: [
+              {
+                element: <MainLayout />,
+                children: [
+                  { path: 'feed', element: <FeedPage /> },
+                  { path: 'feed/search', element: <AccountSearchPage /> },
+                  { path: 'chat', element: <ChatPage /> },
+                  { path: 'profile', element: <ProfilePage /> },
+                  { path: 'profile/:accountname', element: <ProfilePage /> },
+                  { path: 'followers/:accountname', element: <FollowPage /> },
+                  { path: 'followings/:accountname', element: <FollowPage /> },
+                ],
+              },
+
+              { path: 'chat/:chatId', element: <ChatDetailPage /> },
+              { path: 'post-create', element: <PostCreatePage /> },
+              { path: 'post-update/:postId', element: <PostUpdatePage /> },
+              { path: 'product-create', element: <ProductCreatePage /> },
+              { path: 'product-update/:productId', element: <ProductUpdatePage /> },
+              { path: 'profile-update', element: <ProfileUpdatePage /> },
+              { path: 'post/:postId', element: <PostDetailPage /> },
+            ],
+          },
         ],
       },
-    ],
-  },
-  {
-    // 레이아웃 없음
-    path: '/',
-    children: [
-      { index: true, element: <HomePage /> },
       {
-        path: '',
-        element: <RequireAuth />,
-        children: [{ path: 'post-create', element: <PostCreatePage /> }],
-      },
-      {
+        path: '/',
         element: <RequireGuest />,
         children: [
+          { index: true, element: <HomePage /> },
           { path: 'sign-in', element: <SignInPage /> },
           { path: 'sign-up', element: <SignUpPage /> },
+          {
+            element: <RequireSignUpFormData />,
+            children: [{ path: 'profile-setting', element: <ProfileSettingPage /> }],
+          },
         ],
       },
+      // 404 페이지
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
-  // 404 페이지
-  { path: '*', element: <NotFoundPage /> },
 ]);

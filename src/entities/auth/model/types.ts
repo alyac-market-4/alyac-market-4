@@ -1,3 +1,9 @@
+import type { Token, User } from '@/shared/model';
+
+export interface CheckTokenResponse {
+  isValid: boolean;
+}
+
 export interface SignInRequest {
   user: {
     email: string;
@@ -6,18 +12,30 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
+  user: User & Token;
+}
+
+export interface SignUpRequest {
   user: {
-    _id: string;
     username: string;
     email: string;
+    password: string;
     accountname: string;
     intro: string;
     image: string;
-    following: string[];
-    follower: string[];
-    followerCount: number;
-    followingCount: number;
-    accessToken: string;
-    refreshToken: string;
   };
+}
+
+export interface SignUpFormData {
+  username: string;
+  email: string;
+  password: string;
+  accountname: string;
+  intro: string;
+  image: string;
+}
+
+export interface SignUpResponse {
+  message: string;
+  user: User;
 }

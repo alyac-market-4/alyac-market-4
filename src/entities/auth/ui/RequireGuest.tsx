@@ -1,12 +1,16 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { getToken } from '@/shared/lib';
+import { useCheckToken } from '@/entities/auth';
 
 export const RequireGuest = () => {
-  const token = getToken();
+  const { data, isLoading } = useCheckToken();
 
-  if (token) {
-    return <Navigate to="/feed" replace />;
+  if (isLoading) {
+    return null;
+  }
+
+  if (data) {
+    return <Navigate to="/feed" />;
   }
 
   return <Outlet />;
