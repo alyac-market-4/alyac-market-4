@@ -15,7 +15,7 @@ import type {
 export const commentApi = {
   getPostComments: async (
     postId: string,
-    limit: number = 10,
+    limit: number = 5,
     skip: number = 0,
   ): Promise<Comment[]> => {
     const { data } = await axiosInstance.get<GetPostCommentsResponse>(

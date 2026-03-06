@@ -7,7 +7,7 @@ import { profileApi } from '../api/profileApi';
 export const useFriends = (
   accountname: string,
   type: 'followers' | 'followings',
-  limit: number = 10,
+  limit: number = 5,
   skip: number = 0,
 ) => {
   return useQuery({
