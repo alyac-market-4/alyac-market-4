@@ -11,10 +11,10 @@ export const useAuth = () => {
   const { isAuthenticated, setAuthenticated, logoutAction } = useAuthStore();
 
   const logout = () => {
+    replaceNavigate('/');
     removeToken();
     queryClient.clear();
     logoutAction();
-    replaceNavigate('/sign-in');
   };
 
   return { isAuthenticated, setAuthenticated, logout };

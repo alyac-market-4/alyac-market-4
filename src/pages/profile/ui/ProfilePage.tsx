@@ -25,6 +25,8 @@ export const ProfilePage = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useThemeStore();
 
+  if (!user) return null;
+
   return (
     <>
       <Header
@@ -43,7 +45,7 @@ export const ProfilePage = () => {
       <main className="flex-1 overflow-y-auto pb-16">
         {isLoading ? (
           <ProfilePageSkeleton />
-        ) : isError || !user ? (
+        ) : isError ? (
           <ErrorView message="프로필 불러오기 실패" onRetry={() => refetch()} />
         ) : (
           <>
