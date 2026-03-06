@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 
+import { toast } from 'sonner';
+
 import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
 
@@ -33,7 +35,7 @@ export const ProfileImageUpload = ({
         onUploadComplete(data[0].filename);
       },
       onError: (error) => {
-        if (error instanceof Error) alert('업로드 실패: ' + error.message);
+        if (error instanceof Error) toast.error('업로드 실패: ' + error.message);
         setImagePreview(initialImage);
       },
     });
