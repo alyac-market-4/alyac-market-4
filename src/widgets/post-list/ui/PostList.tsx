@@ -1,41 +1,21 @@
-import {
-  PostSummarySkeleton,
-  PostThumbnail,
-  PostThumbnailSkeleton,
-  useUserPosts,
-} from '@/entities/post';
+import { PostThumbnail, useUserPosts } from '@/entities/post';
 import { type Profile } from '@/entities/profile';
-import type { ViewMode } from '@/features/layout-controller';
+import { LayoutController, type ViewMode } from '@/features/layout-controller';
 import { PostSummary } from '@/features/post';
 import { ErrorView } from '@/shared/ui';
 
+import { PostListSkeleton } from './PostListSkeleton';
+
 interface PostListProps {
   viewMode: ViewMode;
+  setViewMode: (viewMode: ViewMode) => void;
   user: Profile;
 }
 
-export const PostList = ({ viewMode, user }: PostListProps) => {
+export const PostList = ({ viewMode, setViewMode, user }: PostListProps) => {
   const { data: posts = [], isLoading, isError, refetch } = useUserPosts(user?.accountname || '');
 
-  if (isLoading) {
-    if (viewMode === 'list') {
-      return (
-        <>
-          <PostSummarySkeleton />
-          <PostSummarySkeleton />
-          <PostSummarySkeleton />
-        </>
-      );
-    } else {
-      return (
-        <div className="grid grid-cols-3 gap-1 py-4">
-          <PostThumbnailSkeleton />
-          <PostThumbnailSkeleton />
-          <PostThumbnailSkeleton />
-        </div>
-      );
-    }
-  }
+  if (isLoading) return <PostListSkeleton viewMode={viewMode} setViewMode={setViewMode} />;
   if (isError) return <ErrorView message="게시글 목록 불러오기 실패" onRetry={() => refetch()} />;
   if (posts.length === 0) {
     return (
@@ -45,21 +25,24 @@ export const PostList = ({ viewMode, user }: PostListProps) => {
     );
   }
 
-  if (viewMode === 'list') {
-    return (
-      <>
-        {posts.map((post) => {
-          return <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />;
-        })}
-      </>
-    );
-  } else {
-    return (
-      <div className="grid grid-cols-3 gap-1 py-4">
-        {posts.map((post) => {
-          return <PostThumbnail key={post.id} image={post.image} to={`/post/${post.id}`} />;
-        })}
+  return (
+    <>
+      <div className="border-border flex items-center justify-end border-b px-4 py-4">
+        <LayoutController viewMode={viewMode} setViewMode={setViewMode} />
       </div>
-    );
-  }
+      {viewMode === 'list' ? (
+        <>
+          {posts.map((post) => {
+            return <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />;
+          })}
+        </>
+      ) : (
+        <div className="grid grid-cols-3 gap-1 py-4">
+          {posts.map((post) => {
+            return <PostThumbnail key={post.id} image={post.image} to={`/post/${post.id}`} />;
+          })}
+        </div>
+      )}
+    </>
+  );
 };
