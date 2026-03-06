@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useCreateComment, usePostComments } from '@/entities/comment';
@@ -31,6 +31,7 @@ export const PostDetailPage = () => {
   const { mutate: deletePost } = useDeletePost();
   const { mutate: reportPost } = useReportPost();
   const { openConfirm } = useConfirmDialogStore();
+  const navigate = useNavigate();
 
   const {
     data: comments,
@@ -55,6 +56,7 @@ export const PostDetailPage = () => {
 
   const kebabMenuItems = isMe
     ? [
+        { label: '수정', onClick: () => navigate(`/post-update/${post.id}`) },
         {
           label: '삭제',
           onClick: () => {
