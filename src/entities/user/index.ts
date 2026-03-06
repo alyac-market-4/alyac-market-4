@@ -5,3 +5,5 @@ export * from './hooks/useValidateEmail';
 export * from './hooks/useValidateAccountname';
 export * from './hooks/useUpdateProfile';
 export * from './model/types';
+export * from './ui/FriendCard';
+export * from './ui/FriendCardSkeleton';
