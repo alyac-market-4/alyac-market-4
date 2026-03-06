@@ -7,6 +7,7 @@
 import { useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { usePostDetail, useUpdatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
@@ -28,7 +29,7 @@ function PostUpdateView({ post }: Props) {
   // - uploadMutation: 새 이미지 업로드 요청
   // - updatePost: 게시글 수정 요청
   const uploadMutation = useUploadFiles();
-  const { mutate: updatePost, isPending: isUpdatePostPending } = useUpdatePost();
+  const { mutateAsync: updatePostAsync, isPending: isUpdatePostPending } = useUpdatePost();
 
   // 페이지 내부 상태
   // - content: 수정 중인 게시글 내용
@@ -97,13 +98,16 @@ function PostUpdateView({ post }: Props) {
 
     const merged = [...existingImages, ...newImageSegments].join(',');
 
-    updatePost({
+    await updatePostAsync({
       postId: post.id,
       post: {
         content: safeContent,
         image: merged,
       },
     });
+
+    // 수정 성공 토스트
+    toast.success('게시글이 수정되었습니다.');
   };
 
   return (
