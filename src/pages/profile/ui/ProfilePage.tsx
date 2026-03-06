@@ -7,15 +7,17 @@ import { useUserProfile } from '@/entities/profile';
 import { LayoutController, type ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
 import { getTokenUserInfo, themeIcons, useThemeStore } from '@/shared/lib';
-import { BackButton, ErrorView, KebabMenu, LoadingState } from '@/shared/ui';
+import { BackButton, ErrorView, KebabMenu } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
 import { ProductList } from '@/widgets/product-list';
 import { ProfileCard } from '@/widgets/profile-card';
 
+import { ProfilePageSkeleton } from './ProfilePageSkeleton';
+
 export const ProfilePage = () => {
   const { accountname } = useParams();
-  const myAccountname = getTokenUserInfo().accountname;
+  const myAccountname = getTokenUserInfo()?.accountname || '';
   const isMe = !accountname || accountname === myAccountname;
   const targetAccountname = isMe ? myAccountname : accountname;
   const { data: user, isLoading, isError, refetch } = useUserProfile(targetAccountname);
@@ -40,7 +42,7 @@ export const ProfilePage = () => {
 
       <main className="flex-1 overflow-y-auto pb-16">
         {isLoading ? (
-          <LoadingState />
+          <ProfilePageSkeleton />
         ) : isError || !user ? (
           <ErrorView message="프로필 불러오기 실패" onRetry={() => refetch()} />
         ) : (
