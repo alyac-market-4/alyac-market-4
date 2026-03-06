@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { X } from 'lucide-react';
 
+import { PostContentInput } from '@/entities/post';
 import { useUserProfile } from '@/entities/profile';
-import PostContentInput from '@/features/post-create/ui/PostContentInput';
 import { getTokenUserInfo, imageUrls } from '@/shared/lib';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
 
@@ -31,7 +31,7 @@ export const PostEditForm = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { data: me } = useUserProfile(getTokenUserInfo().accountname);
 
-  // ✅ 새로 선택한 파일 preview
+  // 새로 선택한 파일 preview
   const previews = useMemo(() => {
     return files.map((file) => ({
       file,
@@ -44,14 +44,14 @@ export const PostEditForm = ({
     return () => previews.forEach((p) => URL.revokeObjectURL(p.url));
   }, [previews]);
 
-  // ✅ 기존 이미지(문자열 segment) -> 실제 이미지 URL로 변환
+  // 기존 이미지(문자열 segment) -> 실제 이미지 URL로 변환
   const existingPreviewUrls = useMemo(() => {
     // existingImages 각각이 "uploadFiles/xxx.jpg" 같은 단일 segment라고 가정
     // imageUrls는 콤마 문자열도 처리하므로 segment 하나 넣어도 OK
     return existingImages.flatMap((seg) => imageUrls(seg));
   }, [existingImages]);
 
-  // ✅ 기존 + 새 이미지를 하나의 grid에서 보여주기 위한 합친 목록
+  // 기존 + 새 이미지를 하나의 grid에서 보여주기 위한 합친 목록
   const mergedPreviews = useMemo(() => {
     const existing = existingPreviewUrls.map((url, idx) => ({
       type: 'existing' as const,
@@ -108,7 +108,7 @@ export const PostEditForm = ({
         <div className="flex-1 space-y-3">
           <PostContentInput value={content} onChangeValue={onChangeContent} />
 
-          {/* ✅ 기존 + 새 이미지를 한 grid에서 렌더링 */}
+          {/* 기존 + 새 이미지를 한 grid에서 렌더링 */}
           {mergedPreviews.length > 0 && (
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {mergedPreviews.map((item) => (

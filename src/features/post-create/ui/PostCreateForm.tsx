@@ -4,11 +4,10 @@ import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
 import { X } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { PostContentInput } from '@/entities/post';
 import { useUserProfile } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
-
-import PostContentInput from './PostContentInput';
 
 export type PostCreateFormProps = {
   content: string;
