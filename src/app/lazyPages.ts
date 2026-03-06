@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-const lazyPage = <T extends Record<K, React.ComponentType<any>>, K extends keyof T>(
+const lazyPage = <T extends Record<K, React.ComponentType<unknown>>, K extends keyof T>(
   importFn: () => Promise<T>,
   name: K,
 ) => lazy(() => importFn().then((m) => ({ default: m[name] })));

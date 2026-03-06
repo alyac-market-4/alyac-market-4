@@ -19,7 +19,7 @@ export const profileApi = {
   },
   getFollowings: async (
     accountname: string,
-    limit: number = 10,
+    limit: number = 5,
     skip: number = 0,
   ): Promise<User[]> => {
     const { data } = await axiosInstance.get<GetFollowingsResponse>(
@@ -30,7 +30,7 @@ export const profileApi = {
   },
   getFollowers: async (
     accountname: string,
-    limit: number = 10,
+    limit: number = 5,
     skip: number = 0,
   ): Promise<User[]> => {
     const { data } = await axiosInstance.get<GetFollowersResponse>(

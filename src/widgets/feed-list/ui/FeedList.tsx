@@ -9,7 +9,7 @@ export const FeedList = () => {
   const navigate = useNavigate();
 
   // 실제 피드 API 연결 (기존 FeedPage 코드 그대로)
-  const { data: posts = [], isLoading, isError, refetch } = useFeedPosts(10, 0);
+  const { data: posts = [], isLoading, isError, refetch } = useFeedPosts();
 
   const isEmptyFeed = posts.length === 0;
 
