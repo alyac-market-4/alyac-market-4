@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useFeedPosts } from '@/entities/post';
 import { PostSummary } from '@/features/post';
 import { fullLogoAlyacGray } from '@/shared/assets';
-import { Button, ErrorView, LoadingState } from '@/shared/ui';
+import { Button, ErrorView } from '@/shared/ui';
+
+import { FeedListSkeleton } from './FeedListSkeleton';
 
 export const FeedList = () => {
   const navigate = useNavigate();
@@ -13,8 +15,7 @@ export const FeedList = () => {
 
   const isEmptyFeed = posts.length === 0;
 
-  // LoadingState가 기본으로 중앙정렬
-  if (isLoading) return <LoadingState />;
+  if (isLoading) return <FeedListSkeleton />;
 
   if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => refetch()} />;
 
