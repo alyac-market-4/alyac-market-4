@@ -1,12 +1,17 @@
 // 게시물 수정 페이지
+// - pages에서는 "게시물 수정 화면" 자체를 담당
+// - 실제 입력 폼 UI는 features/post의 PostForm을 가져와서 재사용
+// - 게시글 수정 API는 entities/post, 이미지 업로드 API는 entities/upload 훅을 사용
+// - content/files 검증은 postCreateSchema에 맡기고,
+//   수정 페이지는 "기존 이미지가 남아 있는 경우"만 추가로 허용
 import { useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { usePostDetail, useUpdatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
-import { PostSubmitButton, postCreateSchema } from '@/features/post-create';
-import { PostEditForm } from '@/features/post-edit';
+import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
 import { splitImageSegments } from '@/shared/lib';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
@@ -20,81 +25,103 @@ type Props = {
 };
 
 function PostUpdateView({ post }: Props) {
-  // 이미지 업로드 API 훅
+  // API 훅
+  // - uploadMutation: 새 이미지 업로드 요청
+  // - updatePost: 게시글 수정 요청
   const uploadMutation = useUploadFiles();
+  const { mutateAsync: updatePostAsync, isPending: isUpdatePostPending } = useUpdatePost();
 
-  // 게시글 수정 API 훅
-  const { mutate: updatePost, isPending: isUpdatePostPending } = useUpdatePost();
-
-  // 게시글 내용 상태
+  // 페이지 내부 상태
+  // - content: 수정 중인 게시글 내용
+  // - files: 새로 추가한 이미지 파일 목록
+  // - existingImages: 서버에 이미 저장된 기존 이미지 목록
+  // - isTouched: 사용자가 한 번이라도 수정/선택했는지 여부
   const [content, setContent] = useState(() => post.content ?? '');
-
-  // 새로 추가할 이미지 파일
   const [files, setFiles] = useState<File[]>([]);
-
-  // 사용자가 수정했는지 여부
   const [isTouched, setIsTouched] = useState(false);
-
-  // 기존 이미지(서버에서 내려온 이미지) 상태
   const [existingImages, setExistingImages] = useState<string[]>(() =>
     splitImageSegments(post.image),
   );
 
-  // Zod 스키마로 게시글 입력값 검증
-  const zodResult = useMemo(() => postCreateSchema.safeParse({ content, files }), [content, files]);
-
-  // 제출 가능 여부
-  const canSubmit = zodResult.success;
-
-  // 업로드 또는 수정 요청 중인지 확인
+  // 업로드 중이거나 수정 요청 중이면 제출 중 상태로 처리
   const isSubmitting = uploadMutation.isPending || isUpdatePostPending;
 
-  // 기존 이미지 삭제
+  // content/files 입력값 검증은 공통 스키마 사용
+  const zodResult = useMemo(() => {
+    return postCreateSchema.safeParse({ content, files });
+  }, [content, files]);
+
+  // 수정 페이지에서는
+  // - 공통 스키마를 통과했거나
+  // - 기존 이미지가 하나라도 남아 있으면
+  // 제출 가능하게 처리
+  const canSubmit = zodResult.success || existingImages.length > 0;
+
+  // 수정 페이지 안내문 계산
+  // - 처음엔 숨김
+  // - 기존 이미지가 남아 있으면 스키마 실패여도 안내문을 띄우지 않음
+  //   (수정 페이지에서는 기존 이미지 자체가 유효한 입력으로 취급되기 때문)
+  // - 그 외에는 스키마 에러 메시지만 표시
+  const helperText = useMemo(() => {
+    if (!isTouched) return '';
+    if (existingImages.length > 0) return '';
+    if (!zodResult.success) return zodResult.error.issues[0]?.message ?? '';
+    return '';
+  }, [isTouched, existingImages.length, zodResult]);
+
+  // 기존 이미지 삭제 처리
   const onRemoveExistingImage = (index: number) => {
     setIsTouched(true);
     setExistingImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // 수정 버튼 클릭 시 게시글 업데이트
+  // 수정 버튼 클릭 시 최종 처리
+  // 1) 새 이미지가 있으면 먼저 업로드
+  // 2) 기존 이미지 + 새 이미지 경로를 합침
+  // 3) 게시글 수정 API 호출
   const onClickUpdate = async () => {
+    if (!isTouched) setIsTouched(true);
+
     if (!canSubmit || isSubmitting) return;
 
-    const parsed = postCreateSchema.parse({ content, files });
-    const safeContent = parsed.content;
-    const safeFiles = parsed.files;
+    // 수정 페이지에서는 기존 이미지가 남아 있는 경우도 허용하므로
+    // parse() 대신 필요한 값만 직접 정리해서 사용
+    const safeContent = content.trim();
+    const safeFiles = files;
 
     let newImageSegments: string[] = [];
 
-    // 새로 선택한 이미지 업로드
     if (safeFiles.length > 0) {
       const uploaded = await uploadMutation.mutateAsync(safeFiles);
       newImageSegments = uploaded.map((item) => item.filename);
     }
 
-    // 기존 이미지 + 새 이미지 합치기
     const merged = [...existingImages, ...newImageSegments].join(',');
 
-    // 게시글 수정 요청
-    updatePost({
+    await updatePostAsync({
       postId: post.id,
       post: {
         content: safeContent,
         image: merged,
       },
     });
+
+    // 수정 성공 토스트
+    toast.success('게시글이 수정되었습니다.');
   };
 
   return (
     <>
-      {/* 상단 헤더 (뒤로가기 / 수정 버튼) */}
+      {/* 공통 헤더 UI 재사용 */}
       <Header
         left={<BackButton />}
         right={<PostSubmitButton disabled={!canSubmit || isSubmitting} onClick={onClickUpdate} />}
       />
 
-      {/* 게시글 수정 폼 */}
+      {/* 공통 폼 UI 재사용
+          - 수정 페이지에서는 기존 이미지 표시/삭제 기능까지 함께 사용 */}
       <main className="px-4 py-6">
-        <PostEditForm
+        <PostForm
           content={content}
           onChangeContent={(next) => {
             if (!isTouched) setIsTouched(true);
@@ -108,19 +135,21 @@ function PostUpdateView({ post }: Props) {
           existingImages={existingImages}
           onRemoveExistingImage={onRemoveExistingImage}
         />
+
+        {/* 수정 페이지 검증 안내문 표시 */}
+        {helperText && <p className="mt-2 text-sm text-red-500">{helperText}</p>}
       </main>
     </>
   );
 }
 
 export const PostUpdatePage = () => {
-  // URL에서 게시글 id 가져오기
+  // URL에서 수정할 게시글 id 추출
   const { postId = '' } = useParams();
 
-  // 게시글 상세 데이터 조회
+  // 게시글 상세 조회
   const { data: post, isLoading } = usePostDetail(postId);
 
-  // 게시글 로딩 중 화면
   if (isLoading) {
     return (
       <>
@@ -130,7 +159,6 @@ export const PostUpdatePage = () => {
     );
   }
 
-  // 게시글이 존재하지 않을 때
   if (!post) {
     return (
       <>
@@ -140,7 +168,6 @@ export const PostUpdatePage = () => {
     );
   }
 
-  // postId 변경 시 내부 상태 초기화를 위해 컴포넌트 재마운트
   return <PostUpdateView key={postId} post={post} />;
 };
 

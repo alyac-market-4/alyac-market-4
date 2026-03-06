@@ -1,17 +1,16 @@
-import { useParams } from 'react-router-dom';
-
-import { ProductCardSkeleton, useUserProducts } from '@/entities/product';
-import { useUserProfile } from '@/entities/profile';
+import { useUserProducts } from '@/entities/product';
+import { type Profile } from '@/entities/profile';
 import { ProductCard } from '@/features/product';
-import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
-const PRODUCT_CARD_SKELETON_COUNT = 3;
+import { ProductListSkeleton } from './ProductListSkeleton';
 
-export const ProductList = ({ isMe }: { isMe: boolean }) => {
-  const { accountname = '' } = useParams();
-  const targetAccountname = accountname || getTokenUserInfo().accountname;
-  const { data: user } = useUserProfile(targetAccountname);
+interface ProductListProps {
+  isMe: boolean;
+  user: Profile;
+}
+
+export const ProductList = ({ isMe, user }: ProductListProps) => {
   const {
     data: products = [],
     isLoading,
@@ -19,19 +18,15 @@ export const ProductList = ({ isMe }: { isMe: boolean }) => {
     refetch,
   } = useUserProducts(user?.accountname || '');
 
+  if (isLoading) return <ProductListSkeleton />;
+
   return (
-    <div className="border-border border-b py-4">
+    <section className="border-border border-b py-4">
       <div className="flex items-center justify-between px-4 pb-3">
         <h3 className="text-foreground text-base font-bold">판매 중인 상품</h3>
       </div>
       <div className="scrollbar-hide flex gap-3 overflow-x-auto px-4 pb-2">
-        {isLoading ? (
-          <>
-            {Array.from({ length: PRODUCT_CARD_SKELETON_COUNT }).map((_, i) => (
-              <ProductCardSkeleton key={i} />
-            ))}
-          </>
-        ) : isError ? (
+        {isError ? (
           <ErrorView message={'상품 목록 불러오기 실패'} onRetry={() => refetch()} />
         ) : products.length > 0 ? (
           products.map((product) => (
@@ -48,6 +43,6 @@ export const ProductList = ({ isMe }: { isMe: boolean }) => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
