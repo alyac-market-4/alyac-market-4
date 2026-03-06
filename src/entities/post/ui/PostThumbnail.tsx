@@ -18,7 +18,7 @@ export const PostThumbnail = ({ image, to }: PostThumbnailProps) => {
       ) : (
         <div className="bg-muted flex h-full w-full flex-col items-center justify-center gap-1">
           <ImageOff className="text-muted-foreground" />
-          <span className="text-muted-foreground text-xs">이미지 없음</span>
+          <span className="text-muted-foreground text-xs">이미지가 없는 게시글입니다.</span>
         </div>
       )}
     </Link>

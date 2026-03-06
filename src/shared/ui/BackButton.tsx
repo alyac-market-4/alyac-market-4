@@ -1,14 +1,20 @@
 import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Button } from './button';
 
 export const BackButton = ({ onClick }: { onClick?: () => void }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBack = () => {
     if (onClick) return onClick();
-    navigate(-1);
+
+    if (location.key === 'default') {
+      navigate('/feed');
+    } else {
+      navigate(-1);
+    }
   };
 
   return (

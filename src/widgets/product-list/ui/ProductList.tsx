@@ -6,8 +6,6 @@ import { ProductCard } from '@/features/product';
 import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
-const PRODUCT_CARD_SKELETON_COUNT = 3;
-
 export const ProductList = ({ isMe }: { isMe: boolean }) => {
   const { accountname = '' } = useParams();
   const targetAccountname = accountname || getTokenUserInfo().accountname;
@@ -27,9 +25,9 @@ export const ProductList = ({ isMe }: { isMe: boolean }) => {
       <div className="scrollbar-hide flex gap-3 overflow-x-auto px-4 pb-2">
         {isLoading ? (
           <>
-            {Array.from({ length: PRODUCT_CARD_SKELETON_COUNT }).map((_, i) => (
-              <ProductCardSkeleton key={i} />
-            ))}
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
           </>
         ) : isError ? (
           <ErrorView message={'상품 목록 불러오기 실패'} onRetry={() => refetch()} />
