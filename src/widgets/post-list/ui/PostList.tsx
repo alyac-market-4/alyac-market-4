@@ -9,8 +9,6 @@ import type { ViewMode } from '@/features/layout-controller';
 import { PostSummary } from '@/features/post';
 import { ErrorView } from '@/shared/ui';
 
-const POST_SUMMARY_SKELETON_COUNT = 3;
-
 interface PostListProps {
   viewMode: ViewMode;
   user: Profile;
@@ -23,17 +21,17 @@ export const PostList = ({ viewMode, user }: PostListProps) => {
     if (viewMode === 'list') {
       return (
         <>
-          {Array.from({ length: POST_SUMMARY_SKELETON_COUNT }).map((_, i) => (
-            <PostSummarySkeleton key={i} />
-          ))}
+          <PostSummarySkeleton />
+          <PostSummarySkeleton />
+          <PostSummarySkeleton />
         </>
       );
     } else {
       return (
         <div className="grid grid-cols-3 gap-1 py-4">
-          {Array.from({ length: POST_SUMMARY_SKELETON_COUNT }).map((_, i) => (
-            <PostThumbnailSkeleton key={i} />
-          ))}
+          <PostThumbnailSkeleton />
+          <PostThumbnailSkeleton />
+          <PostThumbnailSkeleton />
         </div>
       );
     }
