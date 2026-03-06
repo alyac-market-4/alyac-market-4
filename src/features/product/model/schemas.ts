@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
+// 이미지 파일 최대 용량 (5MB)
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 export const productSchema = z.object({
   productName: z
     .string()
-    .trim() // 앞뒤 공백 제거
+    .trim()
     .min(2, '상품명은 2자 이상 입력해주세요.')
     .max(15, '상품명은 15자 이하로 입력해주세요.'),
 
@@ -21,6 +24,20 @@ export const productSchema = z.object({
     ),
 
   saleLink: z.string().trim().url('올바른 URL 형식을 입력해주세요.').optional().or(z.literal('')),
+
+  // 이미지 파일 검증 (1장, 선택은 폼에서 따로 체크)
+  // optional() → 이미지는 react-hook-form 폼 필드가 아니라
+  // ProductImageUpload 컴포넌트에서 별도로 관리하기 때문에
+  // 스키마에서 required로 강제하면 폼 제출이 안 됨
+  file: z
+    .instanceof(File)
+    .refine((f) => f.type.startsWith('image/'), {
+      message: '이미지 파일만 업로드할 수 있습니다.',
+    })
+    .refine((f) => f.size <= MAX_FILE_SIZE, {
+      message: `이미지는 ${MAX_FILE_SIZE / (1024 * 1024)}MB 이하만 업로드 가능합니다.`,
+    })
+    .optional(),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;
