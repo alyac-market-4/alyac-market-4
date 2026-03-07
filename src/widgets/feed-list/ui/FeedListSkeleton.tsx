@@ -6,8 +6,6 @@ export const FeedListSkeleton = () => {
       <PostSummarySkeleton />
       <PostSummarySkeleton />
       <PostSummarySkeleton />
-      <PostSummarySkeleton />
-      <PostSummarySkeleton />
     </section>
   );
 };

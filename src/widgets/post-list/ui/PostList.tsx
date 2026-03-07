@@ -1,7 +1,8 @@
-import { PostThumbnail, useUserPosts } from '@/entities/post';
+import { PostThumbnail, useInfiniteUserPosts } from '@/entities/post';
 import { type Profile } from '@/entities/profile';
 import { LayoutController, type ViewMode } from '@/features/layout-controller';
 import { PostSummary } from '@/features/post';
+import { useIntersectionObserver } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
 import { PostListSkeleton } from './PostListSkeleton';
@@ -13,10 +14,16 @@ interface PostListProps {
 }
 
 export const PostList = ({ viewMode, setViewMode, user }: PostListProps) => {
-  const { data: posts = [], isLoading, isError, refetch } = useUserPosts(user?.accountname || '');
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteUserPosts(user?.accountname || '');
+  const posts = data?.pages.flat() ?? [];
+  const observerRef = useIntersectionObserver(() => {
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+  }, hasNextPage);
 
-  if (isLoading) return <PostListSkeleton viewMode={viewMode} setViewMode={setViewMode} />;
-  if (isError) return <ErrorView message="게시글 목록 불러오기 실패" onRetry={() => refetch()} />;
+  if (isLoading) return <PostListSkeleton viewMode={viewMode} />;
+  if (isError)
+    return <ErrorView message="게시글 목록 불러오기 실패" onRetry={() => fetchNextPage()} />;
   if (posts.length === 0) {
     return (
       <div className="py-8 text-center">
@@ -24,6 +31,17 @@ export const PostList = ({ viewMode, setViewMode, user }: PostListProps) => {
       </div>
     );
   }
+
+  const LoaderTrigger = (
+    <div ref={observerRef}>
+      {isFetchingNextPage && <PostListSkeleton viewMode={viewMode} />}
+      {!hasNextPage && (
+        <div className="py-8 text-center">
+          <p className="text-muted-foreground text-sm">모든 게시물을 확인했습니다.</p>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <>
@@ -35,13 +53,17 @@ export const PostList = ({ viewMode, setViewMode, user }: PostListProps) => {
           {posts.map((post) => {
             return <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />;
           })}
+          {LoaderTrigger}
         </>
       ) : (
-        <div className="grid grid-cols-3 gap-1 py-4">
-          {posts.map((post) => {
-            return <PostThumbnail key={post.id} image={post.image} to={`/post/${post.id}`} />;
-          })}
-        </div>
+        <>
+          <div className="grid grid-cols-3 gap-1 py-4">
+            {posts.map((post) => {
+              return <PostThumbnail key={post.id} image={post.image} to={`/post/${post.id}`} />;
+            })}
+          </div>
+          {LoaderTrigger}
+        </>
       )}
     </>
   );
