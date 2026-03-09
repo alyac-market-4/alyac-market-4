@@ -5,6 +5,7 @@ export * from './hooks/useFollowings';
 export * from './hooks/useFriends';
 export * from './hooks/useUnfollow';
 export * from './hooks/useUserProfile';
+export * from './model/profileImageSchemas';
 export * from './model/schemas';
 export * from './model/types';
 export * from './ui/FollowStat';
