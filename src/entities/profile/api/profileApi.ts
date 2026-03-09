@@ -8,6 +8,7 @@ import type {
   GetUserProfileResponse,
   Profile,
   UnfollowUserResponse,
+  UpdateProfileRequest,
 } from '../model/types';
 
 export const profileApi = {
@@ -52,5 +53,11 @@ export const profileApi = {
       API_ENDPOINTS.PROFILE.UNFOLLOW(accountname),
     );
     return data.profile;
+  },
+
+  // SWAGGER에는 PROFILE이 아니라 USER
+  updateProfile: async (userInfo: UpdateProfileRequest): Promise<User> => {
+    const { data } = await axiosInstance.put<User>(API_ENDPOINTS.USER.UPDATE_PROFILE, userInfo);
+    return data;
   },
 };

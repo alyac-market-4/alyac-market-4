@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { type ProfileFormData, profileSchema } from '@/entities/profile';
-import { useUpdateProfile } from '@/entities/user';
+import { useUpdateProfile } from '@/entities/profile';
 
 export const useProfileUpdate = (user: ProfileFormData & { image?: string }) => {
   const navigate = useNavigate();

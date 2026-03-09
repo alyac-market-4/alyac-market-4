@@ -3,6 +3,7 @@ export * from './hooks/useFollowers';
 export * from './hooks/useFollowings';
 export * from './hooks/useFriends';
 export * from './hooks/useUnfollow';
+export * from './hooks/useUpdateProfile';
 export * from './hooks/useUserProfile';
 export * from './model/profileImageSchemas';
 export * from './model/schemas';

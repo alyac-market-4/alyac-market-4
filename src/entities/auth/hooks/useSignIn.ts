@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { saveToken } from '@/shared/lib';
-import { authKeys } from '@/shared/model';
 
 import { authApi } from '../api/authApi';
+import { authKeys } from '../model/keys';
 import type { SignInRequest } from '../model/types';
 
 export const useSignIn = () => {
