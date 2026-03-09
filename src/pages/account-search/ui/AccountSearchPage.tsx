@@ -1,8 +1,7 @@
 // 계정 검색 화면에서 입력값을 디바운스+Zod 검증 후 검색 패널에 전달하는 페이지
 import { useMemo, useState } from 'react';
 
-import { accountSearchKeywordSchema } from '@/features/account-search/model/schemas';
-import SearchInput from '@/features/account-search/ui/SearchInput';
+import { SearchInput, accountSearchKeywordSchema } from '@/features/account-search';
 import { useDebouncedValue } from '@/shared/lib';
 import { BackButton } from '@/shared/ui';
 import { AccountSearchPanel } from '@/widgets/account-search';
