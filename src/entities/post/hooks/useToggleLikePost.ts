@@ -14,13 +14,15 @@ export const useToggleLikePost = () => {
       await queryClient.cancelQueries({ queryKey: postKeys.detail(postId) });
       await queryClient.cancelQueries({ queryKey: postKeys.lists() });
       const prevDetail = queryClient.getQueryData<Post>(postKeys.detail(postId));
-      const prevLists = queryClient.getQueriesData<Post[]>({ queryKey: postKeys.lists() });
-      queryClient.setQueryData(postKeys.detail(postId), (old: Post) => {
+      const prevLists = queryClient.getQueriesData<InfiniteData<Post[]>>({
+        queryKey: postKeys.lists(),
+      });
+      queryClient.setQueryData(postKeys.detail(postId), (old: Post | undefined) => {
         if (!old) return old;
         return {
           ...old,
-          heartCount: old.hearted ? old.heartCount - 1 : old.heartCount + 1,
-          hearted: !old.hearted,
+          heartCount: old.heartCount + 1,
+          hearted: true,
         };
       });
       queryClient.setQueriesData<InfiniteData<Post[]>>({ queryKey: postKeys.lists() }, (old) => {
@@ -32,8 +34,8 @@ export const useToggleLikePost = () => {
               post.id === postId
                 ? {
                     ...post,
-                    heartCount: post.hearted ? post.heartCount - 1 : post.heartCount + 1,
-                    hearted: !post.hearted,
+                    heartCount: post.heartCount + 1,
+                    hearted: true,
                   }
                 : post,
             ),
@@ -42,10 +44,9 @@ export const useToggleLikePost = () => {
       });
       return { prevDetail, prevLists };
     },
-    onError: (error, _2, context) => {
-      console.log(error);
+    onError: (_, postId, context) => {
       if (context?.prevDetail) {
-        queryClient.setQueryData(postKeys.detail(context.prevDetail.id), context.prevDetail);
+        queryClient.setQueryData(postKeys.detail(postId), context.prevDetail);
       }
       context?.prevLists?.forEach(([queryKey, data]) => {
         queryClient.setQueryData(queryKey, data);
