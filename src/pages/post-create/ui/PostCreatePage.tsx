@@ -10,9 +10,10 @@ import { toast } from 'sonner';
 
 import { useCreatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
-import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
+import { PostSubmitButton, postCreateSchema } from '@/features/post';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
+import { PostForm } from '@/widgets/post-form';
 
 export const PostCreatePage = () => {
   // 페이지 내부 상태
