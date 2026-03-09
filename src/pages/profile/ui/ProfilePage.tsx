@@ -6,7 +6,7 @@ import { useAuth } from '@/entities/auth';
 import { useUserProfile } from '@/entities/profile';
 import { type ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
-import { getTokenUserInfo, themeIcons, useThemeStore } from '@/shared/lib';
+import { getTokenUserInfo, themeIcons, useConfirmDialogStore, useThemeStore } from '@/shared/lib';
 import { BackButton, ErrorView, KebabMenu } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 import { PostList } from '@/widgets/post-list';
@@ -24,6 +24,7 @@ export const ProfilePage = () => {
   const { logout } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useThemeStore();
+  const { openConfirm } = useConfirmDialogStore();
 
   if (isLoading) return <ProfilePageSkeleton viewMode={viewMode} setViewMode={setViewMode} />;
   if (isError) return <ErrorView message="프로필 불러오기 실패" onRetry={() => refetch()} />;
@@ -38,7 +39,17 @@ export const ProfilePage = () => {
             items={[
               { label: '설정 및 개인정보', onClick: () => {} },
               { label: '테마:', icon: themeIcons[theme], onClick: () => switchTheme() },
-              { label: '로그아웃', onClick: logout },
+              {
+                label: '로그아웃',
+                onClick: () =>
+                  openConfirm({
+                    title: '로그아웃 하시겠습니까?',
+                    actionText: '로그아웃',
+                    onConfirm: () => {
+                      logout();
+                    },
+                  }),
+              },
             ]}
           />
         }
