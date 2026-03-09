@@ -1,4 +1,4 @@
-import type { Chat } from '@/entities/chat';
+import type { Chat } from '../model/types';
 
 interface ReceivedBubbleProps {
   chat: Chat;

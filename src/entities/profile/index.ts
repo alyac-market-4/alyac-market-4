@@ -1,4 +1,3 @@
-export * from './api/profileApi';
 export * from './hooks/useFollow';
 export * from './hooks/useFollowers';
 export * from './hooks/useFollowings';

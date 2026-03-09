@@ -1,4 +1,3 @@
-export * from './api/authApi';
 export * from './hooks/useAuthStore';
 export * from './hooks/useCheckToken';
 export * from './hooks/useSignIn';
