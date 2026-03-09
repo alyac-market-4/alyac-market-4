@@ -6,9 +6,10 @@ export const authKeys = {
 export const postKeys = {
   all: ['posts'] as const,
   lists: () => [...postKeys.all, 'list'] as const,
-  list: (limit?: number, skip?: number) => [...postKeys.lists(), { limit, skip }] as const,
-  feed: (limit?: number, skip?: number) => [...postKeys.lists(), 'feed', { limit, skip }] as const,
-  user: (accountname: string, limit?: number, skip?: number) =>
+  list: (limit?: number, skip: number = 0) => [...postKeys.lists(), { limit, skip }] as const,
+  feed: (limit?: number, skip: number = 0) =>
+    [...postKeys.lists(), 'feed', { limit, skip }] as const,
+  user: (accountname: string, limit?: number, skip: number = 0) =>
     [...postKeys.lists(), 'user', { accountname, limit, skip }] as const,
   details: () => [...postKeys.all, 'detail'] as const,
   detail: (postId: string) => [...postKeys.details(), postId] as const,
@@ -24,14 +25,14 @@ export const userKeys = {
 export const commentKeys = {
   all: ['comments'] as const,
   lists: (postId: string) => [...commentKeys.all, 'list', postId] as const,
-  list: (postId: string, limit?: number, skip?: number) =>
+  list: (postId: string, limit?: number, skip: number = 0) =>
     [...commentKeys.lists(postId), { limit, skip }] as const,
 };
 
 export const productKeys = {
   all: ['product'] as const,
   lists: () => [...productKeys.all, 'list'] as const,
-  list: (accountname: string, limit?: number, skip?: number) =>
+  list: (accountname: string, limit?: number, skip: number = 0) =>
     [...productKeys.lists(), accountname, limit, skip] as const,
   details: () => [...productKeys.all, 'detail'] as const,
   detail: (productId: string) => [...productKeys.details(), productId] as const,
@@ -42,8 +43,8 @@ export const profileKeys = {
   details: () => [...profileKeys.all, 'detail'] as const,
   detail: (accountname: string) => [...profileKeys.details(), accountname] as const,
   friends: (accountname: string) => [...profileKeys.detail(accountname), 'friends'] as const,
-  followings: (accountname: string, limit?: number, skip?: number) =>
+  followings: (accountname: string, limit?: number, skip: number = 0) =>
     [...profileKeys.friends(accountname), 'following', { limit, skip }] as const,
-  followers: (accountname: string, limit?: number, skip?: number) =>
+  followers: (accountname: string, limit?: number, skip: number = 0) =>
     [...profileKeys.friends(accountname), 'follower', { limit, skip }] as const,
 };
