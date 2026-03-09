@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { SplashView } from '@/features/splash';
-import { useThemeStore } from '@/shared/lib';
 import { AuthSection } from '@/widgets/auth';
 
 export const HomePage = () => {
   const [showSplash, setShowSplash] = useState(true);
-  const { initThemeByLocalStorage } = useThemeStore();
 
   useEffect(() => {
-    initThemeByLocalStorage();
     const timer = setTimeout(() => setShowSplash(false), 2000);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
