@@ -1,14 +1,15 @@
 import { type FieldErrors, type UseFormRegister, type UseFormSetValue } from 'react-hook-form';
 import { z } from 'zod';
 
-import { productSchema } from '@/features/product/model/schemas';
+import { productSchema } from '../model/schemas';
 
+// z.input - 폼에서 다루는 원본 타입 (price가 string)
 type ProductFormInput = z.input<typeof productSchema>;
 
 interface ProductFormFieldsProps {
-  register: UseFormRegister<ProductFormInput>;
-  errors: FieldErrors<ProductFormInput>;
-  setValue: UseFormSetValue<ProductFormInput>;
+  register: UseFormRegister<ProductFormInput>; // 입력 필드를 react-hook-form에 등록하는 함수
+  errors: FieldErrors<ProductFormInput>; // 각 필드별 에러 메시지 객체
+  setValue: UseFormSetValue<ProductFormInput>; // 특정 필드 값을 직접 세팅하는 함수 (가격 콤마 처리에 사용)
 }
 
 export const ProductFormFields = ({ register, errors, setValue }: ProductFormFieldsProps) => {
@@ -19,7 +20,7 @@ export const ProductFormFields = ({ register, errors, setValue }: ProductFormFie
         <label className="text-foreground text-sm font-medium">상품명</label>
         <input
           type="text"
-          {...register('productName')}
+          {...register('productName')} // react-hook-form에 이 input을 'productName' 필드로 등록
           placeholder="2~15자 이내여야 합니다"
           className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
         />
@@ -33,24 +34,24 @@ export const ProductFormFields = ({ register, errors, setValue }: ProductFormFie
         <label className="text-foreground text-sm font-medium">가격</label>
         <input
           type="text"
-          inputMode="numeric"
+          inputMode="numeric" // 모바일에서 숫자 키패드 열기
           {...register('price')}
           onChange={(e) => {
-            // 숫자 이외 문자 전부 제거 (콤마, 한글 등)
+            // 1. 입력값에서 숫자 이외 문자 전부 제거 (콤마, 한글, 특수문자 등)
             const raw = e.target.value.replace(/[^0-9]/g, '');
 
-            // 커서 위치 저장 (콤마 때문에 커서가 튀는 걸 방지)
+            // 2. 콤마 추가/제거 시 커서가 튀는 걸 막기 위해 현재 커서 위치와 길이 저장
             const cursor = e.target.selectionStart ?? 0;
             const prevLength = e.target.value.length;
 
-            // react-hook-form에는 숫자만 있는 값 저장
+            // 3. react-hook-form에는 숫자만 있는 순수 값 저장 (검증, 제출 시 이 값 사용)
             setValue('price', raw as never, { shouldValidate: true });
 
-            // 화면에는 콤마 붙인 버전으로 표시 (예: 1234 → 1,234)
+            // 4. 화면에는 콤마 붙인 버전으로 표시 (예: 1234567 → 1,234,567)
             const formatted = raw ? Number(raw).toLocaleString() : '';
             e.target.value = formatted;
 
-            // 콤마 추가/제거로 글자 수 달라지면 커서 위치 보정
+            // 5. 콤마가 추가/제거되면서 글자 수가 달라짐 → 커서 위치 보정
             const diff = formatted.length - prevLength;
             e.target.setSelectionRange(cursor + diff, cursor + diff);
           }}
