@@ -20,3 +20,4 @@ export * from './skeleton';
 export * from './sonner';
 export * from './spinner';
 export * from './toggle-group';
+export * from './toggle';
