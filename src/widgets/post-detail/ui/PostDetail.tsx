@@ -95,12 +95,12 @@ export const PostDetail = ({ post }: { post: Post }) => {
                   type="button"
                   onClick={() => open(idx)}
                   aria-label={`이미지 ${idx + 1} 크게 보기`}
-                  className="min-w-[20%] shrink-0 cursor-pointer overflow-hidden rounded-xl border bg-white p-1 dark:bg-zinc-800"
+                  className="min-w-[20%] shrink-0 cursor-pointer overflow-hidden rounded-xl"
                 >
                   <img
                     src={imageUrl(img)}
                     alt={`Post image ${idx + 1}`}
-                    className="h-50 w-full cursor-pointer object-cover"
+                    className="h-40 w-full object-cover"
                     loading="lazy"
                   />
                 </button>
@@ -138,7 +138,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
             <button
               type="button"
               onClick={close}
-              className="absolute top-2 right-2 rounded-full bg-black/50 px-3 py-2 text-sm text-white hover:bg-black/70"
+              className="absolute top-2 right-2 cursor-pointer rounded-full bg-black/50 px-3 py-2 text-sm text-white hover:bg-black/70"
               aria-label="닫기"
             >
               닫기
@@ -150,7 +150,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
                 <button
                   type="button"
                   onClick={prev}
-                  className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/50 px-3 py-2 text-sm text-white hover:bg-black/70"
+                  className="absolute top-1/2 left-2 -translate-y-1/2 cursor-pointer rounded-full bg-black/50 px-3 py-2 text-sm text-white hover:bg-black/70"
                   aria-label="이전 이미지"
                 >
                   ←
@@ -159,7 +159,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
                 <button
                   type="button"
                   onClick={next}
-                  className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/50 px-3 py-2 text-sm text-white hover:bg-black/70"
+                  className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer rounded-full bg-black/50 px-3 py-2 text-sm text-white hover:bg-black/70"
                   aria-label="다음 이미지"
                 >
                   →
@@ -173,7 +173,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
                 <img
                   src={imageUrl(images[activeIndex])}
                   alt={`Post image ${activeIndex + 1}`}
-                  className="max-h-[80vh] w-full cursor-pointer object-contain"
+                  className="max-h-[80vh] w-full object-contain"
                 />
               </div>
 
