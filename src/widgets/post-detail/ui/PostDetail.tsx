@@ -86,7 +86,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
       {images.length > 0 && (
         <div className="mb-4 px-4">
           {/* 이미지 카드 */}
-          <div className="overflow-hidden rounded-2xl border bg-white dark:bg-zinc-900">
+          <div className="border-border bg-card overflow-hidden rounded-2xl border">
             {/* 가로 스크롤 이미지 목록 */}
             <div className="flex gap-2 overflow-x-auto px-3 py-3">
               {images.map((img, idx) => (
@@ -168,7 +168,7 @@ export const PostDetail = ({ post }: { post: Post }) => {
             )}
 
             {/* 확대된 이미지 표시 */}
-            <div className="overflow-hidden rounded-2xl bg-white dark:bg-zinc-900">
+            <div className="bg-background overflow-hidden rounded-2xl">
               <div className="flex items-center justify-center p-4">
                 <img
                   src={imageUrl(images[activeIndex])}
