@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 // 알림 메시지
 
-import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
+import { useUploadFile } from '@/entities/upload/hooks/useUploadFile';
 // 파일 업로드 API 훅
 import { imageUrl } from '@/shared/lib/imageUrl';
 // 이미지 경로 → 전체 URL로 변환해주는 함수
@@ -33,7 +33,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
   // 파일 업로드 API 훅
   // uploadMutation.mutate([file]) 호출하면 서버에 파일 업로드
   // uploadMutation.isPending → 업로드 중이면 true
-  const uploadMutation = useUploadFiles();
+  const uploadMutation = useUploadFile();
 
   // 숨겨진 <input type="file"> 에 직접 접근하기 위한 ref
   // fileInputRef.current.click() 호출하면 파일 선택 창이 열림
@@ -67,11 +67,11 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
     setImagePreview(URL.createObjectURL(file));
 
     // ④ 서버에 파일 업로드
-    uploadMutation.mutate([file], {
+    uploadMutation.mutate(file, {
       onSuccess: (data) => {
         // 업로드 성공 → 서버에서 받은 파일명 배열을 부모(ProductForm)로 전달
         // 부모에서 이 파일명을 나중에 상품 등록/수정 API에 넘겨줌
-        onUploadComplete(data.map((item) => item.filename));
+        onUploadComplete([data.filename]);
       },
       onError: (error) => {
         // 업로드 실패 → 에러 토스트 표시
