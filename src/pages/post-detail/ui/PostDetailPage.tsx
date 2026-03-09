@@ -5,13 +5,14 @@
 // - 여러 entities 훅과 widgets 컴포넌트를 조합해서 상세 화면을 구성
 import { useState } from 'react';
 
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 // entities/comment
 // - 댓글 생성 API(useCreateComment)
 // - 게시글 댓글 목록 조회(usePostComments)
-import { useCreateComment, usePostComments } from '@/entities/comment';
+import { useCreateComment, usePostInfiniteComments } from '@/entities/comment';
 // entities/post
 // - 게시글 상세 조회(usePostDetail)
 // - 게시글 삭제(useDeletePost)
@@ -39,6 +40,7 @@ import {
 // widgets
 // - 댓글 목록 UI
 import { CommentList } from '@/widgets/comment-list';
+import { CommentListSkeleton } from '@/widgets/comment-list';
 // - 페이지 상단 헤더 UI
 import { Header } from '@/widgets/header';
 // - 게시글 상세 내용 UI
@@ -65,10 +67,13 @@ export const PostDetailPage = () => {
 
   // 댓글 목록 조회
   const {
-    data: comments,
+    data: commentData,
     isLoading: isLoadingComments,
     isError: isErrorComments,
-  } = usePostComments(postId);
+    fetchNextPage: fetchNextPageComments,
+    hasNextPage: hasNextPageComments,
+  } = usePostInfiniteComments(postId);
+  const comments = commentData?.pages.flat() ?? [];
 
   // 댓글 입력 상태
   const [comment, setComment] = useState<string>('');
@@ -147,11 +152,25 @@ export const PostDetailPage = () => {
         {/* 댓글 목록 영역 */}
         <div className="divide-border divide-y">
           {Number(post.commentCount) > 0 ? (
-            comments?.map((comment) => (
-              <div key={comment.id} className="flex gap-3 px-4 py-4">
-                <CommentList postId={postId} comment={comment} />
-              </div>
-            ))
+            <>
+              <InfiniteScroll
+                dataLength={comments.length}
+                next={fetchNextPageComments}
+                hasMore={hasNextPageComments}
+                loader={<CommentListSkeleton />}
+              >
+                {comments?.map((comment) => (
+                  <div key={comment.id} className="flex gap-3 px-4 py-4">
+                    <CommentList postId={postId} comment={comment} />
+                  </div>
+                ))}
+              </InfiniteScroll>
+              {!hasNextPageComments && (
+                <div className="py-8 text-center">
+                  <p className="text-muted-foreground text-sm">모든 댓글을 확인했습니다.</p>
+                </div>
+              )}
+            </>
           ) : (
             <div className="px-4 py-8 text-center">
               <p className="text-muted-foreground text-sm">아직 댓글이 없습니다</p>

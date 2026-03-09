@@ -1,3 +1,4 @@
+export * from './ui/FriendButton';
 export * from './ui/ProfileImageUpload';
 export * from './ui/ProfileFormFields';
 export * from './hooks/useProfileSetting';

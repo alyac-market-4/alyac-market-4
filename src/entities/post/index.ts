@@ -3,6 +3,8 @@ export * from './hooks/useAllPosts';
 export * from './hooks/useCreatePost';
 export * from './hooks/useDeletePost';
 export * from './hooks/useFeedPosts';
+export * from './hooks/useInfiniteFeedPosts';
+export * from './hooks/useInfiniteUserPosts';
 export * from './hooks/usePostDetail';
 export * from './hooks/useReportPost';
 export * from './hooks/useToggleLikePost';

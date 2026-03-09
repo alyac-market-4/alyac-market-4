@@ -10,7 +10,8 @@ export const queryClient = new QueryClient({
       refetchOnReconnect: 'always',
     },
     mutations: {
-      retry: false,
+      retry: 1,
+      networkMode: 'always',
     },
   },
 });
