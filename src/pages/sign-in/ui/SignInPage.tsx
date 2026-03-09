@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AuthLinks } from '@/features/auth';
 import { useConfirmDialogStore } from '@/shared/lib';
@@ -8,6 +8,7 @@ import { SignInForm } from '@/widgets/auth';
 
 export const SignInPage = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { openConfirm } = useConfirmDialogStore();
 
   useEffect(() => {
@@ -18,8 +19,10 @@ export const SignInPage = () => {
         isAlert: true,
         cancelText: '확인',
       });
+
+      navigate('.', { replace: true, state: null });
     }
-  }, [state?.message, openConfirm]);
+  }, [state?.message, openConfirm, navigate]);
 
   return (
     <div className="bg-background flex min-h-screen justify-center px-4 pt-20">

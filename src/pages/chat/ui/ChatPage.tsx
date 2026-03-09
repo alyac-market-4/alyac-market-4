@@ -1,7 +1,7 @@
 import { ChatSummary } from '@/entities/chat';
 import { themeIcons, useThemeStore } from '@/shared/lib';
 import { KebabMenu, ProfileAvatar } from '@/shared/ui';
-import { BackButton } from '@/shared/ui/BackButton';
+import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 const CHAT_LIST = [

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/ui';
 
 import { productSchema } from '../model/schemas';
 import { ProductFormFields } from './ProductFormFields';

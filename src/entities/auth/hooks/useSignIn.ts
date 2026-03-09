@@ -11,9 +11,9 @@ export const useSignIn = () => {
 
   return useMutation({
     mutationFn: (userInfo: SignInRequest) => authApi.signIn(userInfo),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       saveToken(data.user.accessToken, data.user.refreshToken);
-      queryClient.invalidateQueries({ queryKey: authKeys.session() });
+      await queryClient.invalidateQueries({ queryKey: authKeys.session() });
     },
   });
 };
