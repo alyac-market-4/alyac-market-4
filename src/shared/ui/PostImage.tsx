@@ -10,7 +10,7 @@ export function PostImage({ src, alt = 'Post image' }: Props) {
   if (!url) return null;
 
   return (
-    <div className="mt-3 overflow-hidden rounded-2xl border bg-white dark:bg-zinc-900">
+    <div className="border-border bg-card mt-3 overflow-hidden rounded-2xl border">
       <div className="flex w-full items-center justify-center p-6">
         <img
           src={url}
