@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { commentKeys, postKeys } from '@/shared/model';
+import { postKeys } from '@/shared/model';
 
 import { commentApi } from '../api/commentApi';
+import { commentKeys } from '../model/keys';
 import type { DeleteCommentRequest } from '../model/types';
 
 export const useDeleteComment = () => {

@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { profileKeys } from '@/shared/model';
-
 import { profileApi } from '../api/profileApi';
+import { profileKeys } from '../model/keys';
 
 export const useFollowings = (accountname: string, limit: number = 5, skip: number = 0) => {
   return useQuery({

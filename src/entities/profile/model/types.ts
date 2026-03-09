@@ -36,3 +36,12 @@ export interface ProfileUpdateRequest {
 export interface ProfileUpdateResponse {
   profile: User;
 }
+
+export interface UpdateProfileRequest {
+  user: {
+    username: string;
+    accountname: string;
+    intro: string;
+    image: string;
+  };
+}

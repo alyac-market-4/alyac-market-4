@@ -1,8 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { commentKeys } from '@/shared/model';
-
 import { commentApi } from '../api/commentApi';
+import { commentKeys } from '../model/keys';
 
 export const usePostInfiniteComments = (postId: string, limit: number = 10) => {
   return useInfiniteQuery({

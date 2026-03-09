@@ -23,12 +23,3 @@ export interface ValidateAccountnameResponse {
   ok: boolean;
   message: string;
 }
-
-export interface UpdateProfileRequest {
-  user: {
-    username: string;
-    accountname: string;
-    intro: string;
-    image: string;
-  };
-}
