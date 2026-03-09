@@ -76,12 +76,12 @@ export const AccountSearchPanel = ({ keyword, keywordError }: Props) => {
 
     // 검색 결과 사용자 리스트 표시
     return (
-      <ul className="flex flex-col divide-y">
+      <ul className="flex flex-col divide-y divide-gray-200 dark:divide-slate-800">
         {users.map((u) => (
           <li key={u.accountname}>
             <button
               type="button"
-              className="flex w-full cursor-pointer items-center gap-3 rounded-md py-3 text-left transition-colors hover:bg-gray-100"
+              className="flex w-full cursor-pointer items-center gap-3 rounded-md py-3 text-left transition-colors hover:bg-gray-100 dark:hover:bg-slate-800"
               onClick={() => navigate(`/profile/${u.accountname}`)}
             >
               <ProfileAvatar size="default" src={u.image} alt={u.username} />
