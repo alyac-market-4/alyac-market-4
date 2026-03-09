@@ -3,13 +3,12 @@ import { z } from 'zod';
 
 import { productSchema } from '../model/schemas';
 
-// z.input - 폼에서 다루는 원본 타입 (price가 string)
 type ProductFormInput = z.input<typeof productSchema>;
 
 interface ProductFormFieldsProps {
-  register: UseFormRegister<ProductFormInput>; // 입력 필드를 react-hook-form에 등록하는 함수
-  errors: FieldErrors<ProductFormInput>; // 각 필드별 에러 메시지 객체
-  setValue: UseFormSetValue<ProductFormInput>; // 특정 필드 값을 직접 세팅하는 함수 (가격 콤마 처리에 사용)
+  register: UseFormRegister<ProductFormInput>;
+  errors: FieldErrors<ProductFormInput>;
+  setValue: UseFormSetValue<ProductFormInput>;
 }
 
 export const ProductFormFields = ({ register, errors, setValue }: ProductFormFieldsProps) => {
@@ -20,7 +19,7 @@ export const ProductFormFields = ({ register, errors, setValue }: ProductFormFie
         <label className="text-foreground text-sm font-medium">상품명</label>
         <input
           type="text"
-          {...register('productName')} // react-hook-form에 이 input을 'productName' 필드로 등록
+          {...register('productName')}
           placeholder="2~15자 이내여야 합니다"
           className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
         />
