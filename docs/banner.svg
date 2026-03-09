@@ -1,0 +1,66 @@
+<svg width="1400" height="420" viewBox="0 0 1400 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1400" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f7fff8"></stop>
+      <stop offset="100%" stop-color="#eefaf1"></stop>
+    </linearGradient>
+
+    <linearGradient id="pillGradient" x1="0" y1="0" x2="0" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4ade80"></stop>
+      <stop offset="50%" stop-color="#4ade80"></stop>
+      <stop offset="50%" stop-color="#ffffff"></stop>
+      <stop offset="100%" stop-color="#ffffff"></stop>
+    </linearGradient>
+
+    <linearGradient id="lineGradient" x1="500" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="transparent"></stop>
+      <stop offset="50%" stop-color="#a7f3d0"></stop>
+      <stop offset="100%" stop-color="transparent"></stop>
+    </linearGradient>
+
+    <clipPath id="bannerClip">
+      <rect x="0.5" y="0.5" width="1399" height="419" rx="24"></rect>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#bannerClip)">
+    <rect x="0.5" y="0.5" width="1399" height="419" rx="24" fill="url(#bgGradient)" stroke="#e4efe8"></rect>
+
+    <circle cx="170" cy="290" r="110" fill="#22c55e" fill-opacity="0.1"></circle>
+    <circle cx="1200" cy="150" r="80" fill="#22c55e" fill-opacity="0.1"></circle>
+
+    <rect x="90" y="70" width="90" height="90" rx="20" fill="#22c55e" fill-opacity="0.15"></rect>
+    <rect x="1230" y="270" width="90" height="90" rx="20" fill="#22c55e" fill-opacity="0.15"></rect>
+  </g>
+
+  <!-- 왼쪽 알약 -->
+  <g transform="translate(240,114)">
+    <rect x="0" y="0" width="52" height="88" rx="26" fill="url(#pillGradient)" stroke="#5d9c5d" stroke-width="3"></rect>
+    <rect x="0" y="42.5" width="52" height="3" fill="#5d9c5d"></rect>
+  </g>
+
+  <!-- 제목 -->
+  <text x="700" y="180" text-anchor="middle" font-size="80" font-weight="800" fill="#22c55e" font-family="Arial, sans-serif">
+    ALYAC MARKET
+  </text>
+
+  <!-- 오른쪽 알약 -->
+  <g transform="translate(1108,114)">
+    <rect x="0" y="0" width="52" height="88" rx="26" fill="url(#pillGradient)" stroke="#5d9c5d" stroke-width="3"></rect>
+    <rect x="0" y="42.5" width="52" height="3" fill="#5d9c5d"></rect>
+  </g>
+
+  <!-- 부제목 -->
+  <text x="700" y="250" text-anchor="middle" font-size="32" font-weight="600" fill="#64748b" font-family="Arial, sans-serif">
+    알약 마켓 서비스
+  </text>
+
+  <!-- 라인 -->
+  <rect x="500" y="270" width="400" height="4" fill="url(#lineGradient)"></rect>
+
+  <!-- 배지 -->
+  <rect x="585" y="294" width="230" height="52" rx="26" fill="#22c55e"></rect>
+  <text x="700" y="327" text-anchor="middle" font-size="22" font-weight="700" fill="white" font-family="Arial, sans-serif">
+    TEAM 막내온탑
+  </text>
+</svg>
