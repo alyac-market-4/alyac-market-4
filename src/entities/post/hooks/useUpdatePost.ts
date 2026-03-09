@@ -13,7 +13,7 @@ export const useUpdatePost = () => {
     mutationFn: ({ postId, post }: { postId: string; post: { content: string; image: string } }) =>
       postApi.updatePost({ postId, post }),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: postKeys.all });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
       replaceNavigate(`/post/${data.id}`);
     },
   });

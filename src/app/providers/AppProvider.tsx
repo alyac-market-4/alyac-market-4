@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { ConfirmRenderer } from '@/shared/lib';
 import { Toaster } from '@/shared/ui';
@@ -16,6 +17,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         <Toaster position="top-right" />
         <ConfirmRenderer />
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

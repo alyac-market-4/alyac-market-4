@@ -30,6 +30,7 @@ export const router = createBrowserRouter([
   {
     element: <ScrollManager />,
     children: [
+      { index: true, element: <HomePage /> },
       {
         path: '/',
         element: <RequireAuth />,
@@ -64,7 +65,6 @@ export const router = createBrowserRouter([
         path: '/',
         element: <RequireGuest />,
         children: [
-          { index: true, element: <HomePage /> },
           { path: 'sign-in', element: <SignInPage /> },
           { path: 'sign-up', element: <SignUpPage /> },
           {
