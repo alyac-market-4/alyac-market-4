@@ -5,7 +5,6 @@ import { axiosInstance } from '@/shared/api';
 import { API_ENDPOINTS, type User } from '@/shared/model';
 
 import type {
-  UpdateProfileRequest,
   UserResponse,
   ValidateAccountnameRequest,
   ValidateAccountnameResponse,
@@ -66,11 +65,6 @@ export const userApi = {
       API_ENDPOINTS.USER.VALID_ACCOUNT,
       accountname,
     );
-    return data;
-  },
-
-  updateProfile: async (userInfo: UpdateProfileRequest): Promise<User> => {
-    const { data } = await axiosInstance.put<User>(API_ENDPOINTS.USER.UPDATE_PROFILE, userInfo);
     return data;
   },
 };
