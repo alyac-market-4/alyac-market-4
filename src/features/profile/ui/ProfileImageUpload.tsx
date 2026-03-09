@@ -2,7 +2,8 @@ import { useRef, useState } from 'react';
 
 import { toast } from 'sonner';
 
-import { useUploadFiles } from '@/entities/upload/hooks/useUploadFiles';
+import { imageFileSchema } from '@/entities/profile';
+import { useUploadFile } from '@/entities/upload';
 import { ImageFileButton, ProfileAvatar } from '@/shared/ui';
 
 interface ProfileImageUploadProps {
@@ -17,7 +18,7 @@ export const ProfileImageUpload = ({
   onUploadComplete,
 }: ProfileImageUploadProps) => {
   const [imagePreview, setImagePreview] = useState<string | undefined>(initialImage);
-  const uploadMutation = useUploadFiles();
+  const uploadMutation = useUploadFile();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
@@ -28,11 +29,19 @@ export const ProfileImageUpload = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setImagePreview(URL.createObjectURL(file));
+    const result = imageFileSchema.safeParse({ file });
 
-    uploadMutation.mutate([file], {
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      e.target.value = '';
+      return;
+    }
+
+    setImagePreview(URL.createObjectURL(file));
+    console.log(file);
+    uploadMutation.mutate(file, {
       onSuccess: (data) => {
-        onUploadComplete(data[0].filename);
+        onUploadComplete(data.filename);
       },
       onError: (error) => {
         if (error instanceof Error) toast.error('업로드 실패: ' + error.message);
