@@ -14,6 +14,7 @@ export * from './hooks/useUserPosts';
 export * from './model/types';
 export * from './ui/CommentButton';
 export * from './ui/PostContentInput';
+export * from './ui/PostContentSkeleton';
 export * from './ui/PostSummarySkeleton';
 export * from './ui/PostThumbnail';
 export * from './ui/PostThumbnailSkeleton';
