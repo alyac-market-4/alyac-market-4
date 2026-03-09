@@ -1,6 +1,6 @@
 // 게시물 이미지 표시용 컴포넌트
 // 서버에 저장된 이미지 경로를 imageUrl 유틸을 통해 실제 URL로 변환하여 화면에 출력
-import { imageUrl } from '@/shared/lib/imageUrl';
+import { imageUrl } from '@/shared/lib';
 
 type Props = {
   src?: string | null; // 서버에서 전달받은 이미지 경로

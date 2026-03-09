@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // 사용자 검색 API 훅
 import { useSearchUser } from '@/entities/user';
 // 입력값 변경 시 일정 시간 후에 값을 반영하는 debounce 훅
-import { useDebounce } from '@/shared/lib/useDebounce';
+import { useDebounce } from '@/shared/lib';
 // 사용자 프로필 이미지 표시 컴포넌트
 import { ProfileAvatar } from '@/shared/ui';
 
