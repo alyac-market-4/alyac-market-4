@@ -10,7 +10,7 @@ interface ProfilePageSkeletonProps {
   setViewMode: (viewMode: ViewMode) => void;
 }
 
-export function ProfilePageSkeleton({ viewMode, setViewMode }: ProfilePageSkeletonProps) {
+export function ProfilePageSkeleton({ viewMode }: ProfilePageSkeletonProps) {
   return (
     <>
       <Header />
@@ -20,7 +20,7 @@ export function ProfilePageSkeleton({ viewMode, setViewMode }: ProfilePageSkelet
         <ProfileActionsSkeleton />
       </section>
       <ProductListSkeleton />
-      <PostListSkeleton viewMode={viewMode} setViewMode={setViewMode} />
+      <PostListSkeleton viewMode={viewMode} />
     </>
   );
 }

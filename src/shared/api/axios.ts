@@ -16,6 +16,9 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    if (config.method !== 'get') {
+      config.timeout = 10000;
+    }
     return config;
   },
   (error) => Promise.reject(error),

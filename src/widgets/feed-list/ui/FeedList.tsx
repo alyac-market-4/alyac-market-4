@@ -1,30 +1,43 @@
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 
-import { useFeedPosts } from '@/entities/post';
+import { useInfiniteFeedPosts } from '@/entities/post';
 import { PostSummary } from '@/features/post';
 import { fullLogoAlyacGray } from '@/shared/assets';
-import { Button, ErrorView, LoadingState } from '@/shared/ui';
+import { Button, ErrorView } from '@/shared/ui';
+
+import { FeedListSkeleton } from './FeedListSkeleton';
 
 export const FeedList = () => {
   const navigate = useNavigate();
 
-  // 실제 피드 API 연결 (기존 FeedPage 코드 그대로)
-  const { data: posts = [], isLoading, isError, refetch } = useFeedPosts();
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteFeedPosts();
+  const posts = data?.pages.flat() ?? [];
 
   const isEmptyFeed = posts.length === 0;
 
-  // LoadingState가 기본으로 중앙정렬
-  if (isLoading) return <LoadingState />;
-
-  if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => refetch()} />;
-
+  if (isLoading) return <FeedListSkeleton />;
+  if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => fetchNextPage()} />;
   if (isEmptyFeed) return <EmptyFeed onSearch={() => navigate('/feed/search')} />;
 
   return (
     <section className="flex flex-col gap-4">
-      {posts.map((post) => (
-        <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />
-      ))}
+      <InfiniteScroll
+        dataLength={posts.length}
+        next={fetchNextPage}
+        hasMore={hasNextPage}
+        loader={isFetchingNextPage ? <FeedListSkeleton /> : null}
+      >
+        {posts.map((post) => (
+          <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />
+        ))}
+      </InfiniteScroll>
+      {!hasNextPage && (
+        <div className="py-8 text-center">
+          <p className="text-muted-foreground text-sm">모든 피드를 확인했습니다.</p>
+        </div>
+      )}
     </section>
   );
 };

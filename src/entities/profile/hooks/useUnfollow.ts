@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type UseMutationOptions, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { profileKeys } from '@/shared/model';
 
 import { profileApi } from '../api/profileApi';
 
-export const useUnfollow = () => {
+export const useUnfollow = (options?: UseMutationOptions<any, Error, string>) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -12,5 +12,6 @@ export const useUnfollow = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: profileKeys.all });
     },
+    ...options,
   });
 };
