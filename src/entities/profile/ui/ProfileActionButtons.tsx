@@ -1,7 +1,8 @@
 import { MessageCircle, Share2 } from 'lucide-react';
 
-import type { Profile } from '@/entities/profile';
 import { Button } from '@/shared/ui';
+
+import type { Profile } from '../model/types';
 
 interface ProfileActionButtonsProps {
   handleFollow: () => void;

@@ -1,4 +1,3 @@
-export * from './api/userApi';
 export * from './hooks/useMyInfo';
 export * from './hooks/useSearchUser';
 export * from './hooks/useValidateEmail';

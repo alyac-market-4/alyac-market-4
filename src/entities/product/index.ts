@@ -1,4 +1,3 @@
-export * from './api/productApi';
 export * from './hooks/useCreateProduct';
 export * from './hooks/useDeleteProduct';
 export * from './hooks/useDetailProduct';
