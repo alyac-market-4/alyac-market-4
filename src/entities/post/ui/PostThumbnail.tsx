@@ -1,7 +1,7 @@
 import { ImageOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { imageUrl } from '@/shared/lib/imageUrl';
+import { imageUrl } from '@/shared/lib';
 
 interface PostThumbnailProps {
   image: string;

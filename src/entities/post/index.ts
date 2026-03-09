@@ -1,4 +1,3 @@
-export * from './api/postApi';
 export * from './hooks/useAllPosts';
 export * from './hooks/useCreatePost';
 export * from './hooks/useDeletePost';

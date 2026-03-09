@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useCheckToken } from '@/entities/auth';
+import { useCheckToken } from '../hooks/useCheckToken';
 
 export const RequireGuest = () => {
   const { data, isLoading } = useCheckToken();
