@@ -11,10 +11,11 @@ import { toast } from 'sonner';
 
 import { usePostDetail, useUpdatePost } from '@/entities/post';
 import { useUploadFiles } from '@/entities/upload';
-import { PostForm, PostSubmitButton, postCreateSchema } from '@/features/post';
+import { PostSubmitButton, postCreateSchema } from '@/features/post';
 import { splitImageSegments } from '@/shared/lib';
 import { BackButton } from '@/shared/ui';
 import { Header } from '@/widgets/header';
+import { PostForm } from '@/widgets/post-form';
 
 type Props = {
   post: {
