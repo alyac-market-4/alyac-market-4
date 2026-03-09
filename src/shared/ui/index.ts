@@ -15,7 +15,6 @@ export * from './KebabMenu';
 export * from './label';
 export * from './LoadingState';
 export * from './PostImage';
-export * from './ProductFormBase';
 export * from './ProfileAvatar';
 export * from './skeleton';
 export * from './sonner';
