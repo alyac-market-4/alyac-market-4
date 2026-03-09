@@ -14,7 +14,7 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: (postId: string) => postApi.deletePost(postId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: postKeys.all });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
       if (!location.pathname.includes('/profile')) {
         replaceNavigate('/profile');
       }

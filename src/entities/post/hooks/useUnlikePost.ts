@@ -10,7 +10,7 @@ export const useUnlikePost = () => {
   return useMutation({
     mutationFn: (postId: string) => postApi.unlikePost(postId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: postKeys.all });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
     },
   });
 };
