@@ -26,9 +26,6 @@ export const productSchema = z.object({
   saleLink: z.string().trim().url('올바른 URL 형식을 입력해주세요.').optional().or(z.literal('')),
 
   // 이미지 파일 검증 (1장, 선택은 폼에서 따로 체크)
-  // optional() → 이미지는 react-hook-form 폼 필드가 아니라
-  // ProductImageUpload 컴포넌트에서 별도로 관리하기 때문에
-  // 스키마에서 required로 강제하면 폼 제출이 안 됨
   file: z
     .instanceof(File)
     .refine((f) => f.type.startsWith('image/'), {
