@@ -34,7 +34,6 @@ import {
   InputGroupAddon,
   InputGroupInput,
   KebabMenu,
-  LoadingState,
   ProfileAvatar,
 } from '@/shared/ui';
 // widgets
@@ -45,6 +44,8 @@ import { CommentListSkeleton } from '@/widgets/comment-list';
 import { Header } from '@/widgets/header';
 // - 게시글 상세 내용 UI
 import { PostDetail } from '@/widgets/post-detail';
+
+import { PostDetailPageSkeleton } from './PostDetailPageSkeleton';
 
 export const PostDetailPage = () => {
   // URL에서 게시글 id 가져오기
@@ -86,7 +87,7 @@ export const PostDetailPage = () => {
   };
 
   // 게시글 또는 댓글 데이터 로딩 중이면 공통 로딩 UI 표시
-  if (isLoadingPost || isLoadingComments) return <LoadingState />;
+  if (isLoadingPost || isLoadingComments) return <PostDetailPageSkeleton />;
 
   // 에러 발생 시 간단한 에러 화면 표시
   if (isErrorPost || isErrorComments) return <div>에러</div>;
