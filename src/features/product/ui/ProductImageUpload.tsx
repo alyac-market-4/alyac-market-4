@@ -1,22 +1,15 @@
 import { useRef, useState } from 'react';
 
 import { ImagePlus } from 'lucide-react';
-// 이미지 아이콘
 import { toast } from 'sonner';
 
-// 알림 메시지
-
 import { useUploadFile } from '@/entities/upload/hooks/useUploadFile';
-// 파일 업로드 API 훅
 import { imageUrl } from '@/shared/lib/imageUrl';
-// 이미지 경로 → 전체 URL로 변환해주는 함수
 import { ImageFileButton } from '@/shared/ui/ImageFileButton';
 
-// 우측 하단 이미지 변경 버튼
-
 interface ProductImageUploadProps {
-  initialImage?: string; // update일 때만 넘겨줌 (기존 이미지 경로), create는 안 넘겨도 됨
-  onUploadComplete: (filenames: string[]) => void; // 업로드 완료 후 파일명 배열을 부모로 올려주는 함수
+  initialImage?: string;
+  onUploadComplete: (filenames: string[]) => void;
 }
 
 // 컴포넌트 밖에 선언 → 렌더링마다 재선언되지 않음
