@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { profileKeys } from '@/shared/model';
-
 import { profileApi } from '../api/profileApi';
+import { profileKeys } from '../model/keys';
 
 export const useFriends = (
   accountname: string,

@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { productKeys } from '@/shared/model';
-
 import { productApi } from '../api/productApi';
+import { productKeys } from '../model/keys';
 import type { UpdateProductRequest } from '../model/types';
 
 export const useUpdateProduct = () => {

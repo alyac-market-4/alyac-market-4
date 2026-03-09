@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { userKeys } from '@/shared/model';
-
 import { userApi } from '../api/userApi';
+import { userKeys } from '../model/keys';
 
 /**
  * @deprecated useUserProfile(getTokenUserInfo().accountname)를 사용하세요.
