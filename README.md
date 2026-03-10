@@ -287,7 +287,7 @@ npm run preview
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 배포 URL
 
-- [alyac-market-4.vercel.app](alyac-market-4.vercel.app)
+- [alyac-market-4.vercel.app](https://alyac-market-4.vercel.app/)
 <p align="center">
   <img src="docs/alyac_banner_F.svg" width="100%" />
 </p>
