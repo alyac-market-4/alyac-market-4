@@ -7,11 +7,12 @@ interface LikeButtonProps {
   postId: string;
   heartCount: number;
   hearted: boolean;
+  disabled?: boolean;
 }
 
-export const LikeButton = ({ postId, heartCount, hearted }: LikeButtonProps) => {
-  const { mutate: toggleLikePost } = useToggleLikePost();
-  const { mutate: unlikePost } = useUnlikePost();
+export const LikeButton = ({ postId, heartCount, hearted, disabled }: LikeButtonProps) => {
+  const { mutate: toggleLikePost, isPending: isToggleLikePending } = useToggleLikePost();
+  const { mutate: unlikePost, isPending: isUnlikePending } = useUnlikePost();
 
   return (
     <button
@@ -21,6 +22,7 @@ export const LikeButton = ({ postId, heartCount, hearted }: LikeButtonProps) => 
         hearted ? 'text-red-500' : '',
       )}
       type="button"
+      disabled={disabled || isToggleLikePending || isUnlikePending}
     >
       <Heart className={cn(hearted && 'fill-current')} />
       <span className="text-muted-foreground text-sm">{heartCount}</span>

@@ -30,7 +30,12 @@ export const FeedList = () => {
         loader={isFetchingNextPage ? <FeedListSkeleton /> : null}
       >
         {posts.map((post) => (
-          <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />
+          <PostSummary
+            key={post.id}
+            post={post}
+            isFetchingNextPage={isFetchingNextPage}
+            to={`/post/${post.id}`}
+          />
         ))}
       </InfiniteScroll>
       {!hasNextPage && (

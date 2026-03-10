@@ -12,7 +12,6 @@ export const useToggleLikePost = () => {
     mutationFn: (postId: string) => postApi.togglePostLike(postId),
     onMutate: async (postId: string) => {
       await queryClient.cancelQueries({ queryKey: postKeys.detail(postId) });
-      await queryClient.cancelQueries({ queryKey: postKeys.lists() });
       const prevDetail = queryClient.getQueryData<Post>(postKeys.detail(postId));
       const prevLists = queryClient.getQueriesData<InfiniteData<Post[]>>({
         queryKey: postKeys.lists(),
@@ -56,7 +55,15 @@ export const useToggleLikePost = () => {
       queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
       const isMutating = queryClient.isMutating({ mutationKey: postKeys.toggleLike() });
       if (isMutating <= 1) {
-        queryClient.invalidateQueries({ queryKey: postKeys.lists() });
+        const isFetchingNextPage = queryClient
+          .getQueryCache()
+          .findAll({ queryKey: postKeys.lists() })
+          .some((query) => query.state.fetchMeta?.fetchMore);
+
+        queryClient.invalidateQueries({
+          queryKey: postKeys.lists(),
+          refetchType: isFetchingNextPage ? 'none' : 'active',
+        });
       }
     },
   });
