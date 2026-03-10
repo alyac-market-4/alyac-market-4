@@ -13,12 +13,13 @@
 - [설치 및 실행 방법](#설치-및-실행-방법)
 - [배포 URL](#배포-url)
 
-
 ---
 
 <p align="center">
   <img src="docs/alyac_banner_T.svg" width="100%" />
 </p>
+
+<a id="프로젝트-소개"></a>
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 프로젝트 소개
 
@@ -63,6 +64,8 @@ CI/CD: d1, 2026-03-09, 4d
 문서화: d2, 2026-03-10, 4d
 ```
 
+<a id="주요-기능"></a>
+
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 주요 기능
 
 - **회원가입 / 로그인**
@@ -106,6 +109,8 @@ CI/CD: d1, 2026-03-09, 4d
   ![프로필 및 상품등록 이미지](docs/preview_Img4.png)
 
 ---
+
+<a id="기술-스택"></a>
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 기술 스택
 
@@ -182,6 +187,8 @@ CI/CD: d1, 2026-03-09, 4d
 - **Vercel**
   정적 사이트 배포 최적화 및 CI/CD 자동화 지원
 
+<a id="라우팅-구조"></a>
+
 ## <img src="./docs/Alyac_Icon.png" width="23"> 라우팅 구조
 
 | 경로                         | 설명             | 접근 권한 |
@@ -204,6 +211,8 @@ CI/CD: d1, 2026-03-09, 4d
 | `/product-create`            | 상품 작성        | 로그인    |
 | `/product-update/:productId` | 상품 수정        | 로그인    |
 | `*`                          | 404 에러         | 전체      |
+
+<a id="설치-및-실행-방법"></a>
 
 ## <img src="./docs/Alyac_Icon.png" width="23"> 설치 및 실행 방법
 
@@ -270,6 +279,8 @@ npm run preview
 ```
 
 ---
+
+<a id="배포-url"></a>
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 배포 URL
 
