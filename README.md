@@ -15,6 +15,10 @@
 
 ---
 
+<p align="center">
+  <img src="docs/alyac_banner_T.svg" width="100%" />
+</p>
+
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 프로젝트 소개
 
 #### 1.1 프로젝트 개요
@@ -165,7 +169,7 @@ CI/CD: d1, 2026-03-09, 4d
 | `/feed`                      | 피드             | 로그인    |
 | `/feed/search`               | 어카운트 검색    | 로그인    |
 | `/chat`                      | 채팅 목록        | 로그인    |
-| `/chat/:chatId`              | 채팅 디테일      | 전체      |
+| `/chat/:chatId`              | 채팅 디테일      | 로그인    |
 | `/profile`                   | 프로필           | 로그인    |
 | `/profile/:accountname`      | 다른 유저 프로필 | 로그인    |
 | `/profile-update`            | 프로필 수정      | 비로그인  |
@@ -246,3 +250,6 @@ npm run preview
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 배포 URL
 
 - [alyac-market-4.vercel.app](alyac-market-4.vercel.app)
+<p align="center">
+  <img src="docs/alyac_banner_F.svg" width="100%" />
+</p>
