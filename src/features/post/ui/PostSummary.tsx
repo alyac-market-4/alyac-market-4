@@ -33,9 +33,10 @@ import { LikeButton } from './LikeButton';
 interface PostSummaryProps {
   post: Post;
   to: string;
+  isFetchingNextPage?: boolean;
 }
 
-export const PostSummary = ({ post, to }: PostSummaryProps) => {
+export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) => {
   // 게시글 상세 페이지 이동을 위한 라우터 훅
   const navigate = useNavigate();
 
@@ -117,7 +118,7 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
         {/* 게시글 옵션 메뉴
            - 수정 / 삭제 / 신고 기능 제공 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <KebabMenu items={kebabMenuItems} />
+          <KebabMenu items={kebabMenuItems} disabled={isFetchingNextPage} />
         </div>
       </div>
 
@@ -147,7 +148,12 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
          - 댓글 개수 표시 및 댓글 페이지 이동 */}
       <div className="mt-3 ml-12 flex gap-4">
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
+          <LikeButton
+            postId={post.id}
+            heartCount={post.heartCount}
+            hearted={post.hearted}
+            disabled={isFetchingNextPage}
+          />
         </div>
 
         <div
