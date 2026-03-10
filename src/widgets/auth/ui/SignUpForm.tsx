@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +34,14 @@ export const SignUpForm = () => {
         setValidated();
         navigate('/profile-setting', { state: { user: data } });
       },
-      onError: () => setServerError('서버 오류가 발생했습니다.'),
+      onError: (error: unknown) => {
+        if (axios.isAxiosError(error)) {
+          setServerError(error.response?.data?.message ?? error.message);
+          return;
+        }
+
+        setServerError('서버 오류가 발생했습니다.');
+      },
     });
   };
 
