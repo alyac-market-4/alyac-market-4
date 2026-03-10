@@ -89,14 +89,22 @@ CI/CD: d1, 2026-03-09, 4d
 - 로그인 및 회원가입
   ![로그인 및 회원가입 이미지](docs/preview_Img1.png)
 
+---
+
 - 피드 및 게시글 작성
   ![피드 및 게시글 작성 이미지](docs/preview_Img2.png)
+
+---
 
 - 채팅
   ![채팅 이미지](docs/preview_Img3.jpg)
 
+---
+
 - 프로필 및 상품등록
   ![프로필 및 상품등록 이미지](docs/preview_Img4.png)
+
+---
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 기술 스택
 
