@@ -24,7 +24,7 @@ export const ProductList = ({ isMe, user }: ProductListProps) => {
     if (!sentinelRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && hasNextPage) {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
@@ -32,7 +32,7 @@ export const ProductList = ({ isMe, user }: ProductListProps) => {
     );
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   if (isLoading) return <ProductListSkeleton />;
 
