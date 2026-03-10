@@ -24,12 +24,9 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
   );
 
   // 파일 업로드 API 훅
-  // uploadMutation.mutate([file]) 호출하면 서버에 파일 업로드
-  // uploadMutation.isPending → 업로드 중이면 true
   const uploadMutation = useUploadFile();
 
   // 숨겨진 <input type="file"> 에 직접 접근하기 위한 ref
-  // fileInputRef.current.click() 호출하면 파일 선택 창이 열림
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,29 +34,24 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // ① 이미지 파일 형식 체크
-    // file.type 예시: "image/jpeg", "image/png", "application/pdf"
-    // startsWith('image/') → 이미지 형식이 아니면 막기
+    // 이미지 파일 형식 체크
     if (!file.type.startsWith('image/')) {
       toast.error('이미지 파일만 업로드할 수 있습니다.');
       e.target.value = ''; // input 초기화 (같은 파일 다시 선택 가능하게)
       return;
     }
 
-    // ② 파일 용량 체크 (5MB 초과 시 막기)
-    // file.size 단위는 바이트
+    // 파일 용량 체크 (5MB 초과 시 막기)
     if (file.size > MAX_FILE_SIZE) {
       toast.error('이미지는 5MB 이하만 업로드 가능합니다.');
       e.target.value = '';
       return;
     }
 
-    // ③ 검증 통과 → 미리보기 즉시 표시
-    // URL.createObjectURL(file) → 선택한 파일을 브라우저 내부 임시 URL로 변환
-    // 서버 업로드 전에도 이미지를 바로 보여줄 수 있음
+    // 검증 통과 → 미리보기 즉시 표시
     setImagePreview(URL.createObjectURL(file));
 
-    // ④ 서버에 파일 업로드
+    // 서버에 파일 업로드
     uploadMutation.mutate(file, {
       onSuccess: (data) => {
         // 업로드 성공 → 서버에서 받은 파일명 배열을 부모(ProductForm)로 전달
@@ -76,7 +68,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
       },
     });
 
-    // ⑤ input 초기화 → 같은 파일을 다시 선택해도 onChange가 다시 실행되게 함
+    // input 초기화 → 같은 파일을 다시 선택해도 onChange가 다시 실행되게 함
     e.target.value = '';
   };
 
@@ -87,7 +79,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
 
   return (
     <div className="space-y-2">
-      <label className="text-muted-foreground block text-sm">이미지 등록</label>
+      <label className="text-foreground block text-sm">이미지 등록</label>
 
       {/* 실제 파일 선택 input → 화면에는 안 보임 (className="hidden")
           버튼 클릭 시 handleButtonClick → fileInputRef.current.click()으로 트리거 */}
@@ -102,7 +94,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
       {/* 이미지 미리보기 영역 */}
       <div className="bg-card border-border relative h-64 w-full overflow-hidden rounded-2xl border">
         <div
-          className="hover:bg-muted/60 flex h-full w-full cursor-pointer flex-col items-center justify-center transition-colors"
+          className="bg-muted/60 hover:bg-muted flex h-full w-full cursor-pointer flex-col items-center justify-center"
           onClick={handleButtonClick} // 영역 어디든 클릭하면 파일 선택 창 열림
         >
           {/* imagePreview가 있으면 이미지 표시, 없으면 안내 아이콘 표시 */}
@@ -116,15 +108,14 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
           )}
         </div>
 
-        {/* 우측 하단 이미지 변경 버튼
-            e.stopPropagation() → 버튼 클릭 시 부모 div의 onClick이 같이 실행되는 걸 막음
-            (버튼만 클릭해도 파일 선택 창이 한 번만 열리게) */}
+        {/* 이미지 업로드 아이콘 버튼 */}
         <ImageFileButton
           onClick={(e) => {
             e.stopPropagation();
             handleButtonClick();
           }}
-          className="border-border right-4 bottom-4 h-12 w-12 border bg-white/60 backdrop-blur-sm hover:bg-white"
+          style={{ borderColor: 'oklch(1 0 0 / 60%)' }}
+          className="border-white-border hover:bg-main-alyac-color right-4 bottom-4 h-12 w-12 border bg-white/40 text-white backdrop-blur-sm hover:border-0"
         />
       </div>
 
