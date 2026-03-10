@@ -15,7 +15,7 @@
 
 ---
 
-## <img src="./docs/Alyac_Icon.png" width="20">&nbsp; 프로젝트 소개
+## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 프로젝트 소개
 
 #### 1.1 프로젝트 개요
 
@@ -58,7 +58,7 @@ CI/CD: d1, 2026-03-09, 4d
 문서화: d2, 2026-03-10, 4d
 ```
 
-## <img src="./docs/Alyac_Icon.png" width="20">&nbsp; 주요 기능
+## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 주요 기능
 
 - **회원가입 / 로그인**
   - JWT 기반 인증을 통해 사용자 계정을 생성하고 로그인할 수 있습니다.
@@ -80,7 +80,7 @@ CI/CD: d1, 2026-03-09, 4d
 - **상품 등록 및 거래**
   - 사용자가 판매할 상품을 등록할 수 있습니다.
 
-## <img src="./docs/Alyac_Icon.png" width="20">&nbsp; 기술 스택
+## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 기술 스택
 
 #### Frontend
 
@@ -155,7 +155,7 @@ CI/CD: d1, 2026-03-09, 4d
 - **Vercel**
   정적 사이트 배포 최적화 및 CI/CD 자동화 지원
 
-## <img src="./docs/Alyac_Icon.png" width="20"> 라우팅 구조
+## <img src="./docs/Alyac_Icon.png" width="23"> 라우팅 구조
 
 | 경로                         | 설명             | 접근 권한 |
 | ---------------------------- | ---------------- | --------- |
@@ -178,7 +178,7 @@ CI/CD: d1, 2026-03-09, 4d
 | `/product-update/:productId` | 상품 수정        | 로그인    |
 | `'*'`                        | 404 에러         | 전체      |
 
-## <img src="./docs/Alyac_Icon.png" width="20"> 설치 및 실행 방법
+## <img src="./docs/Alyac_Icon.png" width="23"> 설치 및 실행 방법
 
 #### 5.1 Clone Repository
 
@@ -243,6 +243,6 @@ npm run preview
 
 ---
 
-## <img src="./docs/Alyac_Icon.png" width="20">&nbsp; 배포 URL
+## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 배포 URL
 
 - [alyac-market-4.vercel.app](alyac-market-4.vercel.app)
