@@ -6,12 +6,12 @@
 
 ## 목차
 
-- [1. 프로젝트 소개](#1프로젝트-소개)
-- [2. 주요 기능](#2주요-기능)
-- [3. 기술 스택](#3기술-스택)
-- [4. 라우팅 구조](#4라우팅-구조)
-- [5. 설치 및 실행 방법](#5설치-및-실행-방법)
-- [6. 배포 URL](#6배포-url)
+- [프로젝트 소개](#프로젝트-소개)
+- [주요 기능](#주요-기능)
+- [기술 스택](#기술-스택)
+- [라우팅 구조](#라우팅-구조)
+- [설치 및 실행 방법](#설치-및-실행-방법)
+- [배포 URL](#배포-url)
 
 ---
 
@@ -19,13 +19,15 @@
   <img src="docs/alyac_banner_T.svg" width="100%" />
 </p>
 
+<a id="프로젝트-소개"></a>
+
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 프로젝트 소개
 
-#### 1.1 프로젝트 개요
+#### 1. 프로젝트 개요
 
 - Alyac Market은 소셜 미디어 및 전자상거래 기능을 제공하는 웹 퍼블리싱 입니다. JWT 기반 인증, 게시글 관리, 팔로우 시스템, 상품 관리 등의 기능을 포함합니다.
 
-#### 1.2 팀원 소개
+#### 2. 팀원 소개
 
 | 이름   | 역할 | 세부역할                | github url                             |
 | ------ | ---- | ----------------------- | -------------------------------------- |
@@ -35,7 +37,7 @@
 | 김연화 | 팀원 | - 제품 카테고리         | https://github.com/yeonaa95            |
 | 장화연 | 팀원 | - 기타 카테고리         | https://github.com/Hwayeon842          |
 
-#### 1.3 마일스톤
+#### 3. 마일스톤
 
 ```mermaid
 gantt
@@ -61,6 +63,8 @@ section 릴리스
 CI/CD: d1, 2026-03-09, 4d
 문서화: d2, 2026-03-10, 4d
 ```
+
+<a id="주요-기능"></a>
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 주요 기능
 
@@ -106,9 +110,11 @@ CI/CD: d1, 2026-03-09, 4d
 
 ---
 
+<a id="기술-스택"></a>
+
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 기술 스택
 
-#### Frontend
+#### Core
 
 - **React**
   확장성과 유지보수성이 높고, 활발하고 성숙한 생태계를 보유한 UI 라이브러리
@@ -181,6 +187,8 @@ CI/CD: d1, 2026-03-09, 4d
 - **Vercel**
   정적 사이트 배포 최적화 및 CI/CD 자동화 지원
 
+<a id="라우팅-구조"></a>
+
 ## <img src="./docs/Alyac_Icon.png" width="23"> 라우팅 구조
 
 | 경로                         | 설명             | 접근 권한 |
@@ -204,9 +212,11 @@ CI/CD: d1, 2026-03-09, 4d
 | `/product-update/:productId` | 상품 수정        | 로그인    |
 | `*`                          | 404 에러         | 전체      |
 
+<a id="설치-및-실행-방법"></a>
+
 ## <img src="./docs/Alyac_Icon.png" width="23"> 설치 및 실행 방법
 
-#### 5.1 Clone Repository
+#### 1. Clone Repository
 
 레포지토리를 클론합니다.
 
@@ -215,7 +225,7 @@ git clone https://github.com/alyac-market-4/alyac-market-4.git
 cd alyac-market-4
 ```
 
-#### 5.2 Install Dependencies
+#### 2. Install Dependencies
 
 프로젝트에 필요한 패키지를 설치합니다.
 
@@ -223,7 +233,7 @@ cd alyac-market-4
 npm install
 ```
 
-#### 5.3 Environment Variables
+#### 3. Environment Variables
 
 프로젝트 실행을 위해 `.env` 파일을 생성합니다.
 
@@ -238,7 +248,7 @@ VITE_API_BASE_URL=your_api_base_url
 VITE_IMAGE_BASE_URL=your_image_base_url
 ```
 
-#### 5.4 Run Development Server
+#### 4. Run Development Server
 
 개발 서버를 실행합니다.
 
@@ -252,7 +262,7 @@ npm run dev
 http://localhost:5173
 ```
 
-#### 5.5 Build
+#### 5. Build
 
 프로덕션 빌드를 생성합니다.
 
@@ -260,7 +270,7 @@ http://localhost:5173
 npm run build
 ```
 
-#### 5.6 Preview Build
+#### 6. Preview Build
 
 빌드된 프로젝트를 로컬에서 미리 확인할 수 있습니다.
 
@@ -269,6 +279,8 @@ npm run preview
 ```
 
 ---
+
+<a id="배포-url"></a>
 
 ## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 배포 URL
 
