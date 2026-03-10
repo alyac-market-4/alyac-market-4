@@ -1,4 +1,6 @@
-import { QueryClient } from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,4 +16,15 @@ export const queryClient = new QueryClient({
       networkMode: 'always',
     },
   },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        if (!error.response?.status) {
+          toast.error(error.message);
+        } else if (error.response?.status >= 500) {
+          toast.error('서버 오류');
+        }
+      }
+    },
+  }),
 });

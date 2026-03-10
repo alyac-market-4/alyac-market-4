@@ -33,15 +33,16 @@ import { LikeButton } from './LikeButton';
 interface PostSummaryProps {
   post: Post;
   to: string;
+  isFetchingNextPage?: boolean;
 }
 
-export const PostSummary = ({ post, to }: PostSummaryProps) => {
+export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) => {
   // 게시글 상세 페이지 이동을 위한 라우터 훅
   const navigate = useNavigate();
 
   // 게시글 삭제 / 신고 요청 훅
-  const { mutate: deletePost } = useDeletePost();
-  const { mutate: reportPost } = useReportPost();
+  const { mutate: deletePost, isPending: isDeletePending } = useDeletePost();
+  const { mutate: reportPost, isPending: isReportPending } = useReportPost();
 
   // 공통 확인 다이얼로그(store) 사용
   const { openConfirm } = useConfirmDialogStore();
@@ -69,8 +70,14 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
               description: '삭제된 게시물은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
-                deletePost(post.id);
-                toast.info('게시글이 삭제되었습니다.');
+                deletePost(post.id, {
+                  onSuccess: () => {
+                    toast.success('게시글을 삭제했습니다.');
+                  },
+                  onError: () => {
+                    toast.error('게시글 삭제에 실패했습니다.');
+                  },
+                });
               },
             });
           },
@@ -85,8 +92,14 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
               description: '신고는 취소할 수 없습니다.',
               actionText: '신고',
               onConfirm: () => {
-                reportPost(post.id);
-                toast.info('신고가 접수되었습니다.');
+                reportPost(post.id, {
+                  onSuccess: () => {
+                    toast.success('신고가 접수되었습니다.');
+                  },
+                  onError: () => {
+                    toast.error('신고 처리에 실패했습니다.');
+                  },
+                });
               },
             });
           },
@@ -117,7 +130,10 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
         {/* 게시글 옵션 메뉴
            - 수정 / 삭제 / 신고 기능 제공 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <KebabMenu items={kebabMenuItems} />
+          <KebabMenu
+            items={kebabMenuItems}
+            disabled={isFetchingNextPage || isDeletePending || isReportPending}
+          />
         </div>
       </div>
 
@@ -147,7 +163,12 @@ export const PostSummary = ({ post, to }: PostSummaryProps) => {
          - 댓글 개수 표시 및 댓글 페이지 이동 */}
       <div className="mt-3 ml-12 flex gap-4">
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <LikeButton postId={post.id} heartCount={post.heartCount} hearted={post.hearted} />
+          <LikeButton
+            postId={post.id}
+            heartCount={post.heartCount}
+            hearted={post.hearted}
+            disabled={isFetchingNextPage}
+          />
         </div>
 
         <div

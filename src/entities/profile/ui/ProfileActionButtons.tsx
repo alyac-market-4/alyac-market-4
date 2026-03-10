@@ -7,9 +7,10 @@ import type { Profile } from '../model/types';
 interface ProfileActionButtonsProps {
   handleFollow: () => void;
   user: Profile;
+  disabled?: boolean;
 }
 
-export function ProfileActionButtons({ handleFollow, user }: ProfileActionButtonsProps) {
+export function ProfileActionButtons({ handleFollow, user, disabled }: ProfileActionButtonsProps) {
   return (
     <>
       <Button type="button" variant="outline" size="icon" className="rounded-full">
@@ -20,6 +21,7 @@ export function ProfileActionButtons({ handleFollow, user }: ProfileActionButton
         className="w-32 rounded-full"
         type="button"
         onClick={handleFollow}
+        disabled={disabled}
       >
         {user.isfollow ? '언팔로우' : '팔로우'}
       </Button>

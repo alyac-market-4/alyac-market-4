@@ -25,8 +25,17 @@ export function CommentList({ postId, comment }: CommentListProps) {
               description: '삭제된 댓글은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
-                deleteComment({ postId, commentId: comment.id });
-                toast.info('댓글이 삭제되었습니다.');
+                deleteComment(
+                  { postId, commentId: comment.id },
+                  {
+                    onSuccess: () => {
+                      toast.success('댓글이 삭제되었습니다.');
+                    },
+                    onError: () => {
+                      toast.error('댓글 삭제에 실패했습니다.');
+                    },
+                  },
+                );
               },
             });
           },
@@ -41,8 +50,17 @@ export function CommentList({ postId, comment }: CommentListProps) {
               description: '신고는 취소할 수 없습니다.',
               actionText: '신고',
               onConfirm: () => {
-                reportComment({ postId, commentId: comment.id });
-                toast.info('신고가 접수되었습니다.');
+                reportComment(
+                  { postId, commentId: comment.id },
+                  {
+                    onSuccess: () => {
+                      toast.success('신고가 접수되었습니다.');
+                    },
+                    onError: () => {
+                      toast.error('댓글 신고에 실패했습니다.');
+                    },
+                  },
+                );
               },
             });
           },

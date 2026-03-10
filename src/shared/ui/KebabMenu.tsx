@@ -17,13 +17,14 @@ interface KebabMenuProps {
     onClick: () => void;
   }[];
   align?: 'center' | 'end' | 'start';
+  disabled?: boolean;
 }
 
-export const KebabMenu = ({ items, align = 'end' }: KebabMenuProps) => {
+export const KebabMenu = ({ items, align = 'end', disabled }: KebabMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <IconButton>
+        <IconButton disabled={disabled}>
           <EllipsisVertical />
         </IconButton>
       </DropdownMenuTrigger>

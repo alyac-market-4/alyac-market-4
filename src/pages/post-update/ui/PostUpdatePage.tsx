@@ -99,16 +99,23 @@ function PostUpdateView({ post }: Props) {
 
     const merged = [...existingImages, ...newImageSegments].join(',');
 
-    await updatePostAsync({
-      postId: post.id,
-      post: {
-        content: safeContent,
-        image: merged,
+    await updatePostAsync(
+      {
+        postId: post.id,
+        post: {
+          content: safeContent,
+          image: merged,
+        },
       },
-    });
-
-    // 수정 성공 토스트
-    toast.success('게시글이 수정되었습니다.');
+      {
+        onSuccess: () => {
+          toast.success('게시글이 수정되었습니다.');
+        },
+        onError: () => {
+          toast.error('게시글 수정에 실패했습니다.');
+        },
+      },
+    );
   };
 
   return (

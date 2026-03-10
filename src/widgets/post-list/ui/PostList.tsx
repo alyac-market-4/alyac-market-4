@@ -44,7 +44,14 @@ export const PostList = ({ viewMode, setViewMode, user }: PostListProps) => {
         {viewMode === 'list' ? (
           <>
             {posts.map((post) => {
-              return <PostSummary key={post.id} post={post} to={`/post/${post.id}`} />;
+              return (
+                <PostSummary
+                  key={post.id}
+                  post={post}
+                  isFetchingNextPage={isFetchingNextPage}
+                  to={`/post/${post.id}`}
+                />
+              );
             })}
           </>
         ) : (
