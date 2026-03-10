@@ -37,7 +37,7 @@ export const useProfileUpdate = (user: ProfileFormData & { image?: string }) => 
         },
         {
           onSuccess: () => {
-            toast.info('프로필을 수정했습니다.');
+            toast.success('프로필을 수정했습니다.');
           },
           onError: () => {
             toast.error('프로필 수정에 실패했습니다.');

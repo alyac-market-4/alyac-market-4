@@ -38,7 +38,7 @@ export const useProfileSetting = (user: ReturnType<typeof useLocation>['state'][
 
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) {
-      toast.success('이전 단계 데이터가 없습니다.');
+      toast.info('이전 단계 데이터가 없습니다.');
       navigate('/sign-up');
       return;
     }
