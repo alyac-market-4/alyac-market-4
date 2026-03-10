@@ -26,15 +26,24 @@ export const useProfileUpdate = (user: ProfileFormData & { image?: string }) => 
 
   const onSubmit = async (data: ProfileFormData) => {
     try {
-      await updateProfileAsync({
-        user: {
-          username: data.username,
-          accountname: data.accountname,
-          intro: data.intro ?? '',
-          image: profileImageUrl,
+      await updateProfileAsync(
+        {
+          user: {
+            username: data.username,
+            accountname: data.accountname,
+            intro: data.intro ?? '',
+            image: profileImageUrl,
+          },
         },
-      });
-      toast.success('프로필 정보가 수정되었습니다.');
+        {
+          onSuccess: () => {
+            toast.info('프로필을 수정했습니다.');
+          },
+          onError: () => {
+            toast.error('프로필 수정에 실패했습니다.');
+          },
+        },
+      );
       navigate('/profile');
     } catch {
       toast.error('서버 오류가 발생했습니다.');

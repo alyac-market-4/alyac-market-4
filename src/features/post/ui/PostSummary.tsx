@@ -41,8 +41,8 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
   const navigate = useNavigate();
 
   // 게시글 삭제 / 신고 요청 훅
-  const { mutate: deletePost } = useDeletePost();
-  const { mutate: reportPost } = useReportPost();
+  const { mutate: deletePost, isPending: isDeletePending } = useDeletePost();
+  const { mutate: reportPost, isPending: isReportPending } = useReportPost();
 
   // 공통 확인 다이얼로그(store) 사용
   const { openConfirm } = useConfirmDialogStore();
@@ -70,8 +70,14 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
               description: '삭제된 게시물은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
-                deletePost(post.id);
-                toast.info('게시글이 삭제되었습니다.');
+                deletePost(post.id, {
+                  onSuccess: () => {
+                    toast.info('게시글을 삭제했습니다.');
+                  },
+                  onError: () => {
+                    toast.error('게시글 삭제에 실패했습니다.');
+                  },
+                });
               },
             });
           },
@@ -86,8 +92,14 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
               description: '신고는 취소할 수 없습니다.',
               actionText: '신고',
               onConfirm: () => {
-                reportPost(post.id);
-                toast.info('신고가 접수되었습니다.');
+                reportPost(post.id, {
+                  onSuccess: () => {
+                    toast.info('신고가 접수되었습니다.');
+                  },
+                  onError: () => {
+                    toast.error('신고 처리에 실패했습니다.');
+                  },
+                });
               },
             });
           },
@@ -118,7 +130,10 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
         {/* 게시글 옵션 메뉴
            - 수정 / 삭제 / 신고 기능 제공 */}
         <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <KebabMenu items={kebabMenuItems} disabled={isFetchingNextPage} />
+          <KebabMenu
+            items={kebabMenuItems}
+            disabled={isFetchingNextPage || isDeletePending || isReportPending}
+          />
         </div>
       </div>
 

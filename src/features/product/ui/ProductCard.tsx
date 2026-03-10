@@ -39,15 +39,21 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
 
         {isMe && (
           <IconButton
-            aria-label="제품 삭제"
+            aria-label="상품 삭제"
             className="absolute top-1 right-1 cursor-pointer opacity-0 transition-colors group-hover:opacity-100"
             onClick={() =>
               openConfirm({
-                title: '제품 삭제',
-                description: '해당 제품을 삭제하시겠습니까?',
+                title: '상품 삭제',
+                description: '해당 상품을 삭제하시겠습니까?',
                 onConfirm: () => {
-                  productDeleteMutate(product.id);
-                  toast.info('제품이 삭제되었습니다.');
+                  productDeleteMutate(product.id, {
+                    onSuccess: () => {
+                      toast.info('상품을 삭제했습니다.');
+                    },
+                    onError: () => {
+                      toast.error('상품 삭제에 실패했습니다.');
+                    },
+                  });
                 },
                 actionText: '삭제',
               })
