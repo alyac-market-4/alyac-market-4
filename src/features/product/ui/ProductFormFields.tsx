@@ -21,10 +21,10 @@ export const ProductFormFields = ({ register, errors, setValue }: ProductFormFie
           type="text"
           {...register('productName')}
           placeholder="2~15자 이내여야 합니다"
-          className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
+          className="border-input bg-background placeholder:text-muted-foreground md:text-smborder-border text-muted-foreground mt-2 h-12 w-full rounded-md border-b-1 pl-1 text-base"
         />
         {errors.productName && (
-          <p className="text-sm text-red-500">{errors.productName.message as string}</p>
+          <p className="text-destructive text-sm">{errors.productName.message as string}</p>
         )}
       </div>
 
@@ -55,9 +55,11 @@ export const ProductFormFields = ({ register, errors, setValue }: ProductFormFie
             e.target.setSelectionRange(cursor + diff, cursor + diff);
           }}
           placeholder="숫자만 입력 가능합니다."
-          className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
+          className="border-input bg-background placeholder:text-muted-foreground md:text-smborder-border text-muted-foreground mt-2 h-12 w-full rounded-md border-b-1 pl-1 text-base"
         />
-        {errors.price && <p className="text-sm text-red-500">{errors.price.message as string}</p>}
+        {errors.price && (
+          <p className="text-destructive text-sm">{errors.price.message as string}</p>
+        )}
       </div>
 
       {/* 판매 링크 필드 */}
@@ -67,13 +69,13 @@ export const ProductFormFields = ({ register, errors, setValue }: ProductFormFie
           type="text"
           {...register('saleLink')}
           placeholder="URL을 입력해 주세요"
-          className="border-border text-foreground mt-2 w-full border-b bg-transparent py-3 focus:outline-none"
+          className="border-input bg-background placeholder:text-muted-foreground md:text-smborder-border text-muted-foreground mt-2 h-12 w-full rounded-md border-b-1 pl-1 text-base"
         />
         {errors.saleLink && (
-          <p className="text-sm text-red-500">{errors.saleLink.message as string}</p>
+          <p className="text-destructive text-sm">{errors.saleLink.message as string}</p>
         )}
         <p className="text-muted-foreground mt-2 text-xs">
-          선택 사항 (http:// 또는 https://로 시작)
+          http:// 또는 https://로 시작해야 합니다.
         </p>
       </div>
     </div>

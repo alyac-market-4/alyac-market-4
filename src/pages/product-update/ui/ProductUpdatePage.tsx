@@ -80,7 +80,6 @@ export const ProductUpdatePage = () => {
       <main className="bg-background flex-1 px-4 py-6">
         <ProductForm
           onValidChange={setIsFormValid}
-          isPending={isProductUpdatePending}
           // 기존 상품 데이터를 폼 초기값으로 넣어줌
           // ProductForm 내부에서 useEffect + reset으로 API 데이터가 늦게 와도 폼에 채워짐
           defaultValues={{
