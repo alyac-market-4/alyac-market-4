@@ -72,7 +72,7 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
               onConfirm: () => {
                 deletePost(post.id, {
                   onSuccess: () => {
-                    toast.info('게시글을 삭제했습니다.');
+                    toast.success('게시글을 삭제했습니다.');
                   },
                   onError: () => {
                     toast.error('게시글 삭제에 실패했습니다.');
@@ -94,7 +94,7 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
               onConfirm: () => {
                 reportPost(post.id, {
                   onSuccess: () => {
-                    toast.info('신고가 접수되었습니다.');
+                    toast.success('신고가 접수되었습니다.');
                   },
                   onError: () => {
                     toast.error('신고 처리에 실패했습니다.');

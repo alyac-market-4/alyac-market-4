@@ -48,7 +48,7 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
                 onConfirm: () => {
                   productDeleteMutate(product.id, {
                     onSuccess: () => {
-                      toast.info('상품을 삭제했습니다.');
+                      toast.success('상품을 삭제했습니다.');
                     },
                     onError: () => {
                       toast.error('상품 삭제에 실패했습니다.');
