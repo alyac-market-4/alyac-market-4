@@ -41,7 +41,6 @@ export const ProductCreatePage = () => {
       <main className="bg-background flex-1 px-4 py-6">
         <ProductForm
           onValidChange={setIsFormValid}
-          isPending={isProductCreatePending}
           onSubmit={(data, uploadedImageNames) => {
             // 이미지 없으면 제출 차단 (isFormValid에서도 막히지만 이중 방어)
             if (!uploadedImageNames.length) {
