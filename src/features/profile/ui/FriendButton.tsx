@@ -14,23 +14,23 @@ interface FriendButtonProps {
 }
 
 export function FriendButton({ user }: FriendButtonProps) {
-  const { mutate: follow, isPending: isFollowPending } = useFollow({
-    onError: () => {
-      toast.error('팔로우에 실패했습니다. 다시 시도해주세요.');
-    },
-  });
-  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow({
-    onError: () => {
-      toast.error('언팔로우에 실패했습니다. 다시 시도해주세요.');
-    },
-  });
+  const { mutate: follow, isPending: isFollowPending } = useFollow();
+  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
 
   const handleFollow = (accountname: string) => {
-    follow(accountname);
+    follow(accountname, {
+      onError: () => {
+        toast.error('팔로우 처리에 실패했습니다.');
+      },
+    });
   };
 
   const handleUnfollow = (accountname: string) => {
-    unfollow(accountname);
+    unfollow(accountname, {
+      onError: () => {
+        toast.error('언팔로우 처리에 실패했습니다.');
+      },
+    });
   };
 
   return (

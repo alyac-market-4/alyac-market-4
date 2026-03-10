@@ -72,13 +72,20 @@ export const PostCreatePage = () => {
         image = uploaded.map((item) => item.filename).join(',');
       }
 
-      await createPostAsync({
-        content: safeContent,
-        image,
-      });
-
-      // 게시글 작성 성공 토스트
-      toast.success('게시글이 등록되었습니다.');
+      await createPostAsync(
+        {
+          content: safeContent,
+          image,
+        },
+        {
+          onSuccess: () => {
+            toast.success('게시글이 등록되었습니다.');
+          },
+          onError: () => {
+            toast.error('게시글 등록에 실패했습니다.');
+          },
+        },
+      );
     } catch (err) {
       // 업로드/생성 실패 시 개발자 확인용 콘솔 로그 + 사용자 토스트 안내
       if (axios.isAxiosError(err)) {
