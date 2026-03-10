@@ -202,7 +202,7 @@ CI/CD: d1, 2026-03-09, 4d
 | `/post-update/:postId`       | 포스트 수정      | 로그인    |
 | `/product-create`            | 상품 작성        | 로그인    |
 | `/product-update/:productId` | 상품 수정        | 로그인    |
-| `'*'`                        | 404 에러         | 전체      |
+| `*`                          | 404 에러         | 전체      |
 
 ## <img src="./docs/Alyac_Icon.png" width="23"> 설치 및 실행 방법
 
@@ -212,7 +212,7 @@ CI/CD: d1, 2026-03-09, 4d
 
 ```bash
 git clone https://github.com/alyac-market-4/alyac-market-4.git
-cd project-name
+cd alyac-market-4
 ```
 
 #### 5.2 Install Dependencies
@@ -234,7 +234,8 @@ cp .env.example .env
 필요한 환경 변수 예시
 
 ```
-VITE_API_URL=your_api_url
+VITE_API_BASE_URL=your_api_base_url
+VITE_IMAGE_BASE_URL=your_image_base_url
 ```
 
 #### 5.4 Run Development Server
@@ -245,7 +246,7 @@ VITE_API_URL=your_api_url
 npm run dev
 ```
 
-브라우저에서 아래 주소로 접속합니다.
+브라우저에서 아래 주소로 접속합니다. (Vite의 port 기본값은 5173)
 
 ```
 http://localhost:5173
