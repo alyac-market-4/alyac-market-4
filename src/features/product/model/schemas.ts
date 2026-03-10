@@ -40,8 +40,8 @@ export const productSchema = z.object({
   saleLink: z
     .string()
     .trim()
-    .url('올바른 URL 형식을 입력해주세요.')
-    .min(1, '판매 링크를 입력해주세요.'),
+    .min(1, '판매 링크를 입력해주세요.')
+    .url('올바른 URL 형식을 입력해주세요.'),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

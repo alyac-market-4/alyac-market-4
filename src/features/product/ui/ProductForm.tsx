@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
@@ -47,9 +47,13 @@ export const ProductForm = ({
     defaultValues: defaultValues ?? { productName: '', price: '', saleLink: '' },
   });
 
+  const hasReset = useRef(false);
+
   useEffect(() => {
     if (!defaultValues) return;
+    if (hasReset.current) return;
     reset(defaultValues);
+    hasReset.current = true;
   }, [defaultValues, reset]);
 
   // 실시간으로 입력값 감지 - 저장 버튼 활성화 조건 체크할 때 사용
