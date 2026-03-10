@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import {
   MyProfileActionButtons,
@@ -15,16 +16,24 @@ interface ProfileActionsProps {
 
 export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   const navigate = useNavigate();
-  const { mutate: follow } = useFollow();
-  const { mutate: unfollow } = useUnfollow();
+  const { mutate: follow, isPending: isFollowPending } = useFollow();
+  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
   const { accountname } = useParams();
 
   const handleFollow = (isFollow: boolean) => {
     if (!accountname) return;
     if (isFollow) {
-      unfollow(accountname);
+      unfollow(accountname, {
+        onError: () => {
+          toast.error('언팔로우 처리에 실패했습니다.');
+        },
+      });
     } else {
-      follow(accountname);
+      follow(accountname, {
+        onError: () => {
+          toast.error('팔로우 처리에 실패했습니다.');
+        },
+      });
     }
   };
 
@@ -45,6 +54,7 @@ export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
             handleFollow(user.isfollow);
           }}
           user={user}
+          disabled={isFollowPending || isUnfollowPending}
         />
       )}
     </div>

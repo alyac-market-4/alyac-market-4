@@ -30,6 +30,7 @@ import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
 import {
   BackButton,
   Button,
+  ErrorView,
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
@@ -82,7 +83,17 @@ export const PostDetailPage = () => {
   // 댓글 작성 처리
   const handleCommentSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createComment({ postId, content: comment });
+    createComment(
+      { postId, content: comment },
+      {
+        onSuccess: () => {
+          toast.success('댓글이 등록되었습니다.');
+        },
+        onError: () => {
+          toast.error('댓글 등록에 실패했습니다.');
+        },
+      },
+    );
     setComment('');
   };
 
@@ -90,7 +101,8 @@ export const PostDetailPage = () => {
   if (isLoadingPost || isLoadingComments) return <PostDetailPageSkeleton />;
 
   // 에러 발생 시 간단한 에러 화면 표시
-  if (isErrorPost || isErrorComments) return <div>에러</div>;
+  if (isErrorPost || isErrorComments)
+    return <ErrorView message="댓글 불러오기 실패" onRetry={fetchNextPageComments} />;
 
   // 게시글이 존재하지 않을 경우
   if (!post) return <div>게시글을 찾을 수 없습니다</div>;
@@ -109,11 +121,17 @@ export const PostDetailPage = () => {
           onClick: () => {
             openConfirm({
               title: '정말 삭제하시겠습니까?',
-              description: '삭제된 게시물은 복구할 수 없습니다.',
+              description: '삭제된 댓글은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
-                deletePost(postId);
-                toast.info('게시글이 삭제되었습니다.');
+                deletePost(postId, {
+                  onSuccess: () => {
+                    toast.success('댓글이 삭제되었습니다.');
+                  },
+                  onError: () => {
+                    toast.error('댓글 삭제에 실패했습니다.');
+                  },
+                });
               },
             });
           },
@@ -128,8 +146,14 @@ export const PostDetailPage = () => {
               description: '신고는 취소할 수 없습니다.',
               actionText: '신고',
               onConfirm: () => {
-                reportPost(postId);
-                toast.info('신고가 접수되었습니다.');
+                reportPost(postId, {
+                  onSuccess: () => {
+                    toast.success('신고가 접수되었습니다.');
+                  },
+                  onError: () => {
+                    toast.error('신고 처리에 실패했습니다.');
+                  },
+                });
               },
             });
           },
