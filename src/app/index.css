@@ -39,25 +39,21 @@
   --sidebar-ring: light-dark(oklch(0.704 0.04 256.788), oklch(0.551 0.027 264.364));
   --main-alyac-color: light-dark(oklch(75.4% 0.177 132.5), oklch(75.4% 0.177 132.5));
   --main-alyac-color-hover: light-dark(oklch(68.9% 0.169 131.8), oklch(68.9% 0.169 131.8));
-  --white-border: light-dark(oklch(0.929 0.013 255.508), oklch(1 0 0 / 60%));
+  --product-image-btn: light-dark(oklch(1 0 0), oklch(0.208 0.042 265.755));
+  --product-image-btn-foreground: light-dark(
+    oklch(0.208 0.042 265.755),
+    oklch(0.984 0.003 247.858)
+  );
 }
 
 /* Base styles */
 :root {
   color-scheme: light;
   --radius: 0.625rem;
-  /* 라이트 모드 그림자 (아이콘 버튼) */
-  --button-shadow:
-    rgba(0, 0, 0, 0.2) 0px 2px 4px, rgba(0, 0, 0, 0.15) 0px 7px 13px -3px,
-    rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
 }
 
 :root.dark {
   color-scheme: dark;
-  /* 다크 모드 그림자 (아이콘 버튼) */
-  --button-shadow:
-    rgba(0, 0, 0, 0.5) 0px 2px 4px, rgba(0, 0, 0, 0.4) 0px 7px 13px -3px,
-    rgba(0, 0, 0, 0.3) 0px -3px 0px inset;
 }
 
 * {
@@ -115,7 +111,8 @@ body {
   --color-main-alyac-color: var(--main-alyac-color);
   --color-main-alyac-color-hover: var(--main-alyac-color-hover);
   --shadow-button: var(--button-shadow);
-  --color-white-border: var(--white-border);
+  --color-product-image-btn: var(--product-image-btn);
+  --color-product-image-btn-foreground: var(--product-image-btn-foreground);
 }
 
 @layer base {
