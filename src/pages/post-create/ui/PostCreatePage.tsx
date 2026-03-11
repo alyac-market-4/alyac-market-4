@@ -27,6 +27,11 @@ export const PostCreatePage = () => {
   // (에러 메시지를 언제부터 보여줄지 판단하기 위해 사용)
   const [isTouched, setIsTouched] = useState(false);
 
+  // 첫 입력/선택 시 touched 상태를 활성화하는 함수
+  const touch = () => {
+    if (!isTouched) setIsTouched(true);
+  };
+
   // 이미지 업로드 API 훅
   const uploadMutation = useUploadFiles();
 
@@ -59,7 +64,7 @@ export const PostCreatePage = () => {
   // 업로드 버튼 클릭 시 실행되는 함수
   const onClickUpload = async () => {
     // 첫 클릭 시 입력 시작 상태로 변경 (에러 메시지 표시 시작)
-    if (!isTouched) setIsTouched(true);
+    touch();
 
     // 검증 실패거나 이미 제출 중이면 중단
     if (!canUpload || isSubmitting) return;
@@ -127,14 +132,12 @@ export const PostCreatePage = () => {
         <PostForm
           content={content}
           onChangeContent={(next) => {
-            // 첫 입력 시 touched 상태 활성화
-            if (!isTouched) setIsTouched(true);
+            touch();
             setContent(next);
           }}
           files={files}
           onChangeFiles={(next) => {
-            // 이미지 선택 시 touched 상태 활성화
-            if (!isTouched) setIsTouched(true);
+            touch();
             setFiles(next);
           }}
         />
