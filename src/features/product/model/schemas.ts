@@ -33,6 +33,7 @@ export const productSchema = z.object({
       z
         .string()
         .regex(/^\d+$/, '숫자만 입력 가능합니다.')
+        .max(12, '가격은 최대 12자리까지 입력 가능합니다.')
         .transform((val) => Number(val)),
     ),
 
