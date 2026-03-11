@@ -121,15 +121,15 @@ export const PostDetailPage = () => {
           onClick: () => {
             openConfirm({
               title: '정말 삭제하시겠습니까?',
-              description: '삭제된 댓글은 복구할 수 없습니다.',
+              description: '삭제된 게시글은 복구할 수 없습니다.',
               actionText: '삭제',
               onConfirm: () => {
                 deletePost(postId, {
                   onSuccess: () => {
-                    toast.success('댓글이 삭제되었습니다.');
+                    toast.success('게시글이 삭제되었습니다.');
                   },
                   onError: () => {
-                    toast.error('댓글 삭제에 실패했습니다.');
+                    toast.error('게시글 삭제에 실패했습니다.');
                   },
                 });
               },

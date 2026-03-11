@@ -79,7 +79,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
 
   return (
     <div className="space-y-2">
-      <label className="text-foreground block text-sm">이미지 등록</label>
+      <label className="text-foreground mb-3 block text-sm">이미지 등록</label>
 
       {/* 실제 파일 선택 input → 화면에는 안 보임 (className="hidden")
           버튼 클릭 시 handleButtonClick → fileInputRef.current.click()으로 트리거 */}
@@ -94,7 +94,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
       {/* 이미지 미리보기 영역 */}
       <div className="bg-card border-border relative h-64 w-full overflow-hidden rounded-2xl border">
         <div
-          className="bg-muted/60 hover:bg-muted flex h-full w-full cursor-pointer flex-col items-center justify-center"
+          className="hover:bg-muted bg-muted/60 flex h-full w-full cursor-pointer flex-col items-center justify-center"
           onClick={handleButtonClick} // 영역 어디든 클릭하면 파일 선택 창 열림
         >
           {/* imagePreview가 있으면 이미지 표시, 없으면 안내 아이콘 표시 */}
@@ -115,7 +115,7 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
             handleButtonClick();
           }}
           style={{ borderColor: 'oklch(1 0 0 / 60%)' }}
-          className="border-white-border hover:bg-main-alyac-color right-4 bottom-4 h-12 w-12 border bg-white/40 text-white backdrop-blur-sm hover:border-0"
+          className="hover:bg-main-alyac-color text-product-image-btn-foreground bg-product-image-btn right-4 bottom-4 h-12 w-12 shadow-lg backdrop-blur-sm hover:text-white"
         />
       </div>
 
