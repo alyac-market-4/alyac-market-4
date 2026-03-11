@@ -1,4 +1,6 @@
 import { MessageCircle, Share2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { Button } from '@/shared/ui';
 
@@ -11,9 +13,17 @@ interface ProfileActionButtonsProps {
 }
 
 export function ProfileActionButtons({ handleFollow, user, disabled }: ProfileActionButtonsProps) {
+  const navigate = useNavigate();
+
   return (
     <>
-      <Button type="button" variant="outline" size="icon" className="rounded-full">
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        className="rounded-full"
+        onClick={() => navigate('/chat')}
+      >
         <MessageCircle />
       </Button>
       <Button
@@ -25,7 +35,16 @@ export function ProfileActionButtons({ handleFollow, user, disabled }: ProfileAc
       >
         {user.isfollow ? '언팔로우' : '팔로우'}
       </Button>
-      <Button type="button" variant="outline" size="icon" className="rounded-full">
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        className="rounded-full"
+        onClick={async () => {
+          await navigator.clipboard.writeText(window.location.href);
+          toast.info('링크가 복사되었습니다.');
+        }}
+      >
         <Share2 />
       </Button>
     </>
