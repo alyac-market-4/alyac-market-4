@@ -15,6 +15,7 @@ export const useCreateComment = () => {
     onSuccess: (_, { postId }) => {
       queryClient.invalidateQueries({ queryKey: commentKeys.all });
       queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
     },
   });
 };
