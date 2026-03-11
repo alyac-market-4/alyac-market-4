@@ -35,7 +35,12 @@ const ProfileUpdateForm = ({ user }: { user: Profile }) => {
       <Header
         left={<BackButton />}
         right={
-          <Button variant="alyac" type="submit" form="profile-form">
+          <Button
+            variant="alyac"
+            type="submit"
+            form="profile-form"
+            disabled={!form.formState.isValid}
+          >
             저장
           </Button>
         }
