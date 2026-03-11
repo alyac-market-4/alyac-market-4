@@ -1,3 +1,5 @@
+import { toast } from 'sonner';
+
 import { AuthLinks, SocialLoginButton } from '@/features/auth';
 import { fullLogoAlyacNoText } from '@/shared/assets';
 
@@ -6,6 +8,10 @@ interface AuthSectionProps {
 }
 
 export const AuthSection = ({ isVisible }: AuthSectionProps) => {
+  const handleSocialLogin = (provider: string) => {
+    toast.error(`${provider} 로그인은 준비 중입니다.`);
+  };
+
   return (
     <div
       className={`absolute inset-0 transition-all duration-1000 ${
@@ -19,9 +25,9 @@ export const AuthSection = ({ isVisible }: AuthSectionProps) => {
 
         <div className="bg-card rounded-t-[40px] px-6 pt-16 pb-24">
           <div className="mx-auto flex max-w-md flex-col gap-4">
-            <SocialLoginButton provider="kakao" />
-            <SocialLoginButton provider="google" />
-            <SocialLoginButton provider="facebook" />
+            <SocialLoginButton provider="kakao" onClick={() => handleSocialLogin('카카오')} />
+            <SocialLoginButton provider="google" onClick={() => handleSocialLogin('구글')} />
+            <SocialLoginButton provider="facebook" onClick={() => handleSocialLogin('페이스북')} />
             <AuthLinks mode="all" />
           </div>
         </div>
