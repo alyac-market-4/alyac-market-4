@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useAuth } from '@/entities/auth';
 import { useUserProfile } from '@/entities/profile';
@@ -37,7 +38,12 @@ export const ProfilePage = () => {
         right={
           <KebabMenu
             items={[
-              { label: '설정 및 개인정보', onClick: () => {} },
+              {
+                label: '설정 및 개인정보',
+                onClick: () => {
+                  toast.info('설정 및 개인정보는 중비 중인 기능입니다.');
+                },
+              },
               { label: '테마:', icon: themeIcons[theme], onClick: () => switchTheme() },
               {
                 label: '로그아웃',
