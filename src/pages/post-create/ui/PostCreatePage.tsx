@@ -17,44 +17,33 @@ import { PostForm } from '@/widgets/post-form';
 
 export const PostCreatePage = () => {
   // 페이지 내부 상태
-  // - content: 작성 중인 게시글 내용
-  // - files: 사용자가 새로 선택한 이미지 파일 목록
-  // - isTouched: 사용자가 한 번이라도 입력/선택을 시작했는지 여부
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [isTouched, setIsTouched] = useState(false);
 
   // API 훅
-  // - uploadMutation: 이미지 업로드 요청
-  // - createPostAsync: 게시글 생성 요청
   const uploadMutation = useUploadFiles();
   const { mutateAsync: createPostAsync, isPending: isCreatePostPending } = useCreatePost();
 
-  // 업로드 중이거나 게시글 생성 요청 중이면 제출 중 상태로 처리
+  // 제출 중 상태
   const isSubmitting = uploadMutation.isPending || isCreatePostPending;
 
-  // 작성 페이지 입력값 검증
-  // - 검증 규칙 자체는 postCreateSchema가 전부 담당
+  // 입력값 검증
   const zodResult = useMemo(() => {
     return postCreateSchema.safeParse({ content, files });
   }, [content, files]);
 
-  // 스키마 검증을 통과하면 업로드 버튼 활성화
+  // 업로드 가능 여부
   const canUpload = zodResult.success;
 
-  // 작성 페이지 안내문 계산
-  // - 처음엔 숨김
-  // - 입력/선택 이후에는 스키마 에러 메시지만 표시
+  // 안내 메시지
   const helperText = useMemo(() => {
     if (!isTouched) return '';
     if (!zodResult.success) return zodResult.error.issues[0]?.message ?? '';
     return '';
   }, [isTouched, zodResult]);
 
-  // 업로드 버튼 클릭 시 최종 처리
-  // 1) 새 이미지가 있으면 먼저 업로드
-  // 2) 업로드된 이미지 filename들을 하나의 문자열로 합침
-  // 3) 게시글 생성 API 호출
+  // 업로드 처리
   const onClickUpload = async () => {
     if (!isTouched) setIsTouched(true);
 
@@ -67,27 +56,26 @@ export const PostCreatePage = () => {
     try {
       let image = '';
 
+      // 이미지가 있으면 먼저 업로드
       if (safeFiles.length > 0) {
         const uploaded = await uploadMutation.mutateAsync(safeFiles);
         image = uploaded.map((item) => item.filename).join(',');
       }
 
+      // 게시글 생성
       await createPostAsync(
         {
-          content: safeContent,
+          content: safeContent || ' ',
           image,
         },
         {
           onSuccess: () => {
             toast.success('게시글이 등록되었습니다.');
           },
-          onError: () => {
-            toast.error('게시글 등록에 실패했습니다.');
-          },
         },
       );
     } catch (err) {
-      // 업로드/생성 실패 시 개발자 확인용 콘솔 로그 + 사용자 토스트 안내
+      // 업로드/생성 실패 로그
       if (axios.isAxiosError(err)) {
         console.error('UPLOAD/CREATE AXIOS ERROR', {
           message: err.message,
@@ -102,21 +90,17 @@ export const PostCreatePage = () => {
         console.error('UPLOAD/CREATE ERROR:', err);
       }
 
-      toast.error('업로드/등록 중 오류가 발생했습니다.');
+      toast.error('게시글 등록에 실패했습니다.');
     }
   };
 
   return (
     <>
-      {/* 공통 헤더 UI 재사용 */}
       <Header
         left={<BackButton />}
         right={<PostSubmitButton disabled={!canUpload || isSubmitting} onClick={onClickUpload} />}
       />
 
-      {/* 공통 폼 UI 재사용
-          - PostForm은 작성 페이지와 수정 페이지가 같이 쓰는 입력 폼
-          - 작성 페이지에서는 기존 이미지가 없으므로 content / files 관련 props만 전달 */}
       <main className="px-4 py-6">
         <PostForm
           content={content}
@@ -131,7 +115,6 @@ export const PostCreatePage = () => {
           }}
         />
 
-        {/* 작성 페이지 검증 안내문 표시 */}
         {helperText && <p className="mt-2 text-sm text-red-500">{helperText}</p>}
       </main>
     </>
