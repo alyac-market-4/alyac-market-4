@@ -40,8 +40,8 @@ export function ProfileActionButtons({ handleFollow, user, disabled }: ProfileAc
         variant="outline"
         size="icon"
         className="rounded-full"
-        onClick={() => {
-          navigator.clipboard.writeText(window.location.href);
+        onClick={async () => {
+          await navigator.clipboard.writeText(window.location.href);
           toast.info('링크가 복사되었습니다.');
         }}
       >
