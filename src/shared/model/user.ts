@@ -13,3 +13,7 @@ export interface User extends UserBase {
   followerCount: number;
   followingCount: number;
 }
+
+export interface UserWithIsFollow extends User {
+  isfollow: boolean;
+}

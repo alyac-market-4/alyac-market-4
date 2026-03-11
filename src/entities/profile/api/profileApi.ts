@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/shared/api';
-import { API_ENDPOINTS, type User } from '@/shared/model';
+import { API_ENDPOINTS, type User, type UserWithIsFollow } from '@/shared/model';
 
 import type {
   FollowUserResponse,
@@ -22,7 +22,7 @@ export const profileApi = {
     accountname: string,
     limit: number = 5,
     skip: number = 0,
-  ): Promise<User[]> => {
+  ): Promise<UserWithIsFollow[]> => {
     const { data } = await axiosInstance.get<GetFollowingsResponse>(
       API_ENDPOINTS.PROFILE.GET_FOLLOWINGS(accountname),
       { params: { limit, skip } },
@@ -33,7 +33,7 @@ export const profileApi = {
     accountname: string,
     limit: number = 5,
     skip: number = 0,
-  ): Promise<User[]> => {
+  ): Promise<UserWithIsFollow[]> => {
     const { data } = await axiosInstance.get<GetFollowersResponse>(
       API_ENDPOINTS.PROFILE.GET_FOLLOWERS(accountname),
       { params: { limit, skip } },
@@ -41,14 +41,14 @@ export const profileApi = {
     return data.follower || [];
   },
 
-  followUser: async (accountname: string): Promise<User> => {
+  followUser: async (accountname: string): Promise<UserWithIsFollow> => {
     const { data } = await axiosInstance.post<FollowUserResponse>(
       API_ENDPOINTS.PROFILE.FOLLOW(accountname),
     );
     return data.profile;
   },
 
-  unfollowUser: async (accountname: string): Promise<User> => {
+  unfollowUser: async (accountname: string): Promise<UserWithIsFollow> => {
     const { data } = await axiosInstance.delete<UnfollowUserResponse>(
       API_ENDPOINTS.PROFILE.UNFOLLOW(accountname),
     );

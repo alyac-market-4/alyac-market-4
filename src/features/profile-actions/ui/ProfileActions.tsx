@@ -20,9 +20,9 @@ export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
   const { accountname } = useParams();
 
-  const handleFollow = (isFollow: boolean) => {
+  const handleFollow = (isfollow: boolean) => {
     if (!accountname) return;
-    if (isFollow) {
+    if (isfollow) {
       unfollow(accountname, {
         onError: () => {
           toast.error('언팔로우 처리에 실패했습니다.');

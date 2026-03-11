@@ -20,7 +20,7 @@ export const FollowPage = () => {
         }
       />
       <main className="flex-1 overflow-y-auto pb-16">
-        <FriendList />
+        <FriendList isFollowersPath={isFollowersPath} />
       </main>
     </>
   );
