@@ -1,4 +1,4 @@
-import type { User } from '@/shared/model';
+import type { User, UserWithIsFollow } from '@/shared/model';
 
 export interface Profile extends User {
   isfollow: boolean;
@@ -9,19 +9,19 @@ export interface GetUserProfileResponse {
 }
 
 export interface GetFollowersResponse {
-  follower: User[];
+  follower: UserWithIsFollow[];
 }
 
 export interface GetFollowingsResponse {
-  following: User[];
+  following: UserWithIsFollow[];
 }
 
 export interface FollowUserResponse {
-  profile: User;
+  profile: UserWithIsFollow;
 }
 
 export interface UnfollowUserResponse {
-  profile: User;
+  profile: UserWithIsFollow;
 }
 
 export interface ProfileUpdateRequest {

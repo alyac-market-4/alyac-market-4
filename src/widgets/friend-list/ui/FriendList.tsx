@@ -1,65 +1,81 @@
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 
-import { useLocation, useParams } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useParams } from 'react-router-dom';
 
-import { useFollowings, useFriends } from '@/entities/profile';
+import { useInfiniteFriends } from '@/entities/profile';
 import { FriendCard } from '@/entities/user';
 import { FriendButton } from '@/features/profile';
-import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
 import { FriendListSkeleton } from './FriendListSkeleton';
 
-export function FriendList() {
+interface FriendListProps {
+  isFollowersPath: boolean;
+}
+
+export function FriendList({ isFollowersPath }: FriendListProps) {
   const { accountname = '' } = useParams();
-  const isFollowersPath = useLocation().pathname.split('/')[1] === 'followers';
   const {
-    data: users = [],
+    data: usersData,
     isLoading: isUsersLoading,
     isError: isUsersError,
-    refetch: refetchUsers,
-  } = useFriends(accountname, isFollowersPath ? 'followers' : 'followings');
-  const {
-    data: myFollowings = [],
-    isLoading: isMyFollowingsLoading,
-    isError: isMyFollowingsError,
-    refetch: refetchMyFollowings,
-  } = useFollowings(getTokenUserInfo().accountname);
+    fetchNextPage: fetchNextPageUsers,
+    hasNextPage: hasNextPageUsers,
+    isFetchingNextPage: isFetchingNextPageUsers,
+  } = useInfiniteFriends(accountname, isFollowersPath ? 'followers' : 'followings');
+  const users = usersData?.pages.flat() ?? [];
 
-  const usersWithIsFollow = useMemo(() => {
-    return users.map((user) => ({
-      ...user,
-      isFollow: myFollowings.some((following) => following._id === user._id),
-    }));
-  }, [users, myFollowings]);
+  useEffect(() => {
+    if (document.documentElement.scrollHeight <= window.innerHeight) {
+      if (hasNextPageUsers && !isFetchingNextPageUsers) fetchNextPageUsers();
+    }
+  }, [users]);
 
-  if (isUsersLoading || isMyFollowingsLoading) return <FriendListSkeleton />;
-  if (isUsersError || isMyFollowingsError) {
+  if (isUsersLoading) return <FriendListSkeleton />;
+  if (isUsersError) {
     return (
       <ErrorView
         message={isFollowersPath ? '팔로워 불러오기 실패' : '팔로잉한 유저 불러오기 실패'}
         onRetry={() => {
-          refetchUsers();
-          refetchMyFollowings();
+          fetchNextPageUsers();
         }}
       />
     );
   }
-  if (!accountname) return null;
 
   return (
-    <section className="divide-border divide-y">
-      {usersWithIsFollow.length > 0 ? (
-        usersWithIsFollow.map((user) => (
-          <FriendCard key={user._id} user={user} actionButton={<FriendButton user={user} />} />
-        ))
-      ) : (
-        <div className="flex items-center justify-center py-8">
+    <section>
+      <InfiniteScroll
+        dataLength={users.length}
+        next={() => {
+          fetchNextPageUsers();
+        }}
+        hasMore={hasNextPageUsers}
+        loader={isFetchingNextPageUsers ? <FriendListSkeleton /> : null}
+      >
+        {users.map((user) => (
+          <FriendCard
+            key={user._id}
+            user={user}
+            actionButton={<FriendButton user={user} disabled={isFetchingNextPageUsers} />}
+          />
+        ))}
+      </InfiniteScroll>
+
+      <div className="flex items-center justify-center py-8">
+        {users.length === 0 ? (
+          !hasNextPageUsers && (
+            <p className="text-muted-foreground">
+              {isFollowersPath ? '팔로워가 없습니다.' : '팔로잉한 유저가 없습니다.'}
+            </p>
+          )
+        ) : (
           <p className="text-muted-foreground">
-            {isFollowersPath ? '팔로워가 없습니다.' : '팔로잉한 유저가 없습니다.'}
+            {isFollowersPath ? '모든 팔로워를 확인했습니다.' : '모든 팔로잉 유저들을 확인했습니다.'}
           </p>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }

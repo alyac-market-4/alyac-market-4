@@ -7,9 +7,10 @@ import { ProfileAvatar } from '@/shared/ui';
 interface ProfileCardProps {
   isMe: boolean;
   user: User;
+  isFetching: boolean;
 }
 
-export const ProfileCard = ({ isMe, user }: ProfileCardProps) => {
+export const ProfileCard = ({ isMe, user, isFetching }: ProfileCardProps) => {
   return (
     <>
       <div className="flex items-center justify-center gap-12">
@@ -17,6 +18,7 @@ export const ProfileCard = ({ isMe, user }: ProfileCardProps) => {
           label="Followers"
           count={user.followerCount}
           link={`/followers/${user.accountname}`}
+          isFetching={isFetching}
         />
 
         {isMe ? (
@@ -31,6 +33,7 @@ export const ProfileCard = ({ isMe, user }: ProfileCardProps) => {
           label="Followings"
           count={user.followingCount}
           link={`/followings/${user.accountname}`}
+          isFetching={isFetching}
         />
       </div>
       <ProfileInfo username={user.username} accountname={user.accountname} intro={user.intro} />
