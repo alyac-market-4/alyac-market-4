@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useDeleteComment, useReportComment } from '@/entities/comment';
-import { getTokenUserInfo, useConfirmDialogStore } from '@/shared/lib';
+import { getTokenUserInfo, timeAgo, useConfirmDialogStore } from '@/shared/lib';
 import type { Comment } from '@/shared/model';
 import { KebabMenu, ProfileAvatar } from '@/shared/ui';
+import { TooltipMessage } from '@/shared/ui';
 
 interface CommentListProps {
   postId: string;
@@ -69,14 +71,23 @@ export function CommentList({ postId, comment }: CommentListProps) {
 
   return (
     <>
-      <ProfileAvatar size="lg" src={comment.author.image} alt={comment.author.username} />
+      <Link to={`/profile/${comment.author.accountname}`}>
+        <ProfileAvatar size="lg" src={comment.author.image} alt={comment.author.username} />
+      </Link>
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-foreground font-semibold">{comment.author.username}</span>
-            <span className="text-muted-foreground text-xs">
-              · {new Date(comment.createdAt).toLocaleDateString()}
-            </span>
+            <Link
+              to={`/profile/${comment.author.accountname}`}
+              className="text-foreground font-semibold"
+            >
+              {comment.author.username}
+            </Link>
+            <TooltipMessage message={new Date(comment.createdAt).toLocaleString()}>
+              <span className="text-muted-foreground text-xs">
+                · {timeAgo(new Date(comment.createdAt))}
+              </span>
+            </TooltipMessage>
           </div>
           <KebabMenu items={kebabMenuItems} />
         </div>
