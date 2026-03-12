@@ -107,78 +107,76 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
       ];
 
   return (
-    <article
-      key={post.id}
-      className="border-border cursor-pointer border-b py-4"
-      onClick={goDetail}
-    >
-      {/* 작성자 프로필 영역
+    <article key={post.id} className="border-border border-b py-2" onClick={goDetail}>
+      <div className="hover:bg-accent flex cursor-pointer flex-col justify-center rounded-2xl p-3">
+        {/* 작성자 프로필 영역
          - ProfileBadge 컴포넌트를 사용해 작성자 정보 표시
          - 클릭 시 작성자 프로필 페이지로 이동
          - 이벤트 전파 방지로 게시글 상세 이동 방지 */}
-      <div className="mb-3 flex items-center justify-between">
-        <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
-            <ProfileBadge
-              username={post.author.username}
-              accountname={post.author.accountname}
-              image={post.author.image}
-            />
-          </Link>
-        </div>
+        <div className="mb-3 flex items-center justify-between">
+          <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+            <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
+              <ProfileBadge
+                username={post.author.username}
+                accountname={post.author.accountname}
+                image={post.author.image}
+              />
+            </Link>
+          </div>
 
-        {/* 게시글 옵션 메뉴
+          {/* 게시글 옵션 메뉴
            - 수정 / 삭제 / 신고 기능 제공 */}
-        <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <KebabMenu
-            items={kebabMenuItems}
-            disabled={isFetchingNextPage || isDeletePending || isReportPending}
-          />
-        </div>
-      </div>
-
-      {/* 게시글 본문 내용 */}
-      <p className="text-foreground mb-3 ml-12 text-sm leading-relaxed">{post.content}</p>
-
-      {/* 게시글 이미지 영역
-         - PostImage 컴포넌트로 이미지 표시
-         - 이미지가 여러 장이면 우측 상단에 개수 배지 표시 */}
-      {imageCount > 0 && (
-        <div className="ml-12">
-          <div className="relative">
-            <PostImage src={post.image} alt="Post image" />
-
-            {imageCount > 1 && (
-              <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
-                <Layers className="h-6 w-6" />
-                {imageCount}
-              </div>
-            )}
+          <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+            <KebabMenu
+              items={kebabMenuItems}
+              disabled={isFetchingNextPage || isDeletePending || isReportPending}
+            />
           </div>
         </div>
-      )}
 
-      {/* 게시글 상호작용 영역
+        {/* 게시글 본문 내용 */}
+        <p className="text-foreground mb-3 ml-12 text-sm leading-relaxed">{post.content}</p>
+
+        {/* 게시글 이미지 영역
+         - PostImage 컴포넌트로 이미지 표시
+         - 이미지가 여러 장이면 우측 상단에 개수 배지 표시 */}
+        {imageCount > 0 && (
+          <div className="ml-12">
+            <div className="relative">
+              <PostImage src={post.image} alt="Post image" />
+
+              {imageCount > 1 && (
+                <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                  <Layers className="h-6 w-6" />
+                  {imageCount}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 게시글 상호작용 영역
          - 좋아요 기능
          - 댓글 개수 표시 및 댓글 페이지 이동 */}
-      <div className="mt-3 ml-12 flex gap-4">
-        <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-          <LikeButton
-            postId={post.id}
-            heartCount={post.heartCount}
-            hearted={post.hearted}
-            disabled={isFetchingNextPage}
-          />
-        </div>
+        <div className="mt-3 ml-12 flex gap-4">
+          <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+            <LikeButton
+              postId={post.id}
+              heartCount={post.heartCount}
+              hearted={post.hearted}
+              disabled={isFetchingNextPage}
+            />
+          </div>
 
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(to);
-          }}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          <CommentButton commentCount={post.commentCount} />
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(to);
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <CommentButton commentCount={post.commentCount} />
+          </div>
         </div>
       </div>
     </article>

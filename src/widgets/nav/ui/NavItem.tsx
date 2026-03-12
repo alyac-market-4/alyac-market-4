@@ -19,12 +19,13 @@ export const NavItem = ({ to, icon, label, isActive }: NavItemProps) => {
       className={cn(
         'flex flex-col items-center justify-center gap-1 p-2',
         buttonVariants({ variant: 'ghost', size: 'icon-lg' }),
-        'h-auto w-auto',
+        'h-auto w-32 rounded-2xl',
+        'hover:text-main-alyac-color',
         isActive && 'text-main-alyac-color',
       )}
     >
       {icon}
-      <span className="text-xs">{label}</span>
+      <span className="text-sm font-bold">{label}</span>
     </NavLink>
   );
 };

@@ -36,6 +36,7 @@ export const PostList = ({ viewMode, setViewMode, user }: PostListProps) => {
         <LayoutController viewMode={viewMode} setViewMode={setViewMode} />
       </div>
       <InfiniteScroll
+        // className="py-2"
         dataLength={posts.length}
         next={fetchNextPage}
         hasMore={hasNextPage}
