@@ -38,8 +38,8 @@
   );
   --color-sidebar-border: light-dark(oklch(0.929 0.013 255.508), oklch(1 0 0 / 10%));
   --color-sidebar-ring: light-dark(oklch(0.704 0.04 256.788), oklch(0.551 0.027 264.364));
-  --color-main-alyac-color: light-dark(oklch(75.4% 0.177 132.5), oklch(75.4% 0.177 132.5));
-  --color-main-alyac-color-hover: light-dark(oklch(68.9% 0.169 131.8), oklch(68.9% 0.169 131.8));
+  --color-main-alyac-color: light-dark(oklch(72.3% 0.198 142.5), oklch(72.3% 0.198 142.5));
+  --color-main-alyac-color-hover: light-dark(oklch(62.3% 0.198 142.5), oklch(62.3% 0.198 142.5));
   --color-product-image-btn: light-dark(oklch(1 0 0), oklch(0.208 0.042 265.755));
   --color-product-image-btn-foreground: light-dark(
     oklch(0.208 0.042 265.755),

@@ -23,16 +23,16 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
     return (
       <div
         ref={ref}
-        className="group relative flex w-32 shrink-0 flex-col overflow-hidden rounded-lg"
+        className="hover:bg-accent group relative flex shrink-0 flex-col rounded-lg p-3"
       >
         <img
           alt={product.itemName}
-          className="h-32 w-full object-cover"
+          className="h-32 w-full rounded-lg object-cover"
           src={imageUrl(product.itemImage)}
         />
         <div className="mt-2">
           <p className="text-foreground text-sm font-medium">{product.itemName}</p>
-          <p className="text-sm font-bold text-green-600">{formatCurrency(product.price)}</p>
+          <p className="text-main-alyac-color text-sm font-bold">{formatCurrency(product.price)}</p>
         </div>
 
         {isMe && <Link to={to} className="absolute inset-0" />}
