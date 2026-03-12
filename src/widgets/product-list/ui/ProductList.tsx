@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react';
 
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 import { ProductCardSkeleton, useUserInfiniteProducts } from '@/entities/product';
 import { type Profile } from '@/entities/profile';
 import { ProductCard } from '@/features/product';
-import { ErrorView } from '@/shared/ui';
+import { ErrorView, IconButton } from '@/shared/ui';
 
 import { ProductListSkeleton } from './ProductListSkeleton';
+
+const SCROLL_AMOUNT = 480;
 
 interface ProductListProps {
   isMe: boolean;
@@ -19,6 +22,14 @@ export const ProductList = ({ isMe, user }: ProductListProps) => {
     useUserInfiniteProducts(user?.accountname || '');
   const products = data?.pages.flat() ?? [];
   const sentinelRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollProducts = (x: number) => {
+    scrollRef.current?.scrollBy({
+      left: x,
+      behavior: 'smooth',
+    });
+  };
 
   useEffect(() => {
     if (!sentinelRef.current) return;
@@ -44,8 +55,11 @@ export const ProductList = ({ isMe, user }: ProductListProps) => {
       {isError ? (
         <ErrorView message={'상품 목록 불러오기 실패'} onRetry={() => fetchNextPage()} />
       ) : products.length > 0 ? (
-        <>
-          <ScrollContainer horizontal className="flex gap-3 px-4 pb-2">
+        <div className="mx-2 flex items-center gap-2">
+          <IconButton onClick={() => scrollProducts(-SCROLL_AMOUNT)} className="shrink-0">
+            <ChevronLeft />
+          </IconButton>
+          <ScrollContainer horizontal innerRef={scrollRef} className="flex gap-3 px-4 pb-2">
             {products.map((product, idx) => {
               const isLast = idx === products.length - 1;
               return (
@@ -65,7 +79,10 @@ export const ProductList = ({ isMe, user }: ProductListProps) => {
               </p>
             )}
           </ScrollContainer>
-        </>
+          <IconButton onClick={() => scrollProducts(SCROLL_AMOUNT)} className="shrink-0">
+            <ChevronRight />
+          </IconButton>
+        </div>
       ) : (
         <div className="py-8 text-center">
           <p className="text-muted-foreground text-sm">등록한 상품이 없습니다.</p>
