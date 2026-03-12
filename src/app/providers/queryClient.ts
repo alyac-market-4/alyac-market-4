@@ -19,10 +19,12 @@ export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        if (!error.response?.status) {
-          toast.error(error.message);
-        } else if (error.response?.status >= 500) {
-          toast.error('서버 오류');
+        if (error.code === 'ECONNABORTED') {
+          toast.error('요청 시간이 초과되었습니다.');
+        } else if (error.response) {
+          toast.error(`서버 오류 ${error.response.status}`);
+        } else {
+          toast.error('네트워크 오류');
         }
       }
     },

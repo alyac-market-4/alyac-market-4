@@ -18,7 +18,8 @@ export const FeedList = () => {
   const isEmptyFeed = posts.length === 0;
 
   if (isLoading) return <FeedListSkeleton />;
-  if (isError) return <ErrorView message="피드 불러오기 실패" onRetry={() => fetchNextPage()} />;
+  if (isError && !isFetchingNextPage)
+    return <ErrorView message="피드 불러오기 실패" onRetry={() => fetchNextPage()} />;
   if (isEmptyFeed) return <EmptyFeed onSearch={() => navigate('/feed/search')} />;
 
   return (
@@ -38,6 +39,9 @@ export const FeedList = () => {
           />
         ))}
       </InfiniteScroll>
+      {isError && !isFetchingNextPage && (
+        <ErrorView message="피드 불러오기 실패" onRetry={() => fetchNextPage()} />
+      )}
       {!hasNextPage && (
         <div className="py-8 text-center">
           <p className="text-muted-foreground text-sm">모든 피드를 확인했습니다.</p>
