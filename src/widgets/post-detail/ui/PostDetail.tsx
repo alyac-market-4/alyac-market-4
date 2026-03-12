@@ -10,8 +10,9 @@ import { ProfileBadge } from '@/entities/profile';
 // 좋아요 기능 컴포넌트
 import { LikeButton } from '@/features/post';
 // 이미지 URL 생성 및 이미지 문자열 분리 유틸
-import { imageUrl, splitImageSegments } from '@/shared/lib';
+import { imageUrl, splitImageSegments, timeAgo } from '@/shared/lib';
 import type { Post } from '@/shared/model';
+import { TooltipMessage } from '@/shared/ui';
 
 export const PostDetail = ({ post }: { post: Post }) => {
   // 게시물 이미지 문자열을 배열로 분리
@@ -75,6 +76,12 @@ export const PostDetail = ({ post }: { post: Post }) => {
             username={post.author.username}
           />
         </Link>
+        {/* 게시물 작성 시간 */}
+        <TooltipMessage message={new Date(post.createdAt).toLocaleString()}>
+          <span className="text-muted-foreground text-xs">
+            · {timeAgo(new Date(post.createdAt))}
+          </span>
+        </TooltipMessage>
       </div>
 
       {/* 게시물 내용 */}
