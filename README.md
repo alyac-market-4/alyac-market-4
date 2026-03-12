@@ -9,6 +9,7 @@
 ## 목차
 
 - [프로젝트 소개](#프로젝트-소개)
+- [프로젝트 구조](#프로젝트-구조)
 - [주요 기능](#주요-기능)
 - [미리보기](#미리-보기)
 - [기술 스택](#기술-스택)
@@ -69,6 +70,56 @@ CI/CD: d1, 2026-03-09, 4d
 ```
 
 <br>
+
+<a id="프로젝트-구조"></a>
+
+## <img src="./docs/Alyac_Icon.png" width="23">&nbsp; 프로젝트 구조
+
+```
+src
+├── app
+│   ├── routes / layouts / providers
+│   └── App.tsx, main.tsx
+│
+├── pages
+│   ├── home
+│   ├── feed
+│   ├── profile
+│   ├── post
+│   ├── product
+│   ├── chat
+│   └── auth (sign-in / sign-up)
+│
+├── widgets
+│   ├── header / nav
+│   ├── feed-list
+│   ├── post-list
+│   ├── comment-list
+│   └── profile-card
+│
+├── features
+│   ├── auth
+│   ├── post
+│   ├── product
+│   ├── profile-actions
+│   └── account-search
+│
+├── entities
+│   ├── user
+│   ├── profile
+│   ├── post
+│   ├── comment
+│   ├── product
+│   └── auth
+│
+└── shared
+    ├── api
+    ├── ui
+    ├── assets
+    └── lib
+
+
+```
 
 <a id="주요-기능"></a>
 
