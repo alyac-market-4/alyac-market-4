@@ -11,7 +11,7 @@ import {
 
 export interface ConfirmDialogProps {
   title: string;
-  description?: string;
+  description: string;
   onCancel?: () => void;
   onConfirm?: () => void;
   cancelText?: string;
@@ -37,7 +37,7 @@ export function ConfirmDialog({
       <AlertDialogContent size="sm" className="p-0">
         <AlertDialogHeader className="px-4 pt-8 pb-6">
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          {description && <AlertDialogDescription>{description}</AlertDialogDescription>}
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-1 gap-0">
           <AlertDialogCancel
