@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useAuth } from '@/entities/auth';
-import { useUserProfile } from '@/entities/profile';
+import { useInvalidateFriends, useUserProfile } from '@/entities/profile';
 import { type ViewMode } from '@/features/layout-controller';
 import { ProfileActions } from '@/features/profile-actions';
 import { getTokenUserInfo, themeIcons, useConfirmDialogStore, useThemeStore } from '@/shared/lib';
@@ -26,6 +26,11 @@ export const ProfilePage = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useThemeStore();
   const { openConfirm } = useConfirmDialogStore();
+  const invalidateFriends = useInvalidateFriends();
+
+  useEffect(() => {
+    invalidateFriends(targetAccountname);
+  }, []);
 
   if (isLoading) return <ProfilePageSkeleton viewMode={viewMode} setViewMode={setViewMode} />;
   if (isError) return <ErrorView message="프로필 불러오기 실패" onRetry={() => refetch()} />;
