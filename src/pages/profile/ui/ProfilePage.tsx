@@ -50,6 +50,7 @@ export const ProfilePage = () => {
                 onClick: () =>
                   openConfirm({
                     title: '로그아웃 하시겠습니까?',
+                    description: '로그아웃 하면 로그인 화면으로 돌아갑니다.',
                     actionText: '로그아웃',
                     onConfirm: () => {
                       logout();
