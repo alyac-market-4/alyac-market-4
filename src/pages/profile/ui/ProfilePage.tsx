@@ -21,7 +21,7 @@ export const ProfilePage = () => {
   const myAccountname = getTokenUserInfo()?.accountname || '';
   const isMe = !accountname || accountname === myAccountname;
   const targetAccountname = isMe ? myAccountname : accountname;
-  const { data: user, isLoading, isError, refetch } = useUserProfile(targetAccountname);
+  const { data: user, isLoading, isError, refetch, isFetching } = useUserProfile(targetAccountname);
   const { logout } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { theme, switchTheme } = useThemeStore();
@@ -41,7 +41,7 @@ export const ProfilePage = () => {
               {
                 label: '설정 및 개인정보',
                 onClick: () => {
-                  toast.info('설정 및 개인정보는 중비 중인 기능입니다.');
+                  toast.info('설정 및 개인정보는 준비 중인 기능입니다.');
                 },
               },
               { label: '테마:', icon: themeIcons[theme], onClick: () => switchTheme() },
@@ -63,7 +63,7 @@ export const ProfilePage = () => {
 
       <main className="flex-1 overflow-y-auto pb-16">
         <section className="border-border border-b px-4 py-6">
-          <ProfileCard isMe={isMe} user={user} />
+          <ProfileCard isMe={isMe} user={user} isFetching={isFetching} />
           <ProfileActions isMe={isMe} user={user} />
         </section>
 
