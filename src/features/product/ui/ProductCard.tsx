@@ -35,7 +35,23 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
           <p className="text-main-alyac-color text-sm font-bold">{formatCurrency(product.price)}</p>
         </div>
 
-        {isMe && <Link to={to} className="absolute inset-0" />}
+        {isMe ? (
+          <Link to={to} className="absolute inset-0" />
+        ) : (
+          <button
+            className="absolute inset-0 cursor-pointer"
+            onClick={() =>
+              openConfirm({
+                title: '판매 링크로 이동하시겠습니까?',
+                description: product.link,
+                actionText: '이동',
+                onConfirm: () => {
+                  window.open(product.link, '_blank');
+                },
+              })
+            }
+          />
+        )}
 
         {isMe && (
           <IconButton
