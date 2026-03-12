@@ -19,12 +19,12 @@ import { ProfileBadge } from '@/entities/profile';
 // - 로그인 사용자 정보 확인
 // - 이미지 문자열을 배열로 분리
 // - 공통 확인 다이얼로그 상태 관리
-import { getTokenUserInfo, splitImageSegments, useConfirmDialogStore } from '@/shared/lib';
+import { getTokenUserInfo, splitImageSegments, timeAgo, useConfirmDialogStore } from '@/shared/lib';
 import type { Post } from '@/shared/model';
 // shared/ui
 // - 케밥 메뉴(게시글 옵션 메뉴)
 // - 게시글 이미지 표시 컴포넌트
-import { KebabMenu, PostImage } from '@/shared/ui';
+import { KebabMenu, PostImage, TooltipMessage } from '@/shared/ui';
 
 // features/post
 // - 좋아요 기능 UI 및 로직
@@ -117,7 +117,11 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
          - 클릭 시 작성자 프로필 페이지로 이동
          - 이벤트 전파 방지로 게시글 상세 이동 방지 */}
       <div className="mb-3 flex items-center justify-between">
-        <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          className="flex items-center gap-3"
+        >
           <Link to={`/profile/${post.author.accountname}`} className="inline-flex">
             <ProfileBadge
               username={post.author.username}
@@ -125,6 +129,12 @@ export const PostSummary = ({ post, to, isFetchingNextPage }: PostSummaryProps) 
               image={post.author.image}
             />
           </Link>
+
+          <TooltipMessage message={new Date(post.createdAt).toLocaleString()}>
+            <span className="text-muted-foreground text-xs">
+              · {timeAgo(new Date(post.createdAt))}
+            </span>
+          </TooltipMessage>
         </div>
 
         {/* 게시글 옵션 메뉴
