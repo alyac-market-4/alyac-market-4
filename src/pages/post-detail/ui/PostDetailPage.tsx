@@ -56,7 +56,12 @@ export const PostDetailPage = () => {
   const { data: user } = useUserProfile(getTokenUserInfo().accountname);
 
   // 게시글 상세 데이터 조회
-  const { data: post, isLoading: isLoadingPost, isError: isErrorPost } = usePostDetail(postId);
+  const {
+    data: post,
+    isLoading: isLoadingPost,
+    isError: isErrorPost,
+    refetch: refetchPost,
+  } = usePostDetail(postId);
 
   // 댓글 생성 / 게시글 삭제 / 신고 요청 훅
   const { mutate: createComment } = useCreateComment();
@@ -102,7 +107,15 @@ export const PostDetailPage = () => {
 
   // 에러 발생 시 간단한 에러 화면 표시
   if (isErrorPost || isErrorComments)
-    return <ErrorView message="댓글 불러오기 실패" onRetry={fetchNextPageComments} />;
+    return (
+      <ErrorView
+        message="댓글 불러오기 실패"
+        onRetry={() => {
+          refetchPost();
+          fetchNextPageComments();
+        }}
+      />
+    );
 
   // 게시글이 존재하지 않을 경우
   if (!post) return <div>게시글을 찾을 수 없습니다</div>;
