@@ -6,7 +6,7 @@ const API_PREFIX = '/api';
 
 export const axiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}${API_PREFIX}`,
-  timeout: 30000,
+  timeout: 60000,
 });
 
 // 요청 인터셉터: 토큰 자동 추가
