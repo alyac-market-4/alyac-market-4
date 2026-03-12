@@ -12,7 +12,10 @@ export const PostThumbnail = ({ image, to }: PostThumbnailProps) => {
   const thumbnail = imageUrl(image);
 
   return (
-    <Link className="aspect-square cursor-pointer overflow-hidden" to={to}>
+    <Link
+      className="hover:bg-accent aspect-square cursor-pointer overflow-hidden rounded-2xl p-3"
+      to={to}
+    >
       {thumbnail ? (
         <img alt="Post content" className="h-full w-full object-cover" src={thumbnail} />
       ) : (
