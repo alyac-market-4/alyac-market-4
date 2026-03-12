@@ -59,7 +59,7 @@ export const ProductList = ({ isMe, user }: ProductListProps) => {
           <IconButton onClick={() => scrollProducts(-SCROLL_AMOUNT)} className="shrink-0">
             <ChevronLeft />
           </IconButton>
-          <ScrollContainer horizontal innerRef={scrollRef} className="flex gap-3 px-4 pb-2">
+          <ScrollContainer horizontal innerRef={scrollRef} className="flex flex-1 gap-3 px-4 pb-2">
             {products.map((product, idx) => {
               const isLast = idx === products.length - 1;
               return (
