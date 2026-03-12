@@ -52,7 +52,7 @@ export function FriendList({ isFollowersPath }: FriendListProps) {
           fetchNextPageUsers();
         }}
         hasMore={hasNextPageUsers}
-        loader={isFetchingNextPageUsers ? <FriendListSkeleton /> : null}
+        loader={null}
       >
         {users.map((user) => (
           <FriendCard
@@ -63,19 +63,25 @@ export function FriendList({ isFollowersPath }: FriendListProps) {
         ))}
       </InfiniteScroll>
 
-      <div className="flex items-center justify-center py-8">
-        {users.length === 0 ? (
-          !hasNextPageUsers && (
+      {isFetchingNextPageUsers && <FriendListSkeleton />}
+
+      {!hasNextPageUsers && (
+        <div className="flex items-center justify-center py-8">
+          {users.length === 0 ? (
+            !hasNextPageUsers && (
+              <p className="text-muted-foreground">
+                {isFollowersPath ? '팔로워가 없습니다.' : '팔로잉한 유저가 없습니다.'}
+              </p>
+            )
+          ) : (
             <p className="text-muted-foreground">
-              {isFollowersPath ? '팔로워가 없습니다.' : '팔로잉한 유저가 없습니다.'}
+              {isFollowersPath
+                ? '모든 팔로워를 확인했습니다.'
+                : '모든 팔로잉 유저들을 확인했습니다.'}
             </p>
-          )
-        ) : (
-          <p className="text-muted-foreground">
-            {isFollowersPath ? '모든 팔로워를 확인했습니다.' : '모든 팔로잉 유저들을 확인했습니다.'}
-          </p>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }
