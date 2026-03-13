@@ -92,9 +92,10 @@ export const ProductImageUpload = ({ initialImage, onUploadComplete }: ProductIm
       />
 
       {/* 이미지 미리보기 영역 */}
-      <div className="bg-card border-border relative h-64 w-full overflow-hidden rounded-2xl border">
+      <div className="bg-card relative h-64 w-full">
         <div
-          className="hover:bg-muted bg-muted/60 flex h-full w-full cursor-pointer flex-col items-center justify-center"
+          tabIndex={0}
+          className="border-border hover:bg-muted bg-muted/60 focus:ring-input flex h-full w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border outline-none focus:ring-2"
           onClick={handleButtonClick} // 영역 어디든 클릭하면 파일 선택 창 열림
         >
           {/* imagePreview가 있으면 이미지 표시, 없으면 안내 아이콘 표시 */}

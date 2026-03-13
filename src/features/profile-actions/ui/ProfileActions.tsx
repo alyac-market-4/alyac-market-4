@@ -38,7 +38,7 @@ export const ProfileActions = ({ isMe, user }: ProfileActionsProps) => {
   };
 
   return (
-    <div className="mt-4 flex justify-center gap-2 px-20">
+    <div className="mt-5">
       {isMe ? (
         <MyProfileActionButtons
           update={() => {
