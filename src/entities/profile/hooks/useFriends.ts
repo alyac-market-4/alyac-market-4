@@ -6,7 +6,7 @@ import { profileKeys } from '../model/keys';
 export const useFriends = (
   accountname: string,
   type: 'followers' | 'followings',
-  limit: number = 5,
+  limit: number = 10,
   skip: number = 0,
 ) => {
   return useQuery({

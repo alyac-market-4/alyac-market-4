@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { profileKeys, useFollow, useUnfollow } from '@/entities/profile';
+import { useFollow, useUnfollow } from '@/entities/profile';
 import { getTokenUserInfo } from '@/shared/lib';
 import type { UserWithIsFollow } from '@/shared/model';
 import { Button } from '@/shared/ui';
@@ -17,7 +16,6 @@ export function FriendButton({ user, disabled }: FriendButtonProps) {
   const { mutate: follow, isPending: isFollowPending } = useFollow();
   const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollow();
   const [isfollow, setIsFollow] = useState(user.isfollow);
-  const queryClient = useQueryClient();
 
   const handleFollow = (accountname: string) => {
     setIsFollow(true);
@@ -41,12 +39,6 @@ export function FriendButton({ user, disabled }: FriendButtonProps) {
   useEffect(() => {
     setIsFollow(user.isfollow);
   }, [user.isfollow]);
-
-  useEffect(() => {
-    return () => {
-      queryClient.invalidateQueries({ queryKey: profileKeys.all });
-    };
-  }, []);
 
   return (
     <>
