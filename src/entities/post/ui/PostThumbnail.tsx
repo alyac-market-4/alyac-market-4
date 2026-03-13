@@ -16,14 +16,16 @@ export const PostThumbnail = ({ image, to }: PostThumbnailProps) => {
       className="hover:bg-accent aspect-square cursor-pointer overflow-hidden rounded-2xl p-3"
       to={to}
     >
-      {thumbnail ? (
-        <img alt="Post content" className="h-full w-full object-cover" src={thumbnail} />
-      ) : (
-        <div className="bg-muted flex h-full w-full flex-col items-center justify-center gap-1">
-          <ImageOff className="text-muted-foreground" />
-          <span className="text-muted-foreground text-xs">이미지가 없는 게시글입니다.</span>
-        </div>
-      )}
+      <div className="h-full w-full overflow-hidden rounded-lg">
+        {thumbnail ? (
+          <img alt="Post content" className="h-full w-full object-cover" src={thumbnail} />
+        ) : (
+          <div className="bg-muted flex h-full w-full flex-col items-center justify-center gap-1">
+            <ImageOff className="text-muted-foreground" />
+            <span className="text-muted-foreground text-xs">이미지가 없는 게시글입니다.</span>
+          </div>
+        )}
+      </div>
     </Link>
   );
 };
