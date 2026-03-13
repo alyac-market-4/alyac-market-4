@@ -6,7 +6,7 @@ import { profileKeys } from '../model/keys';
 export const useInfiniteFriends = (
   accountname: string,
   type: 'followers' | 'followings',
-  limit: number = 5,
+  limit: number = 10,
 ) => {
   return useInfiniteQuery({
     queryKey:
@@ -22,6 +22,8 @@ export const useInfiniteFriends = (
       if (lastPage.length < limit) return undefined;
       return allPages.length * limit;
     },
+    staleTime: 0,
+    gcTime: 0,
     enabled: !!accountname,
   });
 };
