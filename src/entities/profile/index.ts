@@ -5,6 +5,7 @@ export * from './hooks/useFriends';
 export * from './hooks/useInfiniteFollowers';
 export * from './hooks/useInfiniteFollowings';
 export * from './hooks/useInfiniteFriends';
+export * from './hooks/useInvalidateFriends';
 export * from './hooks/useUnfollow';
 export * from './hooks/useUpdateProfile';
 export * from './hooks/useUserProfile';
