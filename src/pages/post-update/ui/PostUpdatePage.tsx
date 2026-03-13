@@ -144,8 +144,8 @@ function PostUpdateView({ post }: Props) {
           onRemoveExistingImage={onRemoveExistingImage}
         />
 
-        {/* 수정 페이지 검증 안내문 표시 */}
-        {helperText && <p className="mt-2 text-sm text-red-500">{helperText}</p>}
+        {/* 검증 실패 시 안내 메시지 표시 */}
+        {helperText && <p className="mt-2 ml-[68px] text-sm text-red-500">{helperText}</p>}
       </main>
     </>
   );
