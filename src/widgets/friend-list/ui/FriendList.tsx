@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useParams } from 'react-router-dom';
 
-import { useInfiniteFriends } from '@/entities/profile';
+import { useInfiniteFriends, useInvalidateFriends } from '@/entities/profile';
 import { FriendCard } from '@/entities/user';
 import { FriendButton } from '@/features/profile';
+import { getTokenUserInfo } from '@/shared/lib';
 import { ErrorView } from '@/shared/ui';
 
 import { FriendListSkeleton } from './FriendListSkeleton';
@@ -25,6 +26,13 @@ export function FriendList({ isFollowersPath }: FriendListProps) {
     isFetchingNextPage: isFetchingNextPageUsers,
   } = useInfiniteFriends(accountname, isFollowersPath ? 'followers' : 'followings');
   const users = usersData?.pages.flat() ?? [];
+  const myAccountname = getTokenUserInfo().accountname;
+  const invalidateFriends = useInvalidateFriends();
+
+  useEffect(() => {
+    invalidateFriends(myAccountname);
+    invalidateFriends(accountname);
+  }, []);
 
   useEffect(() => {
     if (document.documentElement.scrollHeight <= window.innerHeight) {
