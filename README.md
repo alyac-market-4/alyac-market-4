@@ -270,13 +270,14 @@ src
 | `/`                          | 메인 홈          | 비로그인  |
 | `/sign-in`                   | 로그인           | 비로그인  |
 | `/sign-up`                   | 회원가입         | 비로그인  |
+| `/profile-setting`           | 프로필 등록      | 비로그인  |
 | `/feed`                      | 피드             | 로그인    |
 | `/feed/search`               | 어카운트 검색    | 로그인    |
 | `/chat`                      | 채팅 목록        | 로그인    |
 | `/chat/:chatId`              | 채팅 디테일      | 로그인    |
 | `/profile`                   | 프로필           | 로그인    |
 | `/profile/:accountname`      | 다른 유저 프로필 | 로그인    |
-| `/profile-update`            | 프로필 수정      | 비로그인  |
+| `/profile-update`            | 프로필 수정      | 로그인    |
 | `/followers/:accountname`    | 팔로워           | 로그인    |
 | `/followings/:accountname`   | 팔로잉           | 로그인    |
 | `/post/:postId`              | 포스트 디테일    | 로그인    |
