@@ -215,7 +215,7 @@ export function PostImageField({
       {/* 플로팅 이미지 추가 버튼 */}
       <ImageFileButton
         onClick={onPickImages}
-        className="bg-main-alyac-color hover:bg-main-alyac-color-hover fixed right-6 bottom-24 z-50 h-12 w-12 shadow-lg"
+        className="bg-main-alyac-color hover:bg-main-alyac-color-hover fixed right-6 bottom-24 z-50 h-12 w-12 shadow-lg hover:text-white"
       />
     </>
   );
