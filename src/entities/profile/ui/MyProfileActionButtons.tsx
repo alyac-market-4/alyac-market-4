@@ -7,12 +7,12 @@ interface MyProfileActionButtonsProps {
 
 export function MyProfileActionButtons({ update, create }: MyProfileActionButtonsProps) {
   return (
-    <>
+    <div className="flex justify-center gap-5 px-20">
       <Button
         onClick={update}
         variant="outline"
         size="lg"
-        className="flex-1 rounded-full"
+        className="max-w-80 flex-1 rounded-full"
         type="button"
       >
         프로필 수정
@@ -21,11 +21,11 @@ export function MyProfileActionButtons({ update, create }: MyProfileActionButton
         onClick={create}
         variant="outline"
         size="lg"
-        className="flex-1 rounded-full"
+        className="max-w-80 flex-1 rounded-full"
         type="button"
       >
         상품 등록
       </Button>
-    </>
+    </div>
   );
 }

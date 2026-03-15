@@ -16,7 +16,7 @@ export function ProfileActionButtons({ handleFollow, user, disabled }: ProfileAc
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="flex justify-center gap-2 px-20">
       <Button
         type="button"
         variant="outline"
@@ -47,6 +47,6 @@ export function ProfileActionButtons({ handleFollow, user, disabled }: ProfileAc
       >
         <Share2 />
       </Button>
-    </>
+    </div>
   );
 }
